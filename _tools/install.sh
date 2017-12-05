@@ -61,17 +61,6 @@ if test "$install_htpassword_for_user" = "Y"; then
 
 fi
 
-# SSH PORT
-if test "$install_security" = "Y"; then
-
-	# GET CURRENT PORT NUMBER
-	port_number=$(grep -E "^Port\ ([0-9]+)$" /etc/ssh/sshd_config | sed "s/Port //;")
-
-	read -p "Specify SSH port (leave empty to keep $port_number): " install_port
-	export install_port
-	echo
-
-fi
 
 # MYSQL ROOT PASSWORD
 if test "$install_webserver_conf" = "Y"; then
@@ -93,9 +82,6 @@ git config --global credential.helper cache
 
 
 
-
-
-
 # MAKE SITES FOLDER
 if [ ! -d "C:\srv\sites" ]; then
 	mkdir "C:\srv\sites"
@@ -104,6 +90,16 @@ fi
 # MAKE CONF FOLDER
 if [ ! -d "C:\srv\conf" ]; then
 	mkdir "C:\srv\conf"
+fi
+
+# MAKE downloads FOLDER
+if [ ! -d "C:\srv\downloads" ]; then
+	mkdir "C:\srv\downloads"
+fi
+
+# MAKE packages FOLDER
+if [ ! -d "C:\srv\packages" ]; then
+	mkdir "C:\srv\packages"
 fi
 
 

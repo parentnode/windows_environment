@@ -17,7 +17,9 @@ if test "$install_webserver_conf" = "Y"; then
 	echo
 
 
-	install_apache_servername=$(grep -E "^ServerName" "C:\Users\clevo\AppData\Roaming\Apache24\conf\httpd.conf" || echo "")
+#	install_apache_servername=$(grep -E "^ServerName" "C:\Users\clevo\AppData\Roaming\Apache24\conf\httpd.conf" || echo "")
+	install_apache_servername=$( findstr "^ServerName" "C:\Users\clevo\AppData\Roaming\Apache24\conf\httpd.conf" || echo "")
+
 	if [ -z "$install_apache_servername" ]; then
 
 		# SET SERVERNAME
@@ -34,7 +36,8 @@ if test "$install_webserver_conf" = "Y"; then
 	# remove path (slashes) from output to avoid problem with testing string
 	#install_parentnode_includes=$(grep "^IncludeOptional \/srv\/conf\/\*\.conf" "C:\Users\clevo\AppData\Roaming\Apache24\conf\httpd.conf" | sed "s/\/srv\/conf\/\*\.conf//;" || echo "")
 	# TODO: match does not work in windows
-	install_parentnode_includes=$(grep "^IncludeOptional C\:\\srv\\conf\\*\.conf" "C:\Users\clevo\AppData\Roaming\Apache24\conf\httpd.conf" | sed "s/\/srv\/conf\/\*\.conf//;" || echo "")
+	install_parentnode_includes=$( findstr "^IncludeOptional C\:\\srv\\conf\\\*.conf" "C:\Users\clevo\AppData\Roaming\Apache24\conf\httpd.conf" | sed "s/\/srv\/conf\/\*\.conf//;" || echo "")
+	
 	if test -z "$install_parentnode_includes"; then
 
 		# ADD GIT CONF SETUP
@@ -43,7 +46,7 @@ if test "$install_webserver_conf" = "Y"; then
 	fi
 
 	# PHP handler in Apache conf
-	install_PHP_handler=$(grep "^AddHandler application\/x-httpd-php \.php" || echo "")
+	install_PHP_handler=$(findstr "^AddHandler application\/x-httpd-php \.php" "C:\Users\clevo\AppData\Roaming\Apache24\conf\httpd.conf" || echo "")
 	if test -z "$install_PHP_handler"; then
 
 		# ADD GIT CONF SETUP
