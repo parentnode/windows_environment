@@ -1,22 +1,21 @@
-
-
-echo "---------------------------------------------"
-echo 
-echo "        Starting server installation"
-echo 
-echo
+$url = ''
+Write-Output "---------------------------------------------"
+Write-Output ""
+Write-Output "        Starting server installation"
+Write-Output ""
+Write-Output ""
 
 # GET INSTALL USER
 install_user=$(whoami)
 export install_user
 
 
-echo
-echo "Installing system for $install_user"
-
-echo
-echo "To speed up the process, please select your install options now:"
-echo
+Write-Output
+Write-Output "Installing system for $install_user"
+ 
+Write-Output
+Write-Output "To speed up the process, please select your install options now:"
+Write-Output
 
 
 read -p "Install software (Y/n): " install_software
@@ -25,55 +24,30 @@ export install_software
 read -p "Set up Apache/PHP/MariaDB (Y/n): " install_webserver_conf
 export install_webserver_conf
 
-# read -p "Install .htaccess (Y/n): " install_htpassword_for_user
-# export install_htpassword_for_user
-
 # read -p "Install ffmpeg (Y/n): " install_ffmpeg
 # export install_ffmpeg
 
 # read -p "Install wkhtmlto (Y/n): " install_wkhtml
 # export install_wkhtml
 
-# read -p "Install mail (Y/n): " install_mail
-# export install_mail
 
-
-
-
-echo
-echo
-echo "Please enter the information required for your install:"
-echo
+Write-Output
+Write-Output
+Write-Output "Please enter the information required for your install:"
+Write-Output
 
 
 read -p "Your email address: " install_email
 export install_email
-echo
+Write-Output
 
-# HTACCESS PASSWORD
-# if  ("$install_htpassword_for_user" = "Y") {
-
-
-
-# 	read -s -p "HTACCESS password for $install_user\: " install_htaccess_password
-
-# 	export install_htaccess_password
-# 	echo
-# 	echo
-
-# }
-Invoke-WebRequest -Uri "http://windows.php.net/downloads/releases/php-devel-pack-7.1.12-nts-Win32-VC14-x64.zip" -OutFile "C:\srv\downloads\php-7.1.12-nts-Win32-VC14-x64.zip"
-(New-Object Net.WebClient).DownloadFile( "http://windows.php.net/downloads/releases/php-devel-pack-7.1.12-nts-Win32-VC14-x64.zip", "C:\srv\downloads\php-7.1.12-nts-Win32-VC14-x64.zip");
-
-# $client = New-Object System.Net.WebClient 
-# 	$client.DownloadFile("http://windows.php.net/downloads/releases/php-devel-pack-7.1.12-nts-Win32-VC14-x64.zip","C:\srv\downloads\php-7.1.12-nts-Win32-VC14-x64.zip");
-# # MYSQL ROOT PASSWORD
+# MYSQL ROOT PASSWORD
 # if ("$install_webserver_conf" == "Y"){
 
 
 # 	read -s -p "Enter new root DB password\: " db_root_password
 # 	export db_root_password
-# 	echo
+# 	Write-Output
 
 # }
 
@@ -111,13 +85,12 @@ Invoke-WebRequest -Uri "http://windows.php.net/downloads/releases/php-devel-pack
 
 # # INSTALL SOFTWARE
 # # . c:\srv\tools\_tools\install_software.sh
-# . "C:\srv\sites\parentnode\windows_environment\_tools\install_software.sh"
+# . "C:\srv\sites\parentnode\windows_environment\_tools\install_software.ps1"
 
 # # # INSTALL WEBSERVER CONFIGURATION
-# . "C:\srv\sites\parentnode\windows_environment\_tools\install_webserver_configuration.sh"
+# . "C:\srv\sites\parentnode\windows_environment\_tools\install_webserver_configuration.ps1"
 
-# # # INSTALL HTACCESS PASSWORD
-# # . /srv/tools/_tools/install_htaccess.sh
+
 
 # # # INSTALL FFMPEG
 # # . /srv/tools/_tools/install_ffmpeg.sh
@@ -125,35 +98,7 @@ Invoke-WebRequest -Uri "http://windows.php.net/downloads/releases/php-devel-pack
 # # # INSTALL WKHTMLTO
 # # . /srv/tools/_tools/install_wkhtmlto.sh
 
-# # # INSTALL MAIL
-# # . /srv/tools/_tools/install_mail.sh
 
-
-
-# echo
-# echo
-# echo "Copying terminal configuration"
-# echo
-# # ADD COMMANDS ALIAS'
-
-
-# # GET CURRENT PORT NUMBER AND IP ADDRESS
-# # port_number=$(grep -E "^Port\ ([0-9]+)$" /etc/ssh/sshd_config | sed "s/Port //;")
-# # ip_address=$(dig +short myip.opendns.com @resolver1.opendns.com)
-
-# echo
-# echo
-# echo "Login command:"
-# echo
-# echo "ssh -p $port_number $install_user@$ip_address"
-# echo 
-# echo
-# echo "You are done!"
-# echo
-# echo "Reboot the server (sudo reboot)"
-# echo "and log in again (ssh -p $port_number $install_user@$ip_address)"
-# echo
-# echo
-# echo "See you in a bit "
-# echo	
-	#read -s -p "HTACCESS password for $install_user: " install_htaccess_password
+# Write-Output
+# Write-Output "You are done!"
+# Write-Output

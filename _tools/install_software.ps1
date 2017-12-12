@@ -101,7 +101,12 @@ if test "$install_software" = "Y"; then
 #     $Location.Copyhere($ZipFolder.items(), 1040) # 1040 - No msgboxes to the user - http://msdn.microsoft.com/en-us/library/bb787866%28VS.85%29.aspx
 #     $progress++
 # }
+Invoke-WebRequest -Uri "http://windows.php.net/downloads/releases/php-devel-pack-7.1.12-nts-Win32-VC14-x64.zip" -OutFile "C:\srv\downloads\php-7.1.12-nts-Win32-VC14-x64.zip"
+(New-Object Net.WebClient).DownloadFile( "http://windows.php.net/downloads/releases/php-devel-pack-7.1.12-nts-Win32-VC14-x64.zip", "C:\srv\downloads\php-7.1.12-nts-Win32-VC14-x64.zip");
 
+# $client = New-Object System.Net.WebClient 
+# 	$client.DownloadFile("http://windows.php.net/downloads/releases/php-devel-pack-7.1.12-nts-Win32-VC14-x64.zip","C:\srv\downloads\php-7.1.12-nts-Win32-VC14-x64.zip");
+# 
 
 # PARAM (
 #     [string] $ZipFilesPath = "X:\Somepath\Full\Of\Zipfiles",
