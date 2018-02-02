@@ -97,21 +97,20 @@ else
 
 fi;
 
-# SEEMS LIKE WE DON'T NEED THIS
-# echo ""
-# echo "Checking if $vc_compiler already exist"
-# echo ""
-#
-# if [ -e /mnt/c/srv/packages/$vc_compiler ] ; then
-# 	echo "C:/srv/packages/$vc_compiler already exist"
-# else
-# 	cd /mnt/c/srv/packages/
-# 	echo "Downloading c++ compiler"
-# 	wget -O $vc_compiler $vc_compiler_path
-#
-# 	echo "Installing latest C++ compiler"
-# 	/mnt/c/srv/packages/$vc_compiler
-# fi;
+echo ""
+echo "Checking if $vc_compiler already exist"
+echo ""
+
+if [ -e /mnt/c/srv/packages/$vc_compiler ] ; then
+	echo "C:/srv/packages/$vc_compiler already exist"
+else
+	cd /mnt/c/srv/packages/
+	echo "Downloading c++ compiler"
+	wget -O $vc_compiler $vc_compiler_path
+
+	echo "Installing latest C++ compiler"
+	/mnt/c/srv/packages/$vc_compiler
+fi;
 
 echo "Looking for Apache httpd"
 if [ -e /mnt/c/srv/packages/$apache ] ; then
