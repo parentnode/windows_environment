@@ -50,11 +50,11 @@ else
 fi;
 
 # Base apache configuration location
-if [ -e /mnt/c/srv/sites/apache ] ; then
-	echo "C:/srv/sites/apache already exist"
+if [ -e /mnt/c/srv/apache ] ; then
+	echo "C:/srv/apache already exist"
 else
-	echo "create directory C:/srv/sites/apache"
-    mkdir -p /mnt/c/srv/sites/apache;
+	echo "create directory C:/srv/apache"
+    mkdir -p /mnt/c/srv/apache;
 fi;
 
 
@@ -199,11 +199,19 @@ install_apache_vhosts=$(grep -E "^Include conf\\/extra\\/httpd\\-vhosts\\.conf" 
 # Copy accessible apache config extender file
 cp "/mnt/c/srv/tools/_conf/apache.conf" "/mnt/c/srv/apache/apache.conf"
 
-install_apache_extender=$(grep -E "^Include \"c:/srv/sites/apache/*.conf\"" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
+install_apache_extender=$(grep -E "^Include \"c:\\/srv\\/apache\\/\\*\\.conf\"" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
 if [ -z "$install_apache_extender" ]; then
 
 	# Include config extender
-	echo "Include \"c:/srv/sites/apache/*.conf\"" >> "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
+	echo "Include \"c:/srv/apache/*.conf\"" >> "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
+
+fi
+
+install_apache_extender=$(grep -E "^Include \"c:\\/srv\\/sites\\/apache\\/\\*\\.conf\"" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
+if [ -n "$install_apache_extender" ]; then
+
+	# Include config extender
+		sed -i "s/^Include \"c:\\/srv\\/sites\\/apache\\/\\*\\.conf\"//" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
 
 fi
 
