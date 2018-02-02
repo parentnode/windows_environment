@@ -41,12 +41,22 @@ fi
 
 echo "Checking Directories"
 
+# Base parentnode project location
 if [ -e /mnt/c/srv/sites/parentnode ] ; then
 	echo "C:/srv/sites/parentnode already exist"
 else
 	echo "create directory C:/srv/sites/parentnode"
     mkdir -p /mnt/c/srv/sites/parentnode;
 fi;
+
+# Base apache configuration location
+if [ -e /mnt/c/srv/sites/apache ] ; then
+	echo "C:/srv/sites/apache already exist"
+else
+	echo "create directory C:/srv/sites/apache"
+    mkdir -p /mnt/c/srv/sites/apache;
+fi;
+
 
 if [ -e /mnt/c/srv/packages ] ; then
 	echo "C:/srv/packages already exist"
@@ -87,20 +97,21 @@ else
 
 fi;
 
-echo ""
-echo "Checking if $vc_compiler already exist"
-echo ""
-
-if [ -e /mnt/c/srv/packages/$vc_compiler ] ; then
-	echo "C:/srv/packages/$vc_compiler already exist"
-else
-	cd /mnt/c/srv/packages/
-	echo "Downloading c++ compiler"
-	wget -O $vc_compiler $vc_compiler_path
-
-	echo "Installing latest C++ compiler"
-	/mnt/c/srv/packages/$vc_compiler
-fi;
+# SEEMS LIKE WE DON'T NEED THIS
+# echo ""
+# echo "Checking if $vc_compiler already exist"
+# echo ""
+#
+# if [ -e /mnt/c/srv/packages/$vc_compiler ] ; then
+# 	echo "C:/srv/packages/$vc_compiler already exist"
+# else
+# 	cd /mnt/c/srv/packages/
+# 	echo "Downloading c++ compiler"
+# 	wget -O $vc_compiler $vc_compiler_path
+#
+# 	echo "Installing latest C++ compiler"
+# 	/mnt/c/srv/packages/$vc_compiler
+# fi;
 
 echo "Looking for Apache httpd"
 if [ -e /mnt/c/srv/packages/$apache ] ; then
@@ -184,12 +195,27 @@ install_apache_vhosts=$(grep -E "^Include conf\\/extra\\/httpd\\-vhosts\\.conf" 
 
 	fi
 
+
+# Copy accessible apache config extender file
+cp "/mnt/c/srv/tools/_conf/apache.conf" "/mnt/c/srv/apache/apache.conf"
+
+install_apache_extender=$(grep -E "^Include \"c:/srv/sites/apache/*.conf\"" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
+if [ -z "$install_apache_extender" ]; then
+
+	# Include config extender
+	echo "Include \"c:/srv/sites/apache/*.conf\"" >> "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
+
+fi
+
+
 service_installed=$(sudo /mnt/c/Windows/System32/net.exe start apache2.4 exit 2>/dev/null || echo 1)
 if [ "$service_installed" = "1" ]; then 
-sudo /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe -k install
+	sudo /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe -k install
 fi
 
 sudo /mnt/c/Windows/System32/net.exe start apache2.4
+
+
 
 # if [ -e /mnt/c/srv/packages/PHP ] ; then
 # 	echo "C:/srv/packages/PHP already exist so $PHP have been extracted  "
