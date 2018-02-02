@@ -170,7 +170,7 @@ install_apache_php=$(grep -E "^LoadModule php7_module" "/mnt/c/srv/installed-pac
 
 	if [ -z "$install_apache_php" ]; then
 
-		# SET SERVERNAME
+		# Include php module
 		echo "LoadModule php7_module C:/srv/installed-packages/php722/php7apache2_4.dll" >> "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
 
 	fi
@@ -179,7 +179,7 @@ install_apache_php_ini=$(grep -E "^PHPIniDir" "/mnt/c/srv/installed-packages/apa
 
 	if [ -z "$install_apache_php_ini" ]; then
 
-		# SET SERVERNAME
+		# Include PHPIniDir path
 		echo "PHPIniDir  C:/srv/installed-packages/php722" >> "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
 
 	fi
@@ -189,15 +189,25 @@ install_apache_vhosts=$(grep -E "^Include conf\\/extra\\/httpd\\-vhosts\\.conf" 
 
 	if [ -z "$install_apache_vhosts" ]; then
 
-		# SET SERVERNAME
+		# Include vhosts config
 		sed -i "s/^#Include conf\\/extra\\/httpd\\-vhosts\\.conf/Include conf\\/extra\\/httpd\\-vhosts\\.conf/" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
 
 	fi
 
 
+# TODO
+# Correct file location is srv/sites/apache - not srv/apache
 # Copy accessible apache config extender file
-cp "/mnt/c/srv/tools/_conf/apache.conf" "/mnt/c/srv/apache/apache.conf"
+# If file does not exist
+if [ ! -f "/mnt/c/srv/apache/apache.conf" ]; then
 
+	# Copy apache config file
+	cp "/mnt/c/srv/tools/_conf/apache.conf" "/mnt/c/srv/apache/apache.conf"
+
+fi
+
+# TODO
+# File should have been placed in srv/sites/apache
 install_apache_extender=$(grep -E "^Include \"c:\\/srv\\/apache\\/\\*\\.conf\"" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
 if [ -z "$install_apache_extender" ]; then
 
@@ -206,11 +216,14 @@ if [ -z "$install_apache_extender" ]; then
 
 fi
 
+# TODO
+# BAD FIX - moving the file from the correct location to the wrong location
+# THIS SHOULD BE REVERSED
 install_apache_extender=$(grep -E "^Include \"c:\\/srv\\/sites\\/apache\\/\\*\\.conf\"" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
 if [ -n "$install_apache_extender" ]; then
 
 	# Include config extender
-		sed -i "s/^Include \"c:\\/srv\\/sites\\/apache\\/\\*\\.conf\"//" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
+	sed -i "s/^Include \"c:\\/srv\\/sites\\/apache\\/\\*\\.conf\"//" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
 
 fi
 
