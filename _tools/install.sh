@@ -93,9 +93,9 @@ else
 	wget -O $mariadb $mariadb_path
 
 	echo "installing mariadb"
-   # /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\\"$mariadb /passive
+   /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\\"$mariadb /passive
    #mariadb is .msi not .exe it neds windows msi installer (msiexec.exe) (Octavian)
-   /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\/"$mariadb /passive
+   # /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\/"$mariadb /passive
 
 fi;
 
