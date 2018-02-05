@@ -93,9 +93,13 @@ else
 	wget -O $mariadb $mariadb_path
 
 	echo "installing mariadb"
-   /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\\"$mariadb /passive
-   #mariadb is .msi not .exe it neds windows msi installer (msiexec.exe) (Octavian)
-   # /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\/"$mariadb /passive
+	/mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\\"$mariadb /qn
+	# Updated version with correct install parameters
+	# /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\\"$mariadb PASSWORD=$db_root_password SERVICENAME="MariaDB" /qn
+
+
+	#mariadb is .msi not .exe it neds windows msi installer (msiexec.exe) (Octavian)
+	# /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\/"$mariadb /passive
 
 fi;
 
@@ -332,3 +336,15 @@ sudo /mnt/c/Windows/System32/net.exe start apache2.4
 #
 #
 # #cd /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe
+
+
+
+# TO BE INPLEMENTED
+echo
+echo
+echo "Please enter the information required for your install:"
+echo
+
+read -s -p "Enter new root DB password: " db_root_password
+export db_root_password
+echo
