@@ -46,3 +46,6 @@ apache() {
 	sudo /mnt/c/Windows/System32/net.exe "$1" apache2.4
 }
 alias sites="cd /mnt/c/srv/sites"
+
+# Better apache option to be tested
+#alias apache="sudo /mnt/c/srv/installed-packages/apache24/Apache24/httpd.exe -k"
