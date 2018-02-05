@@ -9,7 +9,7 @@ echo "        Starting server installation"
 echo ""
 echo ""
 
-
+#Defining paths
 vc_compiler="VC_redist.x64.exe"
 vc_compiler_path="https://aka.ms/vs/15/release/VC_redist.x64.exe"
 
@@ -27,6 +27,7 @@ imagemagick_path="https://www.imagemagick.org/download/binaries/ImageMagick-7.0.
 
 ffmpeg="ffmpeg.zip"
 ffmpeg_path="https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20180129-d4967c0-win64-static.zip"
+
 
 # Check if windows environment
 if grep -qE "(Microsoft|WSL)" /proc/version &> /dev/null ; then
@@ -49,14 +50,13 @@ else
     mkdir -p /mnt/c/srv/sites/parentnode;
 fi;
 
-# Base apache configuration location
-if [ -e /mnt/c/srv/apache ] ; then
-	echo "C:/srv/apache already exist"
+# Base apache configuration location -> new
+if [ -e /mnt/c/srv/sites/apache ] ; then
+	echo "C:/srv/sites/apache already exist"
 else
-	echo "create directory C:/srv/apache"
-    mkdir -p /mnt/c/srv/apache;
+	echo "create directory C:/srv/sites/apache"
+    mkdir -p /mnt/c/srv/sites/apache;
 fi;
-
 
 if [ -e /mnt/c/srv/packages ] ; then
 	echo "C:/srv/packages already exist"
@@ -195,45 +195,65 @@ install_apache_vhosts=$(grep -E "^Include conf\\/extra\\/httpd\\-vhosts\\.conf" 
 	fi
 
 
-# TODO
+# TODO -> DONE!
 # Correct file location is srv/sites/apache - not srv/apache
 # Copy accessible apache config extender file
 # If file does not exist
-if [ ! -f "/mnt/c/srv/apache/apache.conf" ]; then
+if [ -f "/mnt/c/srv/apache/apache.conf" ]; then
 
-	# Copy apache config file
-	cp "/mnt/c/srv/tools/_conf/apache.conf" "/mnt/c/srv/apache/apache.conf"
-
-fi
-
-# TODO
-# File should have been placed in srv/sites/apache
-install_apache_extender=$(grep -E "^Include \"c:\\/srv\\/apache\\/\\*\\.conf\"" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
-if [ -z "$install_apache_extender" ]; then
-
-	# Include config extender
-	echo "Include \"c:/srv/apache/*.conf\"" >> "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
+	# Move to correct apache folder
+	echo "Moving apache.conf to the correct path"
+	mv "/mnt/c/srv/apache/apache.conf" "/mnt/c/srv/sites/apache/apache.conf"
 
 fi
+#Removing empty leftover apache directory
+if [ -d "/mnt/c/srv/apache/" ]; then
 
-# TODO
-# BAD FIX - moving the file from the correct location to the wrong location
-# THIS SHOULD BE REVERSED
-install_apache_extender=$(grep -E "^Include \"c:\\/srv\\/sites\\/apache\\/\\*\\.conf\"" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
+		echo ""
+		echo "Removing leftover apache directory"
+		echo ""
+		
+		rmdir "/mnt/c/srv/apache/"
+fi
+#Removing wrong "include" in global apache config
+install_apache_extender=$(grep -E "^Include \"(c:)?\\/srv\\/apache\\/\\*\\.conf\"" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
 if [ -n "$install_apache_extender" ]; then
 
 	# Include config extender
-	sed -i "s/^Include \"c:\\/srv\\/sites\\/apache\\/\\*\\.conf\"//" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
+	echo "Removing"
+	sed -i "s/^Include \"[c:]*\\/srv\\/apache\\/\\*\\.conf\"//" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
+
+fi
+
+#Copy default apache.conf
+if [ ! -f "/mnt/c/srv/sites/apache/apache.conf" ]; then
+	echo "Adding apache config file to /srv/sites/apache"
+	cp "/mnt/c/srv/tools/_conf/apache.conf" "/mnt/c/srv/sites/apache/apache.conf"
+
+fi
+
+#Add "include" in global apache config
+install_apache_extender=$(grep -E "^Include \"(c:)?\\/srv\\/sites\\/apache\\/\\*\\.conf\"" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
+if [ -z "$install_apache_extender" ]; then
+
+	# Include config extender
+	echo "Include \"/srv/sites/apache/*.conf\"" >> "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
 
 fi
 
 
+
+
+#Checking if apache service is installed
 service_installed=$(sudo /mnt/c/Windows/System32/net.exe start apache2.4 exit 2>/dev/null || echo 1)
 if [ "$service_installed" = "1" ]; then 
 	sudo /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe -k install
 fi
 
+echo "Starting apache server"
 sudo /mnt/c/Windows/System32/net.exe start apache2.4
+
+
 
 
 
