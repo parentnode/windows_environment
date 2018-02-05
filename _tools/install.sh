@@ -9,11 +9,37 @@ echo "        Starting server installation"
 echo ""
 echo ""
 
-# #echo "$(whoami)"
-# # Setting up bash config
-# echo "Copying .profile to home dir"
-# cp "/mnt/c/srv/tools/_conf/dot_profile" "/home/$(whoami)/.profile"
-# echo ""
+# Setting up git user and email
+read -p "Your git username: " git_user
+export git_user
+echo ""
+
+read -p "Your git email address: " git_email
+export git_email
+echo ""
+
+# Setting up password
+echo ""
+echo "Please enter the information required for your install:"
+echo ""
+
+read -s -p "Enter new root DB password: " db_root_password
+export db_root_password
+echo ""
+
+# SETTING DEFAULT GIT USER
+echo "Setting up default Git settings"
+git config --global core.filemode false
+git config --global user.name "$git_user"
+git config --global user.email "$git_email"
+git config --global credential.helper cache
+git config --global push.default simple
+
+
+# Setting up bash config
+echo "Copying .profile to home dir"
+cp "/mnt/c/srv/tools/_conf/dot_profile" "/home/$SUDO_USER/.profile"
+echo ""
 
 # Defining paths and download urls
 echo ""
@@ -122,6 +148,11 @@ echo "|"
 echo "Unzip installed in WSL!"
 echo ""
 
+# DELETE
+/mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\mariadb-10.2.12-winx64.msi" REMOVE=ALL /qn # Remember to delete
+rm /mnt/c/srv/packages/mariadb-10.2.12-winx64.msi
+# DELETE
+
 # Downloading and installing mariadb
 echo "Looking for mariaDB"
 if [ -e /mnt/c/srv/packages/$mariadb ] ; then
@@ -133,9 +164,9 @@ else
 	wget -O $mariadb $mariadb_path
 
 	echo "Installing mariadb"
-	/mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\\"$mariadb /qn
-	# Updated version with correct install parameters
-	# /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\\"$mariadb PASSWORD=$db_root_password SERVICENAME="MariaDB" /qn
+	# Install MariaDB with password and servicename
+	/mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\\"$mariadb PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
+
 
 
 	#mariadb is .msi not .exe it neds windows msi installer (msiexec.exe) (Octavian)
@@ -328,16 +359,12 @@ fi
 
 # Checking if apache service is installed
 echo "Installing apache server"
-echo ""
-# TODO check doesn't work, to be fixed 
-service_installed=$(sudo /mnt/c/Windows/System32/net.exe start apache2.4 exit 2>/dev/null || echo 1)
-if [ "$service_installed" = "1" ]; then 
-	sudo /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe -k install
-fi
+echo "" 
+	sudo /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe -k install exit 2>/dev/null || echo ""
 
 echo "Starting apache server"
 echo ""
-sudo /mnt/c/Windows/System32/net.exe start apache2.4
+sudo /mnt/c/Windows/System32/net.exe start apache2.4 exit 2>/dev/null || echo ""
 
 echo "        Server install complete "
 echo "---------------------------------------------"
@@ -420,12 +447,3 @@ echo "---------------------------------------------"
 
 
 
-# TO BE INPLEMENTED
-echo
-echo
-echo "Please enter the information required for your install:"
-echo
-
-read -s -p "Enter new root DB password: " db_root_password
-export db_root_password
-echo
