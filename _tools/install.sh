@@ -9,6 +9,12 @@ echo "        Starting server installation"
 echo ""
 echo ""
 
+# #echo "$(whoami)"
+# # Setting up bash config
+# echo "Copying .profile to home dir"
+# cp "/mnt/c/srv/tools/_conf/dot_profile" "/home/$(whoami)/.profile"
+# echo ""
+
 # Defining paths and download urls
 echo ""
 echo "---Checking paths and download links---"
@@ -219,6 +225,12 @@ sed -i "s/^<Directory\ \"c:/<Directory\ \"C:\\/srv\\/installed-packages\\/apache
 echo ""
 
 # Adding php support to apache
+
+# Setting up php.ini
+echo "Copying php.ini to php722/php.ini"
+cp "/mnt/c/srv/tools/_conf/php.ini" "/mnt/c/srv/installed-packages/php722/php.ini"
+echo ""
+
 # Checking if php is configured
 install_apache_php=$(grep -E "^LoadModule php7_module" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
 if [ -z "$install_apache_php" ]; then
