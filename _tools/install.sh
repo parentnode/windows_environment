@@ -106,11 +106,11 @@ else
 fi;
 
 # Base apache configuration location
-if [ -e /mnt/c/srv/sites/apache ] ; then
-	echo "C:/srv/sites/apache already exist"
+if [ -e /mnt/c/srv/sites/apache/logs ] ; then
+	echo "C:/srv/sites/apache/logs already exist"
 else
-	echo "Create directory C:/srv/sites/apache"
-    mkdir -p /mnt/c/srv/sites/apache;
+	echo "Create directory C:/srv/sites/apache/logs"
+    mkdir -p /mnt/c/srv/sites/apache/logs;
 fi;
 
 # Creating packages folder
