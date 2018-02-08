@@ -42,10 +42,11 @@ git_prompt () {
 export PS1="\[$(tput bold)\]\[$(tput setaf 0)\]\u@\h \[$(tput setaf 2)\]\W\$(git_prompt)\[$(tput sgr0)\]\[$(tput setaf 7)\] \\$"
 
 
-apache() {
-	sudo /mnt/c/Windows/System32/net.exe "$1" apache2.4
-}
+# apache() {
+# 	sudo /mnt/c/Windows/System32/net.exe "$1" apache2.4
+# }
+
 alias sites="cd /mnt/c/srv/sites"
 
 # Better apache option to be tested
-#alias apache="sudo /mnt/c/srv/installed-packages/apache24/Apache24/httpd.exe -k"
+alias apache="sudo /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe -k"
