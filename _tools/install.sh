@@ -99,7 +99,7 @@ echo ""
 
 # Base parentnode project location
 if [ -e /mnt/c/srv/sites/parentnode ] ; then
-	echo "C:/srv/sites/parentnode already exist"
+	echo "C:/srv/sites/parentnode already exists"
 else
 	echo "Create directory C:/srv/sites/parentnode"
     mkdir -p /mnt/c/srv/sites/parentnode;
@@ -107,7 +107,7 @@ fi;
 
 # Base apache configuration location
 if [ -e /mnt/c/srv/sites/apache/logs ] ; then
-	echo "C:/srv/sites/apache/logs already exist"
+	echo "C:/srv/sites/apache/logs already exists"
 else
 	echo "Create directory C:/srv/sites/apache/logs"
     mkdir -p /mnt/c/srv/sites/apache/logs;
@@ -115,7 +115,7 @@ fi;
 
 # Creating packages folder
 if [ -e /mnt/c/srv/packages ] ; then
-	echo "C:/srv/packages already exist"
+	echo "C:/srv/packages already exists"
 else
 	echo "Create directory C:/srv/packages"
     mkdir -p /mnt/c/srv/packages;
@@ -123,14 +123,14 @@ fi;
 
 # Creating installed-packages folder
 if [ -e /mnt/c/srv/installed-packages ] ; then
-	echo "C:/srv/installed-packages already exist"
+	echo "C:/srv/installed-packages already exists"
 else
 	echo "Create directory C:/srv/installed-packages"
     mkdir -p /mnt/c/srv/installed-packages;
 fi;
 
 # if [ -e /mnt/c/srv/packages/ffmpeg ] ; then
-# 	echo "C:/srv/packages already exist"
+# 	echo "C:/srv/packages already exists"
 # else
 # 	echo "create directory C:/srv/packages"
 #     mkdir -p /mnt/c/srv/packages/ffmpeg;
@@ -144,9 +144,10 @@ echo ""
 # Install unzip to unpack downloaded packages
 echo "Downloading unzip"
 echo "|"
+# TODO: Will suggest to autoremove, maybe hide output? And run autoremove for suggested package.
 sudo apt-get install unzip
 echo "|"
-echo "Unzip installed in Windows Subsystem on Linux!"
+echo "Unzip installed in Windows Subsystem for Linux"
 echo ""
 
 # DELETE
@@ -157,7 +158,7 @@ rm /mnt/c/srv/packages/mariadb-10.2.12-winx64.msi
 # Downloading and installing mariadb
 echo "Looking for mariaDB"
 if [ -e /mnt/c/srv/packages/$mariadb ] ; then
-	echo "C:/srv/packages/$mariadb already exist"
+	echo "C:/srv/packages/$mariadb already exists"
 else
 	echo "Downloading: $mariadb"
 	cd /mnt/c/srv/packages/
@@ -179,7 +180,7 @@ echo ""
 # Downloading and installing c++ compiler
 echo "Looking for C++ compiler"
 if [ -e /mnt/c/srv/packages/$vc_compiler ] ; then
-	echo "C:/srv/packages/$vc_compiler already exist"
+	echo "C:/srv/packages/$vc_compiler already exists"
 else
 	cd /mnt/c/srv/packages/
 	echo "Downloading c++ compiler"
@@ -193,7 +194,7 @@ echo ""
 # Downloading and installing Apache
 echo "Looking for Apache httpd"
 if [ -e /mnt/c/srv/packages/$apache ] ; then
-	echo "C:/srv/packages/$apache already exist"
+	echo "C:/srv/packages/$apache already exists"
 else
 	cd /mnt/c/srv/packages/
 	echo "Downloading: $apache "
@@ -208,7 +209,7 @@ echo ""
 # Downloading and installing php
 echo "Looking for PHP"
 if [ -e /mnt/c/srv/packages/$php ] ; then
-	echo "C:/srv/packages/$php already exist"
+	echo "C:/srv/packages/$php already exists"
 else
     cd /mnt/c/srv/packages
 	echo "Downloading $php VC15 x64 Thread Safe"
