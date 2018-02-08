@@ -146,7 +146,7 @@ echo "Downloading unzip"
 echo "|"
 sudo apt-get install unzip
 echo "|"
-echo "Unzip installed in WSL!"
+echo "Unzip installed in Windows Subsystem on Linux!"
 echo ""
 
 # DELETE
