@@ -74,8 +74,8 @@ imagemagick_path="https://www.imagemagick.org/download/binaries/ImageMagick-7.0.
 
 echo "Getting ffmpeg path and download link"
 echo ""
-ffmpeg="ffmpeg-20180129-d4967c0-win64-static"
-ffmpeg_path="https://ffmpeg.zeranoe.com/builds/win64/static/$ffmpeg.zip"
+ffmpeg="ffmpeg.zip"
+ffmpeg_path="https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20180129-d4967c0-win64-static.zip"
 
 echo ""
 echo "---Confirming Windows enviroment---"
@@ -369,27 +369,6 @@ sudo /mnt/c/Windows/System32/net.exe start apache2.4 exit 2>/dev/null || echo ""
 
 echo "        Server install complete "
 echo "---------------------------------------------"
-
-
-
-if [ -e /mnt/c/srv/packages/$ffmpeg ] ; then
-	echo "C:/srv/packages/$ffmpeg already exist"
-else
-	cd /mnt/c/srv/packages/
-	echo "Downloading: $ffmpeg "
-	wget -S -O "$ffmpeg.zip" $ffmpeg_path 
-	echo "Extracting: $ffmpeg"
-	cd /mnt/c/srv/packages/
-	unzip "$ffmpeg.zip" -d /mnt/c/srv/installed-packages/
-	sudo mv -r /mnt/c/srv/installed-packages/$ffmpeg  /mnt/c/srv/installed-packages/ffmpeg
-fi;
- 
-
-
-
-
-
-
 
 
 
