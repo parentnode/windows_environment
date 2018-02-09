@@ -44,6 +44,7 @@ git config --global core.autocrlf input
 # Setting up bash config
 echo "Copying .profile to home dir"
 sudo cp "/mnt/c/srv/tools/_conf/dot_profile" "/home/$SUDO_USER/.profile"
+sudo chown "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.profile"
 echo ""
 
 # Defining paths and download urls
