@@ -4,8 +4,6 @@ echo "---------------------------------------------"
 
 echo ""
 echo "        Starting server installation"
-echo "   DO NOT CLOSE UNTILL INSTALL IS COMPLETE" 
-echo  "You will see 'Server install complete' message once it's done"
 
 
 echo ""
@@ -20,16 +18,14 @@ read -p "Your git email address: " git_email
 export git_email
 echo ""
 
-if [ ! -e /mnt/c/srv/packages/$mariadb ] ; then
-	# Setting up password
-	echo ""
-	echo "Please enter the information required for your install:"
-	echo ""
+# Setting up password
+echo ""
+echo "Please enter the information required for your install:"
+echo ""
 
-	read -s -p "Enter new root DB password: " db_root_password
-	export db_root_password
-	echo ""
-fi
+read -s -p "Enter new root DB password: " db_root_password
+export db_root_password
+echo ""
 
 # SETTING DEFAULT GIT USER
 echo "Setting up default Git settings"
@@ -43,7 +39,7 @@ git config --global core.autocrlf input
 
 # Setting up bash config
 echo "Copying .profile to home dir"
-sudo cp "/mnt/c/srv/tools/_conf/dot_profile" "/home/$SUDO_USER/.profile"
+ sudo cp "/mnt/c/srv/tools/_conf/dot_profile" "/home/$SUDO_USER/.profile"
 echo ""
 
 # Defining paths and download urls
@@ -78,9 +74,8 @@ imagemagick_path="https://www.imagemagick.org/download/binaries/ImageMagick-7.0.
 
 echo "Getting ffmpeg path and download link"
 echo ""
-ffmpeg="ffmpeg-20180129-d4967c0-win64-static.zip"
+ffmpeg="ffmpeg.zip"
 ffmpeg_path="https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20180129-d4967c0-win64-static.zip"
-ffmpeg_dir="ffmpeg-20180129-d4967c0-win64-static"
 
 echo ""
 echo "---Confirming Windows enviroment---"
@@ -104,7 +99,7 @@ echo ""
 
 # Base parentnode project location
 if [ -e /mnt/c/srv/sites/parentnode ] ; then
-	echo "C:/srv/sites/parentnode already exists"
+	echo "C:/srv/sites/parentnode already exist"
 else
 	echo "Create directory C:/srv/sites/parentnode"
     mkdir -p /mnt/c/srv/sites/parentnode;
@@ -112,7 +107,7 @@ fi;
 
 # Base apache configuration location
 if [ -e /mnt/c/srv/sites/apache/logs ] ; then
-	echo "C:/srv/sites/apache/logs already exists"
+	echo "C:/srv/sites/apache/logs already exist"
 else
 	echo "Create directory C:/srv/sites/apache/logs"
     mkdir -p /mnt/c/srv/sites/apache/logs;
@@ -120,7 +115,7 @@ fi;
 
 # Creating packages folder
 if [ -e /mnt/c/srv/packages ] ; then
-	echo "C:/srv/packages already exists"
+	echo "C:/srv/packages already exist"
 else
 	echo "Create directory C:/srv/packages"
     mkdir -p /mnt/c/srv/packages;
@@ -128,14 +123,14 @@ fi;
 
 # Creating installed-packages folder
 if [ -e /mnt/c/srv/installed-packages ] ; then
-	echo "C:/srv/installed-packages already exists"
+	echo "C:/srv/installed-packages already exist"
 else
 	echo "Create directory C:/srv/installed-packages"
     mkdir -p /mnt/c/srv/installed-packages;
 fi;
 
 # if [ -e /mnt/c/srv/packages/ffmpeg ] ; then
-# 	echo "C:/srv/packages already exists"
+# 	echo "C:/srv/packages already exist"
 # else
 # 	echo "create directory C:/srv/packages"
 #     mkdir -p /mnt/c/srv/packages/ffmpeg;
@@ -148,19 +143,21 @@ echo ""
 
 # Install unzip to unpack downloaded packages
 echo "Downloading unzip"
-install_unzip=$(unzip || echo "")
-if [ "$install_unzip" = "" ]; then
-	sudo apt-get --assume-yes install unzip
-else
-	echo "unzip is installed"
-fi
-sudo apt-get --assume-yes autoremove
+echo "|"
+sudo apt-get install unzip
+echo "|"
+echo "Unzip installed in Windows Subsystem on Linux!"
 echo ""
+
+# DELETE
+/mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\mariadb-10.2.12-winx64.msi" REMOVE=ALL /qn # Remember to delete
+rm /mnt/c/srv/packages/mariadb-10.2.12-winx64.msi
+# DELETE
 
 # Downloading and installing mariadb
 echo "Looking for mariaDB"
 if [ -e /mnt/c/srv/packages/$mariadb ] ; then
-	echo "C:/srv/packages/$mariadb already exists"
+	echo "C:/srv/packages/$mariadb already exist"
 else
 	echo "Downloading: $mariadb"
 	cd /mnt/c/srv/packages/
@@ -182,7 +179,7 @@ echo ""
 # Downloading and installing c++ compiler
 echo "Looking for C++ compiler"
 if [ -e /mnt/c/srv/packages/$vc_compiler ] ; then
-	echo "C:/srv/packages/$vc_compiler already exists"
+	echo "C:/srv/packages/$vc_compiler already exist"
 else
 	cd /mnt/c/srv/packages/
 	echo "Downloading c++ compiler"
@@ -196,7 +193,7 @@ echo ""
 # Downloading and installing Apache
 echo "Looking for Apache httpd"
 if [ -e /mnt/c/srv/packages/$apache ] ; then
-	echo "C:/srv/packages/$apache already exists"
+	echo "C:/srv/packages/$apache already exist"
 else
 	cd /mnt/c/srv/packages/
 	echo "Downloading: $apache "
@@ -211,7 +208,7 @@ echo ""
 # Downloading and installing php
 echo "Looking for PHP"
 if [ -e /mnt/c/srv/packages/$php ] ; then
-	echo "C:/srv/packages/$php already exists"
+	echo "C:/srv/packages/$php already exist"
 else
     cd /mnt/c/srv/packages
 	echo "Downloading $php VC15 x64 Thread Safe"
@@ -229,29 +226,136 @@ echo ""
 echo "---Configuring apache server---"
 echo ""
 
+echo "Adding server root directory to config"
+echo ""
+sed -i "s/^ServerRoot\ [a-zA-Z0-9\.\_-\"\\:]\+/ServerRoot\ \"C:\\/srv\\/installed-packages\\/apache24\\/Apache24\"/;" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
+
+# Setting up initial apache settings
+echo "Setting up localhost"
+echo ""
+# Checking if servername is configured
+install_apache_servername=$(grep -E "^ServerName" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
+if [ -z "$install_apache_servername" ]; then
+
+	# SET SERVERNAME
+	echo "ServerName localhost:80" >> "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
+
+else
+
+	sed -i "s/^ServerName\ [a-zA-Z0-9\.\_-:]\+/ServerName\ localhost:80/;" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
+
+fi
+
+# Adding DocumentRoot to global config
+echo "Adding DocumentRoot to config"
+sed -i "s/^DocumentRoot\ [a-zA-Z0-9\.\_-\"\\:]\+/DocumentRoot\ \"C:\\/srv\\/sites\"/;" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
+echo ""
+
+# Adding Self directory to global config
+echo "Adding apache install directory to config"
+sed -i "s/^<Directory\ \"c:/<Directory\ \"C:\\/srv\\/installed-packages\\/apache24/;" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
+echo ""
+
+# Adding php support to apache
+
 # Setting up php.ini
 echo "Copying php.ini to php722/php.ini"
 cp "/mnt/c/srv/tools/_conf/php.ini" "/mnt/c/srv/installed-packages/php722/php.ini"
 echo ""
+
+# Checking if php is configured
+install_apache_php=$(grep -E "^LoadModule php7_module" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
+if [ -z "$install_apache_php" ]; then
+
+	# Include php module
+	echo "Adding php module to global config"
+	echo "LoadModule php7_module C:/srv/installed-packages/php722/php7apache2_4.dll" >> "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
+
+fi
+
+# Checking if php ini is configured
+install_apache_php_ini=$(grep -E "^PHPIniDir" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
+if [ -z "$install_apache_php_ini" ]; then
+
+	# Include PHPIniDir path
+	echo "Adding php to global config"
+	echo "PHPIniDir  C:/srv/installed-packages/php722" >> "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
+
+fi
 
 # Setting up vhosts
 echo "Copying vhosts.conf to Apache24/conf/extra"
 cp "/mnt/c/srv/tools/_conf/httpd-vhosts.conf" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/extra/httpd-vhosts.conf"
 echo ""
 
-# Setting up httpd.conf
-echo "Copying httpd config file to apache conf directory"
-cp "/mnt/c/srv/tools/_conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
-echo ""
+# Checking if vhosts is configured
+install_apache_vhosts=$(grep -E "^Include conf\\/extra\\/httpd\\-vhosts\\.conf" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
+if [ -z "$install_apache_vhosts" ]; then
 
-# Setting up apache.conf
+	# Include vhosts config
+	echo "Adding vhosts config to global config"
+	sed -i "s/^#Include conf\\/extra\\/httpd\\-vhosts\\.conf/Include conf\\/extra\\/httpd\\-vhosts\\.conf/" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
+
+fi
+
+
+# Correct file location is srv/sites/apache - not srv/apache
+# Copy accessible apache config extender file
+if [ -f "/mnt/c/srv/apache/apache.conf" ]; then
+
+	# Move to correct apache folder
+	echo "Moving apache.conf to the correct path"
+	mv "/mnt/c/srv/apache/apache.conf" "/mnt/c/srv/sites/apache/apache.conf"
+
+fi
+
+# Removing empty leftover apache directory
+if [ -d "/mnt/c/srv/apache/" ]; then
+
+	echo ""
+	echo "Removing leftover apache directory"
+	echo ""
+	
+	rmdir "/mnt/c/srv/apache/"
+fi
+
+# Removing wrong "include" in global apache config
+echo "Checking if config extender is already added"
+echo ""
+install_apache_extender=$(grep -E "^Include \"(c:)?\\/srv\\/apache\\/\\*\\.conf\"" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
+if [ -n "$install_apache_extender" ]; then
+
+	# Include config extender
+	echo "Removing incorrect apache path from global apache config"
+	echo ""
+
+	sed -i "s/^Include \"[c:]*\\/srv\\/apache\\/\\*\\.conf\"//" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
+
+fi
+
+# Copy default apache.conf
 if [ ! -f "/mnt/c/srv/sites/apache/apache.conf" ]; then
 
-	echo "Adding apache config file to sites/apache/"
+	echo "Adding apache config file to /srv/sites/apache"
 	echo ""
+
 	cp "/mnt/c/srv/tools/_conf/apache.conf" "/mnt/c/srv/sites/apache/apache.conf"
 
 fi
+
+# Add "include" in global apache config
+install_apache_extender=$(grep -E "^Include \"(c:)?\\/srv\\/sites\\/apache\\/\\*\\.conf\"" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
+if [ -z "$install_apache_extender" ]; then
+
+	# Include config extender
+	echo "Adding apache config extender to global config"
+	echo ""
+
+	echo "Include \"/srv/sites/apache/*.conf\"" >> "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
+
+fi
+
+
 
 
 # Checking if apache service is installed
@@ -265,27 +369,6 @@ sudo /mnt/c/Windows/System32/net.exe start apache2.4 exit 2>/dev/null || echo ""
 
 echo "        Server install complete "
 echo "---------------------------------------------"
-
-
-
-if [ -e /mnt/c/srv/packages/$ffmpeg ] ; then
-	echo "C:/srv/packages/$ffmpeg already exist"
-else
-	cd /mnt/c/srv/packages/
-	echo "Downloading: $ffmpeg "
-	wget -S -O "$ffmpeg.zip" $ffmpeg_path 
-	echo "Extracting: $ffmpeg"
-	cd /mnt/c/srv/packages/
-	unzip "$ffmpeg.zip" -d /mnt/c/srv/installed-packages/
-	sudo mv -f /mnt/c/srv/installed-packages/$ffmpeg_dir  /mnt/c/srv/installed-packages/ffmpeg
-fi;
- 
-
-
-
-
-
-
 
 
 
