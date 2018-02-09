@@ -78,8 +78,9 @@ imagemagick_path="https://www.imagemagick.org/download/binaries/ImageMagick-7.0.
 
 echo "Getting ffmpeg path and download link"
 echo ""
-ffmpeg="ffmpeg-20180129-d4967c0-win64-static"
-ffmpeg_path="https://ffmpeg.zeranoe.com/builds/win64/static/$ffmpeg.zip"
+ffmpeg="ffmpeg-20180129-d4967c0-win64-static.zip"
+ffmpeg_path="https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20180129-d4967c0-win64-static.zip"
+ffmpeg_dir="ffmpeg-20180129-d4967c0-win64-static"
 
 echo ""
 echo "---Confirming Windows enviroment---"
@@ -276,7 +277,7 @@ else
 	echo "Extracting: $ffmpeg"
 	cd /mnt/c/srv/packages/
 	unzip "$ffmpeg.zip" -d /mnt/c/srv/installed-packages/
-	sudo mv -f /mnt/c/srv/installed-packages/$ffmpeg  /mnt/c/srv/installed-packages/ffmpeg
+	sudo mv -f /mnt/c/srv/installed-packages/$ffmpeg_dir  /mnt/c/srv/installed-packages/ffmpeg
 fi;
  
 
