@@ -4,6 +4,8 @@ echo "---------------------------------------------"
 
 echo ""
 echo "        Starting server installation"
+echo "   DO NOT CLOSE UNTILL INSTALL IS COMPLETE" 
+echo  "You will see 'Server install complete' message once it's done"
 
 
 echo ""
@@ -18,14 +20,16 @@ read -p "Your git email address: " git_email
 export git_email
 echo ""
 
-# Setting up password
-echo ""
-echo "Please enter the information required for your install:"
-echo ""
+if [ ! -e /mnt/c/srv/packages/$mariadb ] ; then
+	# Setting up password
+	echo ""
+	echo "Please enter the information required for your install:"
+	echo ""
 
-read -s -p "Enter new root DB password: " db_root_password
-export db_root_password
-echo ""
+	read -s -p "Enter new root DB password: " db_root_password
+	export db_root_password
+	echo ""
+fi
 
 # SETTING DEFAULT GIT USER
 echo "Setting up default Git settings"
@@ -143,17 +147,14 @@ echo ""
 
 # Install unzip to unpack downloaded packages
 echo "Downloading unzip"
-echo "|"
-# TODO: Will suggest to autoremove, maybe hide output? And run autoremove for suggested package.
-sudo apt-get install unzip
-echo "|"
-echo "Unzip installed in Windows Subsystem for Linux"
+install_unzip=$(unzip || echo "")
+if [ "$install_unzip" = "" ]; then
+	sudo apt-get --assume-yes install unzip
+else
+	echo "unzip is installed"
+fi
+sudo apt-get --assume-yes autoremove
 echo ""
-
-# DELETE
-/mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\mariadb-10.2.12-winx64.msi" REMOVE=ALL /qn # Remember to delete
-rm /mnt/c/srv/packages/mariadb-10.2.12-winx64.msi
-# DELETE
 
 # Downloading and installing mariadb
 echo "Looking for mariaDB"
@@ -227,136 +228,29 @@ echo ""
 echo "---Configuring apache server---"
 echo ""
 
-echo "Adding server root directory to config"
-echo ""
-sed -i "s/^ServerRoot\ [a-zA-Z0-9\.\_-\"\\:]\+/ServerRoot\ \"C:\\/srv\\/installed-packages\\/apache24\\/Apache24\"/;" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
-
-# Setting up initial apache settings
-echo "Setting up localhost"
-echo ""
-# Checking if servername is configured
-install_apache_servername=$(grep -E "^ServerName" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
-if [ -z "$install_apache_servername" ]; then
-
-	# SET SERVERNAME
-	echo "ServerName localhost:80" >> "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
-
-else
-
-	sed -i "s/^ServerName\ [a-zA-Z0-9\.\_-:]\+/ServerName\ localhost:80/;" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
-
-fi
-
-# Adding DocumentRoot to global config
-echo "Adding DocumentRoot to config"
-sed -i "s/^DocumentRoot\ [a-zA-Z0-9\.\_-\"\\:]\+/DocumentRoot\ \"C:\\/srv\\/sites\"/;" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
-echo ""
-
-# Adding Self directory to global config
-echo "Adding apache install directory to config"
-sed -i "s/^<Directory\ \"c:/<Directory\ \"C:\\/srv\\/installed-packages\\/apache24/;" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
-echo ""
-
-# Adding php support to apache
-
 # Setting up php.ini
 echo "Copying php.ini to php722/php.ini"
 cp "/mnt/c/srv/tools/_conf/php.ini" "/mnt/c/srv/installed-packages/php722/php.ini"
 echo ""
-
-# Checking if php is configured
-install_apache_php=$(grep -E "^LoadModule php7_module" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
-if [ -z "$install_apache_php" ]; then
-
-	# Include php module
-	echo "Adding php module to global config"
-	echo "LoadModule php7_module C:/srv/installed-packages/php722/php7apache2_4.dll" >> "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
-
-fi
-
-# Checking if php ini is configured
-install_apache_php_ini=$(grep -E "^PHPIniDir" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
-if [ -z "$install_apache_php_ini" ]; then
-
-	# Include PHPIniDir path
-	echo "Adding php to global config"
-	echo "PHPIniDir  C:/srv/installed-packages/php722" >> "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
-
-fi
 
 # Setting up vhosts
 echo "Copying vhosts.conf to Apache24/conf/extra"
 cp "/mnt/c/srv/tools/_conf/httpd-vhosts.conf" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/extra/httpd-vhosts.conf"
 echo ""
 
-# Checking if vhosts is configured
-install_apache_vhosts=$(grep -E "^Include conf\\/extra\\/httpd\\-vhosts\\.conf" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
-if [ -z "$install_apache_vhosts" ]; then
-
-	# Include vhosts config
-	echo "Adding vhosts config to global config"
-	sed -i "s/^#Include conf\\/extra\\/httpd\\-vhosts\\.conf/Include conf\\/extra\\/httpd\\-vhosts\\.conf/" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
-
-fi
-
-
-# Correct file location is srv/sites/apache - not srv/apache
-# Copy accessible apache config extender file
-if [ -f "/mnt/c/srv/apache/apache.conf" ]; then
-
-	# Move to correct apache folder
-	echo "Moving apache.conf to the correct path"
-	mv "/mnt/c/srv/apache/apache.conf" "/mnt/c/srv/sites/apache/apache.conf"
-
-fi
-
-# Removing empty leftover apache directory
-if [ -d "/mnt/c/srv/apache/" ]; then
-
-	echo ""
-	echo "Removing leftover apache directory"
-	echo ""
-	
-	rmdir "/mnt/c/srv/apache/"
-fi
-
-# Removing wrong "include" in global apache config
-echo "Checking if config extender is already added"
+# Setting up httpd.conf
+echo "Copying httpd config file to apache conf directory"
+cp "/mnt/c/srv/tools/_conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
 echo ""
-install_apache_extender=$(grep -E "^Include \"(c:)?\\/srv\\/apache\\/\\*\\.conf\"" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
-if [ -n "$install_apache_extender" ]; then
 
-	# Include config extender
-	echo "Removing incorrect apache path from global apache config"
-	echo ""
-
-	sed -i "s/^Include \"[c:]*\\/srv\\/apache\\/\\*\\.conf\"//" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
-
-fi
-
-# Copy default apache.conf
+# Setting up apache.conf
 if [ ! -f "/mnt/c/srv/sites/apache/apache.conf" ]; then
 
-	echo "Adding apache config file to /srv/sites/apache"
+	echo "Adding apache config file to sites/apache/"
 	echo ""
-
 	cp "/mnt/c/srv/tools/_conf/apache.conf" "/mnt/c/srv/sites/apache/apache.conf"
 
 fi
-
-# Add "include" in global apache config
-install_apache_extender=$(grep -E "^Include \"(c:)?\\/srv\\/sites\\/apache\\/\\*\\.conf\"" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf" || echo "")
-if [ -z "$install_apache_extender" ]; then
-
-	# Include config extender
-	echo "Adding apache config extender to global config"
-	echo ""
-
-	echo "Include \"/srv/sites/apache/*.conf\"" >> "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
-
-fi
-
-
 
 
 # Checking if apache service is installed
