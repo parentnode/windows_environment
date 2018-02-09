@@ -273,10 +273,10 @@ if [ -e /mnt/c/srv/packages/$ffmpeg ] ; then
 else
 	cd /mnt/c/srv/packages/
 	echo "Downloading: $ffmpeg "
-	wget -S -O "$ffmpeg.zip" $ffmpeg_path 
+	wget -S -O "$ffmpeg" $ffmpeg_path 
 	echo "Extracting: $ffmpeg"
 	cd /mnt/c/srv/packages/
-	unzip "$ffmpeg.zip" -d /mnt/c/srv/installed-packages/
+	unzip "$ffmpeg" -d /mnt/c/srv/installed-packages/
 	sudo mv -f /mnt/c/srv/installed-packages/$ffmpeg_dir  /mnt/c/srv/installed-packages/ffmpeg
 fi;
  
