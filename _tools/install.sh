@@ -276,7 +276,7 @@ else
 	echo "Extracting: $ffmpeg"
 	cd /mnt/c/srv/packages/
 	unzip "$ffmpeg.zip" -d /mnt/c/srv/installed-packages/
-	sudo mv -r /mnt/c/srv/installed-packages/$ffmpeg  /mnt/c/srv/installed-packages/ffmpeg
+	sudo mv -f /mnt/c/srv/installed-packages/$ffmpeg  /mnt/c/srv/installed-packages/ffmpeg
 fi;
  
 
