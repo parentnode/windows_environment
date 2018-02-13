@@ -218,13 +218,25 @@ else
 	echo "Downloading $php VC15 x64 Thread Safe"
 	wget -O $php $php_path 
 
-    echo "Extracting: $apache"
+    echo "Extracting: $php"
 	cd /mnt/c/srv/packages/
 	unzip $php -d /mnt/c/srv/installed-packages/php722/
 fi;
 echo ""
 
-
+# Downloading and extracting ffmpeg
+echo "Looking for ffmpeg"
+if [ -e /mnt/c/srv/packages/$ffmpeg ] ; then
+	echo "C:/srv/packages/$ffmpeg already exist"
+else
+	cd /mnt/c/srv/packages/
+	echo "Downloading: $ffmpeg "
+	wget -S -O "$ffmpeg" $ffmpeg_path 
+	echo "Extracting: $ffmpeg"
+	cd /mnt/c/srv/packages/
+	unzip "$ffmpeg" -d /mnt/c/srv/installed-packages/
+	sudo mv -f /mnt/c/srv/installed-packages/$ffmpeg_dir  /mnt/c/srv/installed-packages/ffmpeg
+fi;
 
 echo ""
 echo "---Configuring apache server---"
@@ -269,17 +281,7 @@ echo "---------------------------------------------"
 
 
 
-if [ -e /mnt/c/srv/packages/$ffmpeg ] ; then
-	echo "C:/srv/packages/$ffmpeg already exist"
-else
-	cd /mnt/c/srv/packages/
-	echo "Downloading: $ffmpeg "
-	wget -S -O "$ffmpeg" $ffmpeg_path 
-	echo "Extracting: $ffmpeg"
-	cd /mnt/c/srv/packages/
-	unzip "$ffmpeg" -d /mnt/c/srv/installed-packages/
-	sudo mv -f /mnt/c/srv/installed-packages/$ffmpeg_dir  /mnt/c/srv/installed-packages/ffmpeg
-fi;
+
  
 
 
