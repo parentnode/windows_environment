@@ -225,6 +225,7 @@ fi;
 echo ""
 
 # Downloading and extracting ffmpeg
+echo "Looking for ffmpeg"
 if [ -e /mnt/c/srv/packages/$ffmpeg ] ; then
 	echo "C:/srv/packages/$ffmpeg already exist"
 else
