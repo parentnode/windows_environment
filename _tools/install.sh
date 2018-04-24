@@ -69,8 +69,8 @@ mariadb_path="https://downloads.mariadb.org/interstitial/mariadb-10.2.12/winx64-
 
 echo "Getting apache path and download link"
 echo ""
-apache="apachehttpd-2.4.29-Win64-VC15.zip"
-apache_path="https://www.apachelounge.com/download/VC15/binaries/httpd-2.4.29-Win64-VC15.zip"
+apache="apachehttpd-2.4.33-Win64-VC15.zip"
+apache_path="https://www.apachelounge.com/download/VC15/binaries/httpd-2.4.33-Win64-VC15.zip"
 
 echo "Getting imagemagick path and download link"
 echo ""
