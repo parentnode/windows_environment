@@ -83,23 +83,23 @@ if [ -e "$PWD/apache/httpd-vhosts.conf" ] ; then
 			echo "" >> "$host_file_path"
 			echo "127.0.0.1	$server_name" >> "$host_file_path"
 
-			# also add ServerAlias'
-			if [ ! -z "$server_alias" ]; then
-
-				echo ""
-
-				# Get current IP
-				# TODO: Does this work on windows (This need to find the network IP, not 127.0.0.1)
-				ip=$(ifconfig en0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1')
-
-				# loop through server alias'
-				for domain in $(echo $server_alias | tr " " "\n")
-				do
-					echo "Adding $domain ($ip) to $host_file_path"
-					echo "$ip	$domain" >> "$host_file_path"
-				done
-
-			fi
+			# # also add ServerAlias'
+			# if [ ! -z "$server_alias" ]; then
+			#
+			# 	echo ""
+			#
+			# 	# Get current IP
+			# 	# TODO: Does this work on windows (This need to find the network IP, not 127.0.0.1)
+			# 	ip=$(ifconfig en0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1')
+			#
+			# 	# loop through server alias'
+			# 	for domain in $(echo $server_alias | tr " " "\n")
+			# 	do
+			# 		echo "Adding $domain ($ip) to $host_file_path"
+			# 		echo "$ip	$domain" >> "$host_file_path"
+			# 	done
+			#
+			# fi
 
 			echo ""
 
