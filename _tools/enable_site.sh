@@ -8,8 +8,8 @@ echo "-----------------------------------------------------"
 echo ""
 
 # TODO: update to windows paths
-host_file_path="/etc/hosts"
-apache_file_path="/srv/sites/apache/apache.conf"
+host_file_path="mnt/c/Windows/System32/drivers/etc/hosts"
+apache_file_path="/mnt/c/srv/sites/apache/apache.conf"
 
 
 # Request sudo action before continuing to force password prompt (if needed) before script really starts

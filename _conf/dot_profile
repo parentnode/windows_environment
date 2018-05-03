@@ -45,5 +45,5 @@ export PS1="\[$(tput bold)\]\[$(tput setaf 0)\]\u@\h \[$(tput setaf 2)\]\W\$(git
 # Aliases 
 alias sites="cd /mnt/c/srv/sites"
 
-alias enable_site="cd /mnt/c/srv/tools/_tools/enable_site.sh"
+alias enable_site="sudo /mnt/c/srv/tools/_tools/enable_site.sh"
 alias apache="sudo /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe -k"
