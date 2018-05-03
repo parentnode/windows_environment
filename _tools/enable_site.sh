@@ -8,7 +8,7 @@ echo "-----------------------------------------------------"
 echo ""
 
 # TODO: update to windows paths
-host_file_path="mnt/c/Windows/System32/drivers/etc/hosts"
+host_file_path="/mnt/c/Windows/System32/drivers/etc/hosts"
 apache_file_path="/mnt/c/srv/sites/apache/apache.conf"
 
 
