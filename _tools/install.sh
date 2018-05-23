@@ -199,6 +199,15 @@ echo "Looking for Apache httpd"
 if [ -e /mnt/c/srv/packages/$apache ] ; then
 	echo "C:/srv/packages/$apache already exists"
 else
+
+	# TODO: NOT TESTED If installed-packages/apache24 exists, then stop apache, and delete folder before continuing
+	if [ -d /mnt/c/srv/installed-packages/apache24 ] ; then
+
+		sudo /mnt/c/Windows/System32/net.exe stop apache2.4
+		sudo rm -R /mnt/c/srv/installed-packages/apache24
+
+	fi
+
 	cd /mnt/c/srv/packages/
 	echo "Downloading: $apache "
 	wget -S -O $apache $apache_path --referer="https://www.apachelounge.com/download/" --user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299"
@@ -247,6 +256,13 @@ echo "Copying php.ini to php722/php.ini"
 cp "/mnt/c/srv/tools/_conf/php.ini" "/mnt/c/srv/installed-packages/php722/php.ini"
 echo ""
 
+# Setting up php.ini (and required files for CURL)
+echo "Copying libeay32.dll and ssleay32.dll to Apache2.4/bin"
+cp "/mnt/c/srv/installed-packages/php722/libeay32.dll" "/mnt/c/srv/installed-packages/apache24/Apache24/bin/libeay32.dll"
+cp "/mnt/c/srv/installed-packages/php722/ssleay32.dll" "/mnt/c/srv/installed-packages/apache24/Apache24/bin/ssleay32.dll"
+echo ""
+
+
 # Setting up vhosts
 echo "Copying vhosts.conf to Apache24/conf/extra"
 cp "/mnt/c/srv/tools/_conf/httpd-vhosts.conf" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/extra/httpd-vhosts.conf"
@@ -270,15 +286,18 @@ fi
 # Checking if apache service is installed
 echo "Installing apache server"
 echo "" 
-	sudo /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe -k install exit 2>/dev/null || echo ""
+#sudo /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe -k install exit 2>/dev/null || echo ""
+# TODO: Fails to prompt for Windows Defender access when output is surpressed - but output looks like an error on 2nd run
+sudo /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe -k install
 
 echo "Starting apache server"
 echo ""
 sudo /mnt/c/Windows/System32/net.exe start apache2.4 exit 2>/dev/null || echo ""
 
+echo ""
 echo "        Server install complete "
 echo "---------------------------------------------"
-
+echo ""
 
 
 
