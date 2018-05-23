@@ -72,10 +72,11 @@ echo ""
 apache="apachehttpd-2.4.33-Win64-VC15.zip"
 apache_path="https://www.apachelounge.com/download/VC15/binaries/httpd-2.4.33-Win64-VC15.zip"
 
-echo "Getting imagemagick path and download link"
+echo "Getting imagick path and download link"
 echo ""
-imagemagick="imagemagick.exe"
-imagemagick_path="https://www.imagemagick.org/download/binaries/ImageMagick-7.0.7-22-Q16-x64-dll.exe"
+imagick="ImageMagick-6.9.3-7-vc14-x64.zip"
+#imagemagick_path="https://www.imagemagick.org/download/binaries/ImageMagick-7.0.7-22-Q16-x64-dll.exe"
+imagick_path="https://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc14-x64.zip"
 
 echo "Getting ffmpeg path and download link"
 echo ""
@@ -135,17 +136,22 @@ else
     mkdir -p /mnt/c/srv/installed-packages;
 fi;
 
-# if [ -e /mnt/c/srv/packages/ffmpeg ] ; then
-# 	echo "C:/srv/packages already exists"
-# else
-# 	echo "create directory C:/srv/packages"
-#     mkdir -p /mnt/c/srv/packages/ffmpeg;
-# fi;
-#
+
+
+# Check if Apache is running
+apache_service=$(/mnt/c/Windows/System32/net.exe start | grep -E "Apache")
+if [ ! -z "$apache_service" ]; then
+	echo "Apache is running"
+else
+	echo "Apache is NOT running"
+fi
+
+
 
 echo ""
 echo "---Installing software---"
 echo ""
+
 
 # Install unzip to unpack downloaded packages
 echo "Downloading unzip"
@@ -155,8 +161,12 @@ if [ "$install_unzip" = "" ]; then
 else
 	echo "unzip is installed"
 fi
+
+
+# Clean up
 sudo apt-get --assume-yes autoremove
 echo ""
+
 
 # Downloading and installing mariadb
 echo "Looking for mariaDB"
@@ -172,13 +182,9 @@ else
 	# Install MariaDB with password and servicename
 	/mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\\"$mariadb PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
 
-
-
-	#mariadb is .msi not .exe it neds windows msi installer (msiexec.exe) (Octavian)
-	# /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\/"$mariadb /passive
-
-fi;
+fi
 echo ""
+
 
 # Downloading and installing c++ compiler
 echo "Looking for C++ compiler"
@@ -191,8 +197,9 @@ else
 
 	echo "Installing latest C++ compiler"
 	/mnt/c/srv/packages/$vc_compiler
-fi;
+fi
 echo ""
+
 
 # Downloading and installing Apache
 echo "Looking for Apache httpd"
@@ -215,8 +222,9 @@ else
 	echo "Extracting: $apache"
 	cd /mnt/c/srv/packages/
 	unzip $apache -d /mnt/c/srv/installed-packages/apache24/
-fi;
+fi
 echo ""
+
 
 # Downloading and installing php
 echo "Looking for PHP"
@@ -230,8 +238,9 @@ else
     echo "Extracting: $php"
 	cd /mnt/c/srv/packages/
 	unzip $php -d /mnt/c/srv/installed-packages/php722/
-fi;
+fi
 echo ""
+
 
 # Downloading and extracting ffmpeg
 echo "Looking for ffmpeg"
@@ -245,7 +254,23 @@ else
 	cd /mnt/c/srv/packages/
 	unzip "$ffmpeg" -d /mnt/c/srv/installed-packages/
 	sudo mv -f /mnt/c/srv/installed-packages/$ffmpeg_dir  /mnt/c/srv/installed-packages/ffmpeg
-fi;
+fi
+
+
+# Downloading and extracting Imagick
+# echo "Looking for Imagick"
+# if [ -e /mnt/c/srv/packages/$imagick ] ; then
+# 	echo "C:/srv/packages/$imagick already exist"
+# else
+# 	cd /mnt/c/srv/packages/
+# 	echo "Downloading: $imagick "
+# 	wget -S -O "$imagick" $imagick_path
+# 	echo "Extracting: $imagick"
+# 	cd /mnt/c/srv/packages/
+# 	unzip "$imagick" -d /mnt/c/srv/installed-packages/
+# #	sudo mv -f /mnt/c/srv/installed-packages/$ffmpeg_dir  /mnt/c/srv/installed-packages/ffmpeg
+# fi
+
 
 echo ""
 echo "---Configuring apache server---"
@@ -258,6 +283,13 @@ echo ""
 
 # Setting up php.ini (and required files for CURL)
 echo "Copying libeay32.dll and ssleay32.dll to Apache2.4/bin"
+
+# # TODO: NOT TESTED If installed-packages/apache24 exists, then stop apache, and delete folder before continuing
+# if [ -d /mnt/c/srv/installed-packages/apache24 ] ; then
+#
+#
+# fi
+
 cp "/mnt/c/srv/installed-packages/php722/libeay32.dll" "/mnt/c/srv/installed-packages/apache24/Apache24/bin/libeay32.dll"
 cp "/mnt/c/srv/installed-packages/php722/ssleay32.dll" "/mnt/c/srv/installed-packages/apache24/Apache24/bin/ssleay32.dll"
 echo ""
