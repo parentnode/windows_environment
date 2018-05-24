@@ -192,7 +192,7 @@ else
 
 	echo ""
 	echo "Installing $vc_compiler"
-	/mnt/c/srv/packages/$vc_compiler.exe
+	/mnt/c/srv/packages/$vc_compiler.exe /passive
 
 	# Remove installer
 	rm /mnt/c/srv/packages/$vc_compiler.exe
