@@ -57,35 +57,32 @@ echo ""
 vc_compiler="VC_redist.x64.exe"
 vc_compiler_path="https://aka.ms/vs/15/release/VC_redist.x64.exe"
 
-echo "Getting php path and download link"
-echo ""
+# Setting php path and download link"
 php="php-7.2.2-Win32-VC15-x64.zip"
 php_path="https://phpdev.toolsforresearch.com/php-7.2.2-Win32-VC15-x64.zip"
 
-echo "Getting mariadb path and download link"
-echo ""
-mariadb="mariadb-10.2.12-winx64.msi"
-mariadb_path="https://downloads.mariadb.org/interstitial/mariadb-10.2.12/winx64-packages/mariadb-10.2.12-winx64.msi?serve"
+# Setting mariadb path and download link"
+mariadb="mariadb-10-2-12-winx64"
+mariadb_path="https://parentnode.dk/download/72/HTML-bzwa9f7m/mariadb-10-2-12-winx64.zip"
 
-echo "Getting apache path and download link"
-echo ""
+# Setting apache path and download link"
 apache="apachehttpd-2.4.33-Win64-VC15.zip"
 apache_path="https://www.apachelounge.com/download/VC15/binaries/httpd-2.4.33-Win64-VC15.zip"
 
-echo "Getting imagick path and download link"
-echo ""
-imagick="ImageMagick-6.9.3-7-vc14-x64.zip"
+# Getting imagick path and download link"
+imagick="imagemagick-6-9-9-37-q16-x64-d.zip"
 #imagemagick_path="https://www.imagemagick.org/download/binaries/ImageMagick-7.0.7-22-Q16-x64-dll.exe"
-imagick_path="https://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc14-x64.zip"
+imagick_path="https://parentnode.dk/download/72/HTML-6pfwyd1b/imagemagick-6-9-9-37-q16-x64-d.zip"
 
-echo "Getting ffmpeg path and download link"
+# Setting ffmpeg path and download link"
 echo ""
 ffmpeg="ffmpeg-20180129-d4967c0-win64-static.zip"
 ffmpeg_path="https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20180129-d4967c0-win64-static.zip"
 ffmpeg_dir="ffmpeg-20180129-d4967c0-win64-static"
 
+
 echo ""
-echo "---Confirming Windows enviroment---"
+echo "--- Confirming Windows enviroment ---"
 echo ""
 
 # Check if windows environment
@@ -100,8 +97,9 @@ else
 
 fi
 
+
 echo ""
-echo "---Checking Directories---"
+echo "--- Checking Directories ---"
 echo ""
 
 # Base parentnode project location
@@ -146,6 +144,7 @@ else
 	echo "Apache is NOT running"
 fi
 
+exit
 
 
 echo ""
@@ -175,7 +174,6 @@ if [ -e /mnt/c/srv/packages/$mariadb ] ; then
 else
 	echo "Downloading: $mariadb"
 	cd /mnt/c/srv/packages/
-#	wget -P /mnt/c/srv/packages -O mariadb-10.2.12-winx64.msi https://downloads.mariadb.org/interstitial/mariadb-10.2.12/winx64-packages/mariadb-10.2.12-winx64.msi?serve
 	wget -O $mariadb $mariadb_path
 
 	echo "Installing mariadb"
