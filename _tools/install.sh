@@ -55,8 +55,8 @@ echo ""
 # Defining paths and download urls
 
 # Setting c++ compiler path and download link"
-vc_compiler="VC_redist.x64.exe"
-vc_compiler_path="https://aka.ms/vs/15/release/VC_redist.x64.exe"
+vc_compiler="VC_redist.x64"
+vc_compiler_path="https://parentnode.dk/download/72/HTML-s7epgyr3/vc_redist-x64.zip"
 
 # Setting mariadb path and download link"
 mariadb="mariadb-10-2-12-winx64"
@@ -177,6 +177,30 @@ sudo apt-get --assume-yes autoremove
 echo ""
 
 
+
+# Downloading and installing c++ compiler
+echo "Looking for C++ compiler"
+if [ -e /mnt/c/srv/packages/$vc_compiler.zip ] ; then
+	echo "C:/srv/packages/$vc_compiler already exists"
+else
+	echo "Downloading $vc_compiler"
+	cd /mnt/c/srv/packages/
+	wget -O $vc_compiler.zip $vc_compiler_path
+
+	# Unpack zip
+	unzip $vc_compiler.zip -d /mnt/c/srv/packages/
+
+	echo ""
+	echo "Installing $vc_compiler"
+	/mnt/c/srv/packages/$vc_compiler.exe
+
+	# Remove installer
+	unlink("/mnt/c/srv/packages/$vc_compiler.exe");
+
+fi
+echo ""
+
+
 # Downloading and installing mariadb
 echo "Looking for mariaDB"
 if [ -e /mnt/c/srv/packages/$mariadb.zip ] ; then
@@ -186,11 +210,16 @@ else
 	cd /mnt/c/srv/packages/
 	wget -O $mariadb.zip $mariadb_path
 
+	# Unpack zip
 	unzip $mariadb.zip -d /mnt/c/srv/packages/
 
-	echo "Installing mariadb"
+	echo ""
+	echo "Installing $mariadb"
 	# Install MariaDB with password and servicename
-#	/mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\\"$mariadb.msi PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
+	/mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\\"$mariadb.msi PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
+
+	# Remove installer
+	unlink("/mnt/c/srv/packages/$mariadb.msi");
 
 fi
 echo ""
@@ -198,19 +227,6 @@ echo ""
 exit
 
 
-# Downloading and installing c++ compiler
-echo "Looking for C++ compiler"
-if [ -e /mnt/c/srv/packages/$vc_compiler ] ; then
-	echo "C:/srv/packages/$vc_compiler already exists"
-else
-	cd /mnt/c/srv/packages/
-	echo "Downloading c++ compiler"
-	wget -O $vc_compiler $vc_compiler_path
-
-	echo "Installing latest C++ compiler"
-	/mnt/c/srv/packages/$vc_compiler
-fi
-echo ""
 
 
 # Downloading and installing Apache
