@@ -3,12 +3,16 @@ echo "---------------------------------------------"
 #echo " ***prior running this script***"
 
 echo ""
-echo "        Starting server installation"
-echo "   DO NOT CLOSE UNTILL INSTALL IS COMPLETE" 
+echo "                 Starting server installation"
+echo "           DO NOT CLOSE UNTILL INSTALL IS COMPLETE" 
 echo  "You will see 'Server install complete' message once it's done"
 
 
 echo ""
+echo ""
+
+echo ""
+echo "Please enter the information required for your install:"
 echo ""
 
 # Setting up git user and email
@@ -20,16 +24,14 @@ read -p "Your git email address: " git_email
 export git_email
 echo ""
 
-if [ ! -e /mnt/c/srv/packages/$mariadb ] ; then
-	# Setting up password
-	echo ""
-	echo "Please enter the information required for your install:"
-	echo ""
 
+# MariaDB not installed, ask for new root password
+if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] ; then
 	read -s -p "Enter new root DB password: " db_root_password
 	export db_root_password
 	echo ""
 fi
+
 
 # SETTING DEFAULT GIT USER
 echo "Setting up default Git settings"
@@ -47,13 +49,14 @@ sudo cp "/mnt/c/srv/tools/_conf/dot_profile" "/home/$SUDO_USER/.profile"
 sudo chown "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.profile"
 echo ""
 
+
 # Defining paths and download urls
 echo ""
 echo "---Checking paths and download links---"
 echo ""
 
-echo "Getting c++ compiler path and download link"
-echo ""
+
+# Setting c++ compiler path and download link"
 vc_compiler="VC_redist.x64.exe"
 vc_compiler_path="https://aka.ms/vs/15/release/VC_redist.x64.exe"
 
@@ -75,7 +78,6 @@ imagick="imagemagick-6-9-9-37-q16-x64-d.zip"
 imagick_path="https://parentnode.dk/download/72/HTML-6pfwyd1b/imagemagick-6-9-9-37-q16-x64-d.zip"
 
 # Setting ffmpeg path and download link"
-echo ""
 ffmpeg="ffmpeg-20180129-d4967c0-win64-static.zip"
 ffmpeg_path="https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20180129-d4967c0-win64-static.zip"
 ffmpeg_dir="ffmpeg-20180129-d4967c0-win64-static"
@@ -137,7 +139,7 @@ fi;
 
 
 # Check if Apache is running
-apache_service=$(/mnt/c/Windows/System32/net.exe start | grep -E "Apache")
+apache_service=$(/mnt/c/Windows/System32/net.exe start | grep -E "Apache" || echo "")
 if [ ! -z "$apache_service" ]; then
 	echo "Apache is running"
 else
@@ -171,16 +173,18 @@ echo ""
 
 # Downloading and installing mariadb
 echo "Looking for mariaDB"
-if [ -e /mnt/c/srv/packages/$mariadb ] ; then
+if [ -e /mnt/c/srv/packages/$mariadb.zip ] ; then
 	echo "C:/srv/packages/$mariadb already exists"
 else
 	echo "Downloading: $mariadb"
 	cd /mnt/c/srv/packages/
-	wget -O $mariadb $mariadb_path
+	wget -O $mariadb.zip $mariadb_path
+
+	unzip $mariadb.zip -d /mnt/c/srv/packages/
 
 	echo "Installing mariadb"
 	# Install MariaDB with password and servicename
-	/mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\\"$mariadb PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
+	/mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\\"$mariadb.msi PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
 
 fi
 echo ""
