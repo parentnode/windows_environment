@@ -195,7 +195,7 @@ else
 	/mnt/c/srv/packages/$vc_compiler.exe
 
 	# Remove installer
-	unlink("/mnt/c/srv/packages/$vc_compiler.exe");
+	rm /mnt/c/srv/packages/$vc_compiler.exe
 
 fi
 echo ""
@@ -219,7 +219,7 @@ else
 	/mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\\"$mariadb.msi PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
 
 	# Remove installer
-	unlink("/mnt/c/srv/packages/$mariadb.msi");
+	rm /mnt/c/srv/packages/$mariadb.msi
 
 fi
 echo ""
