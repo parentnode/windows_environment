@@ -1,5 +1,5 @@
 #!/bin/bash -e
-echo "---------------------------------------------"
+echo "--------------------------------------------------------------"
 #echo " ***prior running this script***"
 
 echo ""
@@ -34,6 +34,7 @@ fi
 
 
 # SETTING DEFAULT GIT USER
+echo ""
 echo "Setting up default Git settings"
 git config --global core.filemode false
 git config --global user.name "$git_user"
@@ -44,6 +45,7 @@ git config --global core.autocrlf true
 
 
 # Setting up bash config
+echo ""
 echo "Copying .profile to home dir"
 sudo cp "/mnt/c/srv/tools/_conf/dot_profile" "/home/$SUDO_USER/.profile"
 sudo chown "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.profile"
@@ -51,10 +53,6 @@ echo ""
 
 
 # Defining paths and download urls
-echo ""
-echo "---Checking paths and download links---"
-echo ""
-
 
 # Setting c++ compiler path and download link"
 vc_compiler="VC_redist.x64.exe"
@@ -139,7 +137,7 @@ else
 	echo "Create directory C:/srv/installed-packages"
     mkdir -p /mnt/c/srv/installed-packages;
 fi;
-
+echo ""
 
 
 # Check if Apache is running
@@ -147,8 +145,11 @@ apache_service=$(/mnt/c/Windows/System32/net.exe start | grep -E "Apache" || ech
 # Apache is running (possibly other version)
 if [ ! -z "$apache_service" ]; then
 
+	echo ""
+	echo "Apache is running. Stopping Apache to continue."
 	# Stop Apache before continuing
 	sudo /mnt/c/Windows/System32/net.exe stop apache2.4
+	echo ""
 
 fi
 
@@ -160,7 +161,7 @@ echo ""
 
 
 # Install unzip to unpack downloaded packages
-echo "Downloading unzip"
+echo "Checking unzip:"
 install_unzip=$(unzip || echo "")
 if [ "$install_unzip" = "" ]; then
 	sudo apt-get --assume-yes install unzip
@@ -170,6 +171,8 @@ fi
 
 
 # Clean up
+echo ""
+echo "Cleaning up:"
 sudo apt-get --assume-yes autoremove
 echo ""
 
