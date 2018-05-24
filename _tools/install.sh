@@ -181,7 +181,7 @@ echo ""
 # Downloading and installing c++ compiler
 echo "Looking for C++ compiler"
 if [ -e /mnt/c/srv/packages/$vc_compiler.zip ] ; then
-	echo "C:/srv/packages/$vc_compiler already exists"
+	echo "$vc_compiler already exists"
 else
 	echo "Downloading $vc_compiler"
 	cd /mnt/c/srv/packages/
@@ -204,7 +204,7 @@ echo ""
 # Downloading and installing mariadb
 echo "Looking for mariaDB"
 if [ -e /mnt/c/srv/packages/$mariadb.zip ] ; then
-	echo "C:/srv/packages/$mariadb already exists"
+	echo "$mariadb already exists"
 else
 	echo "Downloading: $mariadb"
 	cd /mnt/c/srv/packages/
