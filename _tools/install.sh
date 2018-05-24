@@ -60,10 +60,6 @@ echo ""
 vc_compiler="VC_redist.x64.exe"
 vc_compiler_path="https://aka.ms/vs/15/release/VC_redist.x64.exe"
 
-# Setting php path and download link"
-php="php-7.2.2-Win32-VC15-x64.zip"
-php_path="https://phpdev.toolsforresearch.com/php-7.2.2-Win32-VC15-x64.zip"
-
 # Setting mariadb path and download link"
 mariadb="mariadb-10-2-12-winx64"
 mariadb_path="https://parentnode.dk/download/72/HTML-bzwa9f7m/mariadb-10-2-12-winx64.zip"
@@ -71,6 +67,10 @@ mariadb_path="https://parentnode.dk/download/72/HTML-bzwa9f7m/mariadb-10-2-12-wi
 # Setting apache path and download link"
 apache="apachehttpd-2.4.33-Win64-VC15.zip"
 apache_path="https://www.apachelounge.com/download/VC15/binaries/httpd-2.4.33-Win64-VC15.zip"
+
+# Setting php path and download link"
+php="php-7.2.2-Win32-VC15-x64.zip"
+php_path="https://phpdev.toolsforresearch.com/php-7.2.2-Win32-VC15-x64.zip"
 
 # Getting imagick path and download link"
 imagick="imagemagick-6-9-9-37-q16-x64-d.zip"
@@ -80,7 +80,11 @@ imagick_path="https://parentnode.dk/download/72/HTML-6pfwyd1b/imagemagick-6-9-9-
 # Setting ffmpeg path and download link"
 ffmpeg="ffmpeg-20180129-d4967c0-win64-static.zip"
 ffmpeg_path="https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20180129-d4967c0-win64-static.zip"
-ffmpeg_dir="ffmpeg-20180129-d4967c0-win64-static"
+
+# Setting wkhtml path and download link"
+wkhtml="ffmpeg-20180129-d4967c0-win64-static.zip"
+wkhtml_path="https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20180129-d4967c0-win64-static.zip"
+
 
 
 echo ""
@@ -140,19 +144,18 @@ fi;
 
 # Check if Apache is running
 apache_service=$(/mnt/c/Windows/System32/net.exe start | grep -E "Apache" || echo "")
+# Apache is running (possibly other version)
 if [ ! -z "$apache_service" ]; then
-	echo "Apache is running"
-else
-	echo "Apache is NOT running"
+
+	# Stop Apache before continuing
+	sudo /mnt/c/Windows/System32/net.exe stop apache2.4
+
 fi
 
-echo "test"
-
-exit
 
 
 echo ""
-echo "---Installing software---"
+echo "--- Installing software ---"
 echo ""
 
 
@@ -184,10 +187,12 @@ else
 
 	echo "Installing mariadb"
 	# Install MariaDB with password and servicename
-	/mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\\"$mariadb.msi PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
+#	/mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\srv\packages\\"$mariadb.msi PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
 
 fi
 echo ""
+
+exit
 
 
 # Downloading and installing c++ compiler
@@ -211,9 +216,10 @@ if [ -e /mnt/c/srv/packages/$apache ] ; then
 	echo "C:/srv/packages/$apache already exists"
 else
 
-	# TODO: NOT TESTED If installed-packages/apache24 exists, then stop apache, and delete folder before continuing
-	if [ -d /mnt/c/srv/installed-packages/apache24 ] ; then
+	# Apache is running (possibly other version)
+	if [ ! -z "$apache_service" ]; then
 
+		# Stop Apache before trying to install
 		sudo /mnt/c/Windows/System32/net.exe stop apache2.4
 		sudo rm -R /mnt/c/srv/installed-packages/apache24
 
