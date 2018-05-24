@@ -144,6 +144,8 @@ else
 	echo "Apache is NOT running"
 fi
 
+echo "test"
+
 exit
 
 
