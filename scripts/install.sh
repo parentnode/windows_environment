@@ -146,10 +146,24 @@ fi;
 echo ""
 
 
+apache_service_installed=$(/mnt/c/Windows/System32/sc.exe queryex type= service state= all | grep -E "Apache" || echo "")
+if [ ! -z "$apache_service_installed" ]; then
+
+	echo ""
+	echo "Apache is installed. Stopping Apache to continue."
+
+else
+	echo "Apache is not installed"
+	
+fi
+
+exit
+
+
 # Check if Apache is running
-apache_service=$(/mnt/c/Windows/System32/net.exe start | grep -E "Apache" || echo "")
+apache_service_running=$(/mnt/c/Windows/System32/net.exe start | grep -E "Apache" || echo "")
 # Apache is running (possibly other version)
-if [ ! -z "$apache_service" ]; then
+if [ ! -z "$apache_service_running" ]; then
 
 	echo ""
 	echo "Apache is running. Stopping Apache to continue."
@@ -240,7 +254,7 @@ if [ -e /mnt/c/srv/packages/$apache.zip ] ; then
 else
 
 	# Uninstall existing service
-	if [ ! -z "$apache_service" ]; then
+	if [ ! -z "$apache_service_running" ]; then
 
 		echo "APACHE IS RUNNING"
 
