@@ -72,13 +72,13 @@ php_path="https://parentnode.dk/download/72/HTML-i58uiisu/php-7-2-2-win32-vc15-x
 
 
 # Getting imagick name and download link"
-imagick="imagemagick-6-9-9-37-q16-x64-d.zip"
+imagick="imagemagick-6-9-9-37-q16-x64-d"
 #imagemagick_path="https://www.imagemagick.org/download/binaries/ImageMagick-7.0.7-22-Q16-x64-dll.exe"
 imagick_path="https://parentnode.dk/download/72/HTML-6pfwyd1b/imagemagick-6-9-9-37-q16-x64-d.zip"
 
 # Setting ffmpeg name and download link"
-ffmpeg="ffmpeg-20180129-d4967c0-win64-static.zip"
-ffmpeg_path="https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20180129-d4967c0-win64-static.zip"
+ffmpeg="ffmpeg-20180129-d4967c0-win64"
+ffmpeg_path="https://parentnode.dk/download/72/HTML-knnkg3yn/ffmpeg-20180129-d4967c0-win64.zip"
 
 # Setting wkhtml name and download link"
 wkhtml="ffmpeg-20180129-d4967c0-win64-static.zip"
@@ -230,19 +230,30 @@ echo ""
 
 # Downloading and installing Apache
 echo "Looking for $apache"
-if [ -e /mnt/c/srv/packages/$apache ] ; then
+if [ -e /mnt/c/srv/packages/$apache.zip ] ; then
 	echo "$apache already exists"
 else
 
-	# Apache is installed (possibly other version)
-	if [ -e /mnt/c/srv/installed-packages/apache24 ] ; then
+	# Uninstall existing service
+	if [ ! -z "$apache_service" ]; then
 
-		# Remove old version
-		sudo rm -R /mnt/c/srv/installed-packages/apache24
+		# Old path
+		if [ -e /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe ] ; then
+			sudo /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe -k uninstall
+		# New path
+		else
+			sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k uninstall
+		fi
 
 	fi
 
-	echo "Downloading: $apache "
+	# Remove existing version
+	if [ -e /mnt/c/srv/installed-packages/apache24 ] ; then
+		sudo rm -R /mnt/c/srv/installed-packages/apache24
+	fi
+
+
+	echo "Downloading: $apache"
 	cd /mnt/c/srv/packages/
 	wget -O $apache.zip $apache_path
 
@@ -257,16 +268,13 @@ echo ""
 
 # Downloading and installing php
 echo "Looking for $php"
-if [ -e /mnt/c/srv/packages/$php ] ; then
+if [ -e /mnt/c/srv/packages/$php.zip ] ; then
 	echo "$php already exists"
 else
 
-	# Apache is installed (possibly other version)
+	# Remove existing version
 	if [ -e /mnt/c/srv/installed-packages/php722 ] ; then
-
-		# Remove old version
 		sudo rm -R /mnt/c/srv/installed-packages/php722
-
 	fi
 
 	echo "Downloading $php"
@@ -281,38 +289,41 @@ else
 fi
 echo ""
 
-exit
 
-# Downloading and extracting ffmpeg
+# Downloading and installing ffmpeg
 echo "Looking for $ffmpeg"
-if [ -e /mnt/c/srv/packages/$ffmpeg ] ; then
+if [ -e /mnt/c/srv/packages/$ffmpeg.zip ] ; then
 	echo "$ffmpeg already exist"
 else
-	echo "Downloading: $ffmpeg "
-	cd /mnt/c/srv/packages/
-	wget -S -O "$ffmpeg" $ffmpeg_path 
 
-	echo "Extracting: $ffmpeg"
+	echo "Downloading: $ffmpeg"
 	cd /mnt/c/srv/packages/
-	unzip "$ffmpeg" -d /mnt/c/srv/installed-packages/
-	sudo mv -f /mnt/c/srv/installed-packages/$ffmpeg_dir  /mnt/c/srv/installed-packages/ffmpeg
+	wget -O $ffmpeg.zip $ffmpeg_path 
+
+	echo ""
+	echo "Installing $ffmpeg"
+	unzip $ffmpeg.zip -d /mnt/c/srv/installed-packages/ffmpeg
+
 fi
 
 
-# Downloading and extracting Imagick
-# echo "Looking for Imagick"
-# if [ -e /mnt/c/srv/packages/$imagick ] ; then
-# 	echo "C:/srv/packages/$imagick already exist"
-# else
-# 	cd /mnt/c/srv/packages/
-# 	echo "Downloading: $imagick "
-# 	wget -S -O "$imagick" $imagick_path
-# 	echo "Extracting: $imagick"
-# 	cd /mnt/c/srv/packages/
-# 	unzip "$imagick" -d /mnt/c/srv/installed-packages/
-# #	sudo mv -f /mnt/c/srv/installed-packages/$ffmpeg_dir  /mnt/c/srv/installed-packages/ffmpeg
-# fi
+# Downloading and installing Imagick
+echo "Looking for Imagick"
+if [ -e /mnt/c/srv/packages/$imagick.zip ] ; then
+	echo "$imagick already exist"
+else
 
+	echo "Downloading: $imagick"
+	cd /mnt/c/srv/packages/
+	wget -O $imagick.zip $imagick_path
+
+	# echo "Extracting: $imagick"
+	# cd /mnt/c/srv/packages/
+	# unzip "$imagick" -d /mnt/c/srv/installed-packages/
+#	sudo mv -f /mnt/c/srv/installed-packages/$ffmpeg_dir  /mnt/c/srv/installed-packages/ffmpeg
+fi
+
+exit
 
 echo ""
 echo "---Configuring apache server---"
