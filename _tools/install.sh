@@ -72,9 +72,8 @@ php_path="https://parentnode.dk/download/72/HTML-i58uiisu/php-7-2-2-win32-vc15-x
 
 
 # Getting imagick name and download link"
-imagick="imagemagick-6-9-9-37-q16-x64-d"
-#imagemagick_path="https://www.imagemagick.org/download/binaries/ImageMagick-7.0.7-22-Q16-x64-dll.exe"
-imagick_path="https://parentnode.dk/download/72/HTML-6pfwyd1b/imagemagick-6-9-9-37-q16-x64-d.zip"
+imagick="imagemagick-6-9-9-37-q16-x64-dll"
+imagick_path="https://parentnode.dk/download/72/HTML-940u1z9m/imagemagick-6-9-9-37-q16-x64-dll.zip"
 
 # Setting ffmpeg name and download link"
 ffmpeg="ffmpeg-20180129-d4967c0-win64"
@@ -296,6 +295,11 @@ if [ -e /mnt/c/srv/packages/$ffmpeg.zip ] ; then
 	echo "$ffmpeg already exist"
 else
 
+	# Remove existing version
+	if [ -e /mnt/c/srv/installed-packages/ffmpeg ] ; then
+		sudo rm -R /mnt/c/srv/installed-packages/ffmpeg
+	fi
+
 	echo "Downloading: $ffmpeg"
 	cd /mnt/c/srv/packages/
 	wget -O $ffmpeg.zip $ffmpeg_path 
@@ -316,6 +320,18 @@ else
 	echo "Downloading: $imagick"
 	cd /mnt/c/srv/packages/
 	wget -O $imagick.zip $imagick_path
+
+
+	# Unpack zip
+	unzip $imagick.zip -d /mnt/c/srv/packages/
+
+	echo ""
+	echo "Installing $imagick"
+	/mnt/c/srv/packages/$imagick.exe /NOICONS /SAVEINF="C:\\srv\\i-install.txt" 
+#	/mnt/c/srv/packages/$imagick.exe /NOICONS /passive
+
+	# Remove installer
+#	rm /mnt/c/srv/packages/$imagick.exe
 
 	# echo "Extracting: $imagick"
 	# cd /mnt/c/srv/packages/
