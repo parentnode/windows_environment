@@ -275,6 +275,9 @@ else
 	# Unpack zip to install location
 	unzip $apache.zip -d /mnt/c/srv/installed-packages/apache24
 
+	# Copy default apache config, before installing service to avoid error
+	cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
+
 	# Install service
 	sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k install
 
@@ -369,12 +372,6 @@ echo ""
 echo "Copying libeay32.dll and ssleay32.dll to apache24/bin"
 cp "/mnt/c/srv/installed-packages/php722/libeay32.dll" "/mnt/c/srv/installed-packages/apache24/bin/libeay32.dll"
 cp "/mnt/c/srv/installed-packages/php722/ssleay32.dll" "/mnt/c/srv/installed-packages/apache24/bin/ssleay32.dll"
-echo ""
-
-
-# Setting up vhosts
-echo "Copying vhosts.conf to apache24/conf/extra"
-cp "/mnt/c/srv/tools/conf/httpd-vhosts.conf" "/mnt/c/srv/installed-packages/apache24/conf/extra/httpd-vhosts.conf"
 echo ""
 
 
