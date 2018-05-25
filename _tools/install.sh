@@ -327,17 +327,14 @@ else
 
 	echo ""
 	echo "Installing $imagick"
-	/mnt/c/srv/packages/$imagick.exe /NOICONS /SAVEINF="C:\\srv\\i-install.txt" 
-#	/mnt/c/srv/packages/$imagick.exe /NOICONS /passive
+	/mnt/c/srv/packages/$imagick.exe /NOICONS /SILENT
 
 	# Remove installer
-#	rm /mnt/c/srv/packages/$imagick.exe
+	rm /mnt/c/srv/packages/$imagick.exe
 
-	# echo "Extracting: $imagick"
-	# cd /mnt/c/srv/packages/
-	# unzip "$imagick" -d /mnt/c/srv/installed-packages/
-#	sudo mv -f /mnt/c/srv/installed-packages/$ffmpeg_dir  /mnt/c/srv/installed-packages/ffmpeg
 fi
+
+
 
 exit
 
