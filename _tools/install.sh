@@ -184,6 +184,7 @@ echo "Looking for $vc_compiler"
 if [ -e /mnt/c/srv/packages/$vc_compiler.zip ] ; then
 	echo "$vc_compiler already exists"
 else
+
 	echo "Downloading $vc_compiler"
 	cd /mnt/c/srv/packages/
 	wget -O $vc_compiler.zip $vc_compiler_path
@@ -207,6 +208,7 @@ echo "Looking for $mariadb"
 if [ -e /mnt/c/srv/packages/$mariadb.zip ] ; then
 	echo "$mariadb already exists"
 else
+
 	echo "Downloading: $mariadb"
 	cd /mnt/c/srv/packages/
 	wget -O $mariadb.zip $mariadb_path
@@ -258,6 +260,15 @@ echo "Looking for $php"
 if [ -e /mnt/c/srv/packages/$php ] ; then
 	echo "$php already exists"
 else
+
+	# Apache is installed (possibly other version)
+	if [ -e /mnt/c/srv/installed-packages/php722 ] ; then
+
+		# Remove old version
+		sudo rm -R /mnt/c/srv/installed-packages/php722
+
+	fi
+
 	echo "Downloading $php"
     cd /mnt/c/srv/packages
 	wget -O $php.zip $php_path 
