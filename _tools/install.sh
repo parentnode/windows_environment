@@ -55,12 +55,12 @@ echo ""
 # Defining paths and download urls
 
 # Setting c++ compiler path and download link"
-vc_compiler="VC_redist.x64"
-vc_compiler_path="https://parentnode.dk/download/72/HTML-s7epgyr3/vc_redist-x64.zip"
+vc_compiler="vc_redist-x64"
+vc_compiler_path="https://parentnode.dk/download/72/HTML-ikg9m2me/vc_redist-x64.zip"
 
 # Setting mariadb path and download link"
 mariadb="mariadb-10-2-12-winx64"
-mariadb_path="https://parentnode.dk/download/72/HTML-bzwa9f7m/mariadb-10-2-12-winx64.zip"
+mariadb_path="https://parentnode.dk/download/72/HTML-uwogdi5x/mariadb-10-2-12-winx64.zip"
 
 # Setting apache path and download link"
 apache="apachehttpd-2-4-33-win64-vc15"
@@ -217,7 +217,7 @@ else
 	echo ""
 	echo "Installing $mariadb"
 	# Install MariaDB with password and servicename
-	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i C:\\srv\\packages\\$mariadb.msi PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
+	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$mariadb.msi" PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
 #	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\Mariadb-10.2.12-winx64.msi" PASSWORD="c0nte9do" SERVICENAME="MariaDB" /qn
 	# Remove installer
 	rm /mnt/c/srv/packages/$mariadb.msi
