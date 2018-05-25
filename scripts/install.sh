@@ -43,6 +43,7 @@ echo  "You will see 'Server install complete' message once it's done"
 
 
 echo ""
+echo ""
 echo "--- Confirming Windows environment ---"
 echo ""
 echo ""
