@@ -6,10 +6,14 @@
 # Setting c++ compiler name and download link"
 vc_compiler="vc_redist-x64"
 vc_compiler_path="https://parentnode.dk/download/72/HTML-ikg9m2me/vc_redist-x64.zip"
+# Old file is also valid (and should not cause re-install)
+vc_compiler_alt="VC_redist.x64.exe"
 
 # Setting mariadb name and download link"
 mariadb="mariadb-10-2-12-winx64"
 mariadb_path="https://parentnode.dk/download/72/HTML-uwogdi5x/mariadb-10-2-12-winx64.zip"
+# Old file is also valid (and should not cause re-install)
+mariadb_alt="mariadb-10.2.12-winx64.msi"
 
 # Setting apache name and download link"
 apache="apachehttpd-2-4-33-win64-vc15"
@@ -29,8 +33,8 @@ ffmpeg="ffmpeg-20180129-d4967c0-win64"
 ffmpeg_path="https://parentnode.dk/download/72/HTML-knnkg3yn/ffmpeg-20180129-d4967c0-win64.zip"
 
 # Setting wkhtml name and download link"
-wkhtml="ffmpeg-20180129-d4967c0-win64-static.zip"
-wkhtml_path="https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20180129-d4967c0-win64-static.zip"
+wkhtml="ffmpeg-20180129-d4967c0-win64"
+wkhtml_path="https://parentnode.dk/download/72/HTML-knnkg3yn/ffmpeg-20180129-d4967c0-win64.zip"
 
 
 
@@ -190,7 +194,7 @@ echo ""
 
 # Downloading and installing c++ compiler
 echo "Looking for $vc_compiler"
-if [ -e /mnt/c/srv/packages/$vc_compiler.zip ] ; then
+if [ -e /mnt/c/srv/packages/$vc_compiler.zip ] || [ -e /mnt/c/srv/packages/$vc_compiler_alt ]; then
 	echo "$vc_compiler already exists"
 else
 
@@ -203,18 +207,20 @@ else
 
 	echo ""
 	echo "Installing $vc_compiler"
-	/mnt/c/srv/packages/$vc_compiler.exe /passive
+#	/mnt/c/srv/packages/$vc_compiler.exe /passive
 
 	# Remove installer
-	rm /mnt/c/srv/packages/$vc_compiler.exe
+#	rm /mnt/c/srv/packages/$vc_compiler.exe
 
 fi
 echo ""
 
+exit
+
 
 # Downloading and installing mariadb
 echo "Looking for $mariadb"
-if [ -e /mnt/c/srv/packages/$mariadb.zip ] ; then
+if [ -e /mnt/c/srv/packages/$mariadb.zip ] || [ -e /mnt/c/srv/packages/$mariadb_alt ] ; then
 	echo "$mariadb already exists"
 else
 
