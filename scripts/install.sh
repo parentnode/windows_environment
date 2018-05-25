@@ -312,6 +312,7 @@ else
 	unzip $ffmpeg.zip -d /mnt/c/srv/installed-packages/ffmpeg
 
 fi
+echo ""
 
 
 # Downloading and installing Imagick
@@ -336,6 +337,7 @@ else
 	rm /mnt/c/srv/packages/$imagick.exe
 
 fi
+echo ""
 
 
 echo ""
@@ -379,8 +381,8 @@ fi
 
 
 
-echo "--- Starting apache server ---"
 echo ""
+echo "Starting apache server"
 sudo /mnt/c/Windows/System32/net.exe start apache2.4 exit 2>/dev/null || echo ""
 
 
