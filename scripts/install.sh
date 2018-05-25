@@ -236,11 +236,15 @@ else
 	# Uninstall existing service
 	if [ ! -z "$apache_service" ]; then
 
+		echo "APACHE IS RUNNING"
+
 		# Old path
 		if [ -e /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe ] ; then
+			echo "OLD PATH"
 			sudo /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe -k uninstall
 		# New path
 		else
+			echo "NEW PATH"
 			sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k uninstall
 		fi
 
