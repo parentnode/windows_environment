@@ -207,15 +207,13 @@ else
 
 	echo ""
 	echo "Installing $vc_compiler"
-#	/mnt/c/srv/packages/$vc_compiler.exe /passive
+	/mnt/c/srv/packages/$vc_compiler.exe /passive
 
 	# Remove installer
-#	rm /mnt/c/srv/packages/$vc_compiler.exe
+	rm /mnt/c/srv/packages/$vc_compiler.exe
 
 fi
 echo ""
-
-exit
 
 
 # Downloading and installing mariadb
