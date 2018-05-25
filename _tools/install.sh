@@ -242,7 +242,7 @@ else
 
 	echo "Downloading: $apache "
 	cd /mnt/c/srv/packages/
-	wget -O $apache $apache_path
+	wget -O $apache.zip $apache_path
 
 	echo ""
 	echo "Installing $apache"
