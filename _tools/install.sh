@@ -64,7 +64,7 @@ mariadb_path="https://parentnode.dk/download/72/HTML-uwogdi5x/mariadb-10-2-12-wi
 
 # Setting apache path and download link"
 apache="apachehttpd-2-4-33-win64-vc15"
-apache_path="https://parentnode.dk/download/72/HTML-uft863wa/apachehttpd-2-4-33-win64-vc15.zip"
+apache_path="https://parentnode.dk/download/72/HTML-i59ty49r/apachehttpd-2-4-33-win64-vc15.zip"
 
 
 # Setting php path and download link"
@@ -180,7 +180,7 @@ echo ""
 
 
 # Downloading and installing c++ compiler
-echo "Looking for C++ compiler"
+echo "Looking for $vc_compiler"
 if [ -e /mnt/c/srv/packages/$vc_compiler.zip ] ; then
 	echo "$vc_compiler already exists"
 else
@@ -203,7 +203,7 @@ echo ""
 
 
 # Downloading and installing mariadb
-echo "Looking for mariaDB"
+echo "Looking for $mariadb"
 if [ -e /mnt/c/srv/packages/$mariadb.zip ] ; then
 	echo "$mariadb already exists"
 else
@@ -218,42 +218,44 @@ else
 	echo "Installing $mariadb"
 	# Install MariaDB with password and servicename
 	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$mariadb.msi" PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
-#	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\Mariadb-10.2.12-winx64.msi" PASSWORD="c0nte9do" SERVICENAME="MariaDB" /qn
+
 	# Remove installer
 	rm /mnt/c/srv/packages/$mariadb.msi
 
 fi
 echo ""
 
-exit
-
-
-
 
 # Downloading and installing Apache
-echo "Looking for Apache httpd"
+echo "Looking for $apache"
 if [ -e /mnt/c/srv/packages/$apache ] ; then
-	echo "C:/srv/packages/$apache already exists"
+	echo "$apache already exists"
 else
 
-	# Apache is running (possibly other version)
-	if [ ! -z "$apache_service" ]; then
+	# Apache is installed (possibly other version)
+	if [ -e /mnt/c/srv/installed-packages/apache24 ] ; then
 
-		# Stop Apache before trying to install
-		sudo /mnt/c/Windows/System32/net.exe stop apache2.4
+		# Remove old version
 		sudo rm -R /mnt/c/srv/installed-packages/apache24
 
 	fi
 
-	cd /mnt/c/srv/packages/
 	echo "Downloading: $apache "
-	wget -S -O $apache $apache_path --referer="https://www.apachelounge.com/download/" --user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299"
-
-	echo "Extracting: $apache"
 	cd /mnt/c/srv/packages/
-	unzip $apache -d /mnt/c/srv/installed-packages/apache24/
+	wget -O $apache $apache_path
+
+	echo ""
+	echo "Installing $apache"
+	# Unpack zip to install location
+	unzip $apache.zip -d /mnt/c/srv/installed-packages/apache24
+
+	# echo "Extracting: $apache"
+	# cd /mnt/c/srv/packages/
+	# unzip $apache -d /mnt/c/srv/installed-packages/apache24/
 fi
 echo ""
+
+exit
 
 
 # Downloading and installing php
