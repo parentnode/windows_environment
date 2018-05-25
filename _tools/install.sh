@@ -63,8 +63,9 @@ mariadb="mariadb-10-2-12-winx64"
 mariadb_path="https://parentnode.dk/download/72/HTML-bzwa9f7m/mariadb-10-2-12-winx64.zip"
 
 # Setting apache path and download link"
-apache="apachehttpd-2.4.33-Win64-VC15.zip"
-apache_path="https://www.apachelounge.com/download/VC15/binaries/httpd-2.4.33-Win64-VC15.zip"
+apache="apachehttpd-2-4-33-win64-vc15"
+apache_path="https://parentnode.dk/download/72/HTML-uft863wa/apachehttpd-2-4-33-win64-vc15.zip"
+
 
 # Setting php path and download link"
 php="php-7.2.2-Win32-VC15-x64.zip"
@@ -216,7 +217,7 @@ else
 	echo ""
 	echo "Installing $mariadb"
 	# Install MariaDB with password and servicename
-	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$mariadb.msi" PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
+	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i C:\\srv\\packages\\$mariadb.msi PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
 #	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\Mariadb-10.2.12-winx64.msi" PASSWORD="c0nte9do" SERVICENAME="MariaDB" /qn
 	# Remove installer
 	rm /mnt/c/srv/packages/$mariadb.msi
