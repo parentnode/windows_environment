@@ -1,55 +1,4 @@
 #!/bin/bash -e
-echo "--------------------------------------------------------------"
-#echo " ***prior running this script***"
-
-echo ""
-echo "                 Starting server installation"
-echo "           DO NOT CLOSE UNTILL INSTALL IS COMPLETE" 
-echo  "You will see 'Server install complete' message once it's done"
-
-
-echo ""
-echo ""
-
-echo ""
-echo "Please enter the information required for your install:"
-echo ""
-
-# Setting up git user and email
-read -p "Your git username: " git_user
-export git_user
-echo ""
-
-read -p "Your git email address: " git_email
-export git_email
-echo ""
-
-
-# MariaDB not installed, ask for new root password
-if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] ; then
-	read -s -p "Enter new root DB password: " db_root_password
-	export db_root_password
-	echo ""
-fi
-
-
-# SETTING DEFAULT GIT USER
-echo ""
-echo "Setting up default Git settings"
-git config --global core.filemode false
-git config --global user.name "$git_user"
-git config --global user.email "$git_email"
-git config --global credential.helper cache
-git config --global push.default simple
-git config --global core.autocrlf true
-
-
-# Setting up bash config
-echo ""
-echo "Copying .profile to home dir"
-sudo cp "/mnt/c/srv/tools/conf/dot_profile" "/home/$SUDO_USER/.profile"
-sudo chown "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.profile"
-echo ""
 
 
 # Defining paths and download urls
@@ -85,8 +34,17 @@ wkhtml_path="https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20180129-d496
 
 
 
+echo "--------------------------------------------------------------"
 echo ""
-echo "--- Confirming Windows enviroment ---"
+echo "                 Starting server installation"
+echo "           DO NOT CLOSE UNTILL INSTALL IS COMPLETE" 
+echo  "You will see 'Server install complete' message once it's done"
+
+
+
+echo ""
+echo "--- Confirming Windows environment ---"
+echo ""
 echo ""
 
 # Check if windows environment
@@ -100,6 +58,54 @@ else
     exit 1
 
 fi
+
+
+
+echo ""
+echo ""
+echo "Please enter the information required for your install:"
+echo ""
+
+# Setting up git user and email
+read -p "Your git username: " git_user
+export git_user
+echo ""
+
+read -p "Your git email address: " git_email
+export git_email
+echo ""
+
+
+# MariaDB not installed, ask for new root password
+if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] ; then
+	read -s -p "Enter new root DB password: " db_root_password
+	export db_root_password
+	echo ""
+fi
+
+
+# SETTING DEFAULT GIT USER
+echo ""
+echo "--- Setting up default user configuration ---"
+echo ""
+
+echo ""
+echo "Setting Git variables"
+git config --global core.filemode false
+git config --global user.name "$git_user"
+git config --global user.email "$git_email"
+git config --global credential.helper cache
+git config --global push.default simple
+git config --global core.autocrlf true
+
+
+# Setting up bash config
+echo ""
+echo "Copying .profile to /home/$SUDO_USER"
+sudo cp "/mnt/c/srv/tools/conf/dot_profile" "/home/$SUDO_USER/.profile"
+sudo chown "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.profile"
+echo ""
+
 
 
 echo ""
