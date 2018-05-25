@@ -54,33 +54,33 @@ echo ""
 
 # Defining paths and download urls
 
-# Setting c++ compiler path and download link"
+# Setting c++ compiler name and download link"
 vc_compiler="vc_redist-x64"
 vc_compiler_path="https://parentnode.dk/download/72/HTML-ikg9m2me/vc_redist-x64.zip"
 
-# Setting mariadb path and download link"
+# Setting mariadb name and download link"
 mariadb="mariadb-10-2-12-winx64"
 mariadb_path="https://parentnode.dk/download/72/HTML-uwogdi5x/mariadb-10-2-12-winx64.zip"
 
-# Setting apache path and download link"
+# Setting apache name and download link"
 apache="apachehttpd-2-4-33-win64-vc15"
 apache_path="https://parentnode.dk/download/72/HTML-i59ty49r/apachehttpd-2-4-33-win64-vc15.zip"
 
+# Setting php name and download link"
+php="php-7-2-2-win32-vc15-x64"
+php_path="https://parentnode.dk/download/72/HTML-i58uiisu/php-7-2-2-win32-vc15-x64.zip"
 
-# Setting php path and download link"
-php="php-7.2.2-Win32-VC15-x64.zip"
-php_path="https://phpdev.toolsforresearch.com/php-7.2.2-Win32-VC15-x64.zip"
 
-# Getting imagick path and download link"
+# Getting imagick name and download link"
 imagick="imagemagick-6-9-9-37-q16-x64-d.zip"
 #imagemagick_path="https://www.imagemagick.org/download/binaries/ImageMagick-7.0.7-22-Q16-x64-dll.exe"
 imagick_path="https://parentnode.dk/download/72/HTML-6pfwyd1b/imagemagick-6-9-9-37-q16-x64-d.zip"
 
-# Setting ffmpeg path and download link"
+# Setting ffmpeg name and download link"
 ffmpeg="ffmpeg-20180129-d4967c0-win64-static.zip"
 ffmpeg_path="https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20180129-d4967c0-win64-static.zip"
 
-# Setting wkhtml path and download link"
+# Setting wkhtml name and download link"
 wkhtml="ffmpeg-20180129-d4967c0-win64-static.zip"
 wkhtml_path="https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-20180129-d4967c0-win64-static.zip"
 
@@ -249,39 +249,38 @@ else
 	# Unpack zip to install location
 	unzip $apache.zip -d /mnt/c/srv/installed-packages/apache24
 
-	# echo "Extracting: $apache"
-	# cd /mnt/c/srv/packages/
-	# unzip $apache -d /mnt/c/srv/installed-packages/apache24/
+fi
+echo ""
+
+
+# Downloading and installing php
+echo "Looking for $php"
+if [ -e /mnt/c/srv/packages/$php ] ; then
+	echo "$php already exists"
+else
+	echo "Downloading $php"
+    cd /mnt/c/srv/packages
+	wget -O $php.zip $php_path 
+
+	echo ""
+	echo "Installing $php"
+	# Unpack zip to install location
+	unzip $php.zip -d /mnt/c/srv/installed-packages/php722
+
 fi
 echo ""
 
 exit
 
-
-# Downloading and installing php
-echo "Looking for PHP"
-if [ -e /mnt/c/srv/packages/$php ] ; then
-	echo "C:/srv/packages/$php already exists"
-else
-    cd /mnt/c/srv/packages
-	echo "Downloading $php VC15 x64 Thread Safe"
-	wget -O $php $php_path 
-
-    echo "Extracting: $php"
-	cd /mnt/c/srv/packages/
-	unzip $php -d /mnt/c/srv/installed-packages/php722/
-fi
-echo ""
-
-
 # Downloading and extracting ffmpeg
-echo "Looking for ffmpeg"
+echo "Looking for $ffmpeg"
 if [ -e /mnt/c/srv/packages/$ffmpeg ] ; then
-	echo "C:/srv/packages/$ffmpeg already exist"
+	echo "$ffmpeg already exist"
 else
-	cd /mnt/c/srv/packages/
 	echo "Downloading: $ffmpeg "
+	cd /mnt/c/srv/packages/
 	wget -S -O "$ffmpeg" $ffmpeg_path 
+
 	echo "Extracting: $ffmpeg"
 	cd /mnt/c/srv/packages/
 	unzip "$ffmpeg" -d /mnt/c/srv/installed-packages/
