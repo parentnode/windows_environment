@@ -47,7 +47,7 @@ git config --global core.autocrlf true
 # Setting up bash config
 echo ""
 echo "Copying .profile to home dir"
-sudo cp "/mnt/c/srv/tools/_conf/dot_profile" "/home/$SUDO_USER/.profile"
+sudo cp "/mnt/c/srv/tools/conf/dot_profile" "/home/$SUDO_USER/.profile"
 sudo chown "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.profile"
 echo ""
 
@@ -261,6 +261,9 @@ else
 	# Unpack zip to install location
 	unzip $apache.zip -d /mnt/c/srv/installed-packages/apache24
 
+	# Install service
+	sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k install
+
 fi
 echo ""
 
@@ -335,153 +338,58 @@ else
 fi
 
 
-
-exit
-
 echo ""
-echo "---Configuring apache server---"
+echo "--- Configuring Apache server and PHP ---"
 echo ""
+
 
 # Setting up php.ini
 echo "Copying php.ini to php722/php.ini"
-cp "/mnt/c/srv/tools/_conf/php.ini" "/mnt/c/srv/installed-packages/php722/php.ini"
+cp "/mnt/c/srv/tools/conf/php.ini" "/mnt/c/srv/installed-packages/php722/php.ini"
 echo ""
 
+
 # Setting up php.ini (and required files for CURL)
-echo "Copying libeay32.dll and ssleay32.dll to Apache2.4/bin"
-
-# # TODO: NOT TESTED If installed-packages/apache24 exists, then stop apache, and delete folder before continuing
-# if [ -d /mnt/c/srv/installed-packages/apache24 ] ; then
-#
-#
-# fi
-
-cp "/mnt/c/srv/installed-packages/php722/libeay32.dll" "/mnt/c/srv/installed-packages/apache24/Apache24/bin/libeay32.dll"
-cp "/mnt/c/srv/installed-packages/php722/ssleay32.dll" "/mnt/c/srv/installed-packages/apache24/Apache24/bin/ssleay32.dll"
+echo "Copying libeay32.dll and ssleay32.dll to apache24/bin"
+cp "/mnt/c/srv/installed-packages/php722/libeay32.dll" "/mnt/c/srv/installed-packages/apache24/bin/libeay32.dll"
+cp "/mnt/c/srv/installed-packages/php722/ssleay32.dll" "/mnt/c/srv/installed-packages/apache24/bin/ssleay32.dll"
 echo ""
 
 
 # Setting up vhosts
-echo "Copying vhosts.conf to Apache24/conf/extra"
-cp "/mnt/c/srv/tools/_conf/httpd-vhosts.conf" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/extra/httpd-vhosts.conf"
+echo "Copying vhosts.conf to apache24/conf/extra"
+cp "/mnt/c/srv/tools/conf/httpd-vhosts.conf" "/mnt/c/srv/installed-packages/apache24/conf/extra/httpd-vhosts.conf"
 echo ""
+
 
 # Setting up httpd.conf
-echo "Copying httpd config file to apache conf directory"
-cp "/mnt/c/srv/tools/_conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/Apache24/conf/httpd.conf"
+echo "Copying httpd config file to apache24/conf"
+cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
 echo ""
 
-# Setting up apache.conf
+
+# Setting up apache.conf (only once)
 if [ ! -f "/mnt/c/srv/sites/apache/apache.conf" ]; then
 
 	echo "Adding apache config file to sites/apache/"
 	echo ""
-	cp "/mnt/c/srv/tools/_conf/apache.conf" "/mnt/c/srv/sites/apache/apache.conf"
+	cp "/mnt/c/srv/tools/conf/apache.conf" "/mnt/c/srv/sites/apache/apache.conf"
 
 fi
 
 
-# Checking if apache service is installed
-echo "Installing apache server"
-echo "" 
-#sudo /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe -k install exit 2>/dev/null || echo ""
-# TODO: Fails to prompt for Windows Defender access when output is surpressed - but output looks like an error on 2nd run
-sudo /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe -k install
 
-echo "Starting apache server"
+echo "--- Starting apache server ---"
 echo ""
 sudo /mnt/c/Windows/System32/net.exe start apache2.4 exit 2>/dev/null || echo ""
+
+
 
 echo ""
 echo "        Server install complete "
 echo "---------------------------------------------"
 echo ""
 
-
-
- 
-
-
-
-
-
-
-
-
-
-# if [ -e /mnt/c/srv/packages/PHP ] ; then
-# 	echo "C:/srv/packages/PHP already exist so $PHP have been extracted  "
-# else
-# 	echo "Extracting: $PHP VC15 x64 Thread Safe zip"
-# 	cd /mnt/c/srv/packages/
-# 	unzip $PHP -d /mnt/c/srv/packages/PHP/
-# 	echo "Seting enviroment variable for: PHP methode permanent "
-#
-# # echo "Installing php-7.2.1-VC15-x64"
-# # /mnt/c/srv/packages/php-7.2.1-VC15-x64.exe
-# fi;
-# # WORNING save the original path before cang it with below line
-# #/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe   setx php %PHP%; C:\srv\packages\PHP
-#
-# # echo "seting enviroment variable for PHP methode 2 "
-# # /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe  setx php "%PHP%; C:\srv\packages\PHP"
-#
-# # echo "seting enviroment variable for PHP methode 3 "
-# # /mnt/c/Windows/System32/cmd.exe setx php "%PHP%; C:\srv\packages\PHP\"
-# # echo "seting enviroment variable for PHP methode 1 "
-# # /mnt/c/Windows/System32/cmd.exe set PATH=%PATH%; C:\srv\packages\PHP\
-# # /mnt/c/Windows/System32/cmd.exe set PHP=%PHP%; C:\srv\packages\PHP\
-# echo "Looking: for $Ffmpeg"
-# if [ -e /mnt/c/srv/packages/$Ffmpeg ] ; then
-# 		echo "C:/srv/packages/ffmpeg.zip already exist but have not ben extracted"
-# else
-# 	echo "Downloading: ffmpeg"
-# 	cd /mnt/c/srv/packages/
-#  	wget -P  /mnt/c/srv/packages/  -O $Ffmpeg $Ffmpeg_path
-# fi;
-#
-# if [ -e /mnt/c/srv/packages/$Ffmpeg ] ; then
-# 	echo "C:/srv/packages/$Ffmpeg already exist so have ben extracted"
-# else
-# 	echo "Extracting: $Ffmpeg"
-# 	cd /mnt/c/srv/packages/
-# 	unzip $Ffmpeg  -d /mnt/c/srv/packages/ffmpeg/
-# 	echo "seting enviroment variable for ffmpeg"
-# 	#/mnt/c/Windows/System32/cmd.exe set ffmpeg=%ffmpeg% "C:\srv\packages\ffmpeg"
-# 	/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe  setx ffmpeg %ffmpeg% "C:\srv\packages\ffmpeg" #
-# fi;
-#
-#
-# # echo "Installing ffmpeg"
-# # /mnt/c/srv/packages/ffmpeg.exe
-# if [ -e /mnt/c/srv/packages/$Imagemagick ] ; then
-# 	echo "C:/srv/packages/imagemagick already exist"
-# else
-#  echo "Downloading: imagemagick"
-#  wget -P  /mnt/c/srv/packages/  -O $Imagemagick $Imagemagick_path
-# fi;
-#  echo "Installing: imagemagick"
-#  /mnt/c/srv/packages/$Imagemagick
-# #/mnt/c/ProgramData/chocolatey/bin/choco.exe install -y apache-httpd
-#
-# #echo "Install mariadb"
-# 	#/mnt/c/ProgramData/chocolatey/bin/choco.exe  install -y --force mariadb
-# 	#/mnt/c/ProgramData/chocolatey/lib/NuGet.CommandLine/tools/NuGet.exe
-# #echo "Upgrde mariadb"
-# 	#/mnt/c/ProgramData/chocolatey/bin/choco.exe --force upgrade -y mariadb install -y --force mariadb
-#
-#
-# # if [ -e /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe ] ; then
-# # 	echo "mariadb : OK"
-# # else
-# # 	echo " mariadb  does not exist"
-# # 	echo "Install mariadb"
-# # 	/mnt/c/ProgramData/chocolatey/bin/choco.exe install -y mariadb
-# # 	exit 1
-# # fi
-#
-#
-# #cd /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe
 
 
 
