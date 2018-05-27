@@ -406,7 +406,7 @@ else
 
 	echo ""
 	echo "Installing $wkhtmltopdf"
-	unzip $ffmpeg.zip -d /mnt/c/srv/installed-packages/wkhtmltopdf
+	unzip $wkhtmltopdf.zip -d /mnt/c/srv/installed-packages/wkhtmltopdf
 
 fi
 echo ""
