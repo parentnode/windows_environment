@@ -36,8 +36,8 @@ ffmpeg="ffmpeg-20180129-d4967c0-win64"
 ffmpeg_path="https://parentnode.dk/download/72/HTML-knnkg3yn/ffmpeg-20180129-d4967c0-win64.zip"
 
 # Setting wkhtml name and download link"
-wkhtml="wkhtmltopdf-static-0-12-3"
-wkhtml_path="https://parentnode.dk/download/72/HTML-g2y0tm22/wkhtmltopdf-static-0-12-3.zip"
+wkhtmltopdf="wkhtmltopdf-static-0-12-3"
+wkhtmltopdf_path="https://parentnode.dk/download/72/HTML-g2y0tm22/wkhtmltopdf-static-0-12-3.zip"
 
 
 
