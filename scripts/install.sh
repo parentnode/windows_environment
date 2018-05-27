@@ -31,14 +31,13 @@ imagick_path="https://parentnode.dk/download/72/HTML-940u1z9m/imagemagick-6-9-9-
 redis="redis-x64-4-0-2-2"
 redis_path="https://parentnode.dk/download/72/HTML-wc8evnh2/redis-x64-4-0-2-2.zip"
 
-
 # Setting ffmpeg name and download link"
 ffmpeg="ffmpeg-20180129-d4967c0-win64"
 ffmpeg_path="https://parentnode.dk/download/72/HTML-knnkg3yn/ffmpeg-20180129-d4967c0-win64.zip"
 
 # Setting wkhtml name and download link"
-wkhtml="ffmpeg-20180129-d4967c0-win64"
-wkhtml_path="https://parentnode.dk/download/72/HTML-knnkg3yn/ffmpeg-20180129-d4967c0-win64.zip"
+wkhtml="wkhtmltopdf-static-0-12-3"
+wkhtml_path="https://parentnode.dk/download/72/HTML-g2y0tm22/wkhtmltopdf-static-0-12-3.zip"
 
 
 
@@ -318,7 +317,7 @@ echo ""
 
 
 # Downloading and installing Imagick
-echo "Looking for Imagick"
+echo "Looking for $imagick"
 if [ -e /mnt/c/srv/packages/$imagick.zip ] ; then
 	echo "$imagick already exist"
 else
@@ -342,12 +341,8 @@ fi
 echo ""
 
 
-# TODO REDIS
-#sudo /mnt/c/srv/installed-packages/memcached/memcached.exe -d install
-#sudo /mnt/c/Windows/System32/net.exe start memcached
-
 # Downloading and installing Imagick
-echo "Looking for Redis"
+echo "Looking for $redis"
 if [ -e /mnt/c/srv/packages/$redis.zip ] ; then
 	echo "$redis already exist"
 else
@@ -394,6 +389,27 @@ fi
 echo ""
 
 
+# Downloading and installing wkhtmltopdf
+echo "Looking for $wkhtmltopdf"
+if [ -e /mnt/c/srv/packages/$wkhtmltopdf.zip ] ; then
+	echo "$wkhtmltopdf already exist"
+else
+
+	# Remove existing version
+	if [ -e /mnt/c/srv/installed-packages/wkhtmltopdf ] ; then
+		sudo rm -R /mnt/c/srv/installed-packages/wkhtmltopdf
+	fi
+
+	echo "Downloading: $wkhtmltopdf"
+	cd /mnt/c/srv/packages/
+	wget -O $wkhtmltopdf.zip $wkhtmltopdf_path 
+
+	echo ""
+	echo "Installing $wkhtmltopdf"
+	unzip $ffmpeg.zip -d /mnt/c/srv/installed-packages/wkhtmltopdf
+
+fi
+echo ""
 
 
 echo ""
