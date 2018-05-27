@@ -20,13 +20,17 @@ apache="apachehttpd-2-4-33-win64-vc15"
 apache_path="https://parentnode.dk/download/72/HTML-i59ty49r/apachehttpd-2-4-33-win64-vc15.zip"
 
 # Setting php name and download link"
-php="php-7-2-2-win32-vc15-x64"
-php_path="https://parentnode.dk/download/72/HTML-i58uiisu/php-7-2-2-win32-vc15-x64.zip"
-
+php="php-7-2-2-win32-vc15-x64-redis-4"
+php_path="https://parentnode.dk/download/72/HTML-aqwla8g3/php-7-2-2-win32-vc15-x64-redis-4.zip"
 
 # Getting imagick name and download link"
 imagick="imagemagick-6-9-9-37-q16-x64-dll"
 imagick_path="https://parentnode.dk/download/72/HTML-940u1z9m/imagemagick-6-9-9-37-q16-x64-dll.zip"
+
+# Setting redis name and download link"
+redis="redis-x64-4-0-2-2"
+redis_path="https://parentnode.dk/download/72/HTML-wc8evnh2/redis-x64-4-0-2-2.zip"
+
 
 # Setting ffmpeg name and download link"
 ffmpeg="ffmpeg-20180129-d4967c0-win64"
@@ -207,7 +211,7 @@ else
 
 	echo ""
 	echo "Installing $vc_compiler"
-	/mnt/c/srv/packages/$vc_compiler.exe /passive
+	/mnt/c/srv/packages/$vc_compiler.exe /passive /norestart
 
 	# Remove installer
 	rm /mnt/c/srv/packages/$vc_compiler.exe
@@ -313,29 +317,6 @@ fi
 echo ""
 
 
-# Downloading and installing ffmpeg
-echo "Looking for $ffmpeg"
-if [ -e /mnt/c/srv/packages/$ffmpeg.zip ] ; then
-	echo "$ffmpeg already exist"
-else
-
-	# Remove existing version
-	if [ -e /mnt/c/srv/installed-packages/ffmpeg ] ; then
-		sudo rm -R /mnt/c/srv/installed-packages/ffmpeg
-	fi
-
-	echo "Downloading: $ffmpeg"
-	cd /mnt/c/srv/packages/
-	wget -O $ffmpeg.zip $ffmpeg_path 
-
-	echo ""
-	echo "Installing $ffmpeg"
-	unzip $ffmpeg.zip -d /mnt/c/srv/installed-packages/ffmpeg
-
-fi
-echo ""
-
-
 # Downloading and installing Imagick
 echo "Looking for Imagick"
 if [ -e /mnt/c/srv/packages/$imagick.zip ] ; then
@@ -359,6 +340,60 @@ else
 
 fi
 echo ""
+
+
+# TODO REDIS
+#sudo /mnt/c/srv/installed-packages/memcached/memcached.exe -d install
+#sudo /mnt/c/Windows/System32/net.exe start memcached
+
+# Downloading and installing Imagick
+echo "Looking for Redis"
+if [ -e /mnt/c/srv/packages/$redis.zip ] ; then
+	echo "$redis already exist"
+else
+
+	echo "Downloading: $redis"
+	cd /mnt/c/srv/packages/
+	wget -O $redis.zip $redis_path
+
+
+	# Unpack zip
+	unzip $redis.zip -d /mnt/c/srv/packages/
+
+	echo ""
+	echo "Installing $redis"
+#	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$redis.msi" /qn
+
+	# Remove installer
+#	rm /mnt/c/srv/packages/$redis.msi
+
+fi
+echo ""
+
+
+# Downloading and installing ffmpeg
+echo "Looking for $ffmpeg"
+if [ -e /mnt/c/srv/packages/$ffmpeg.zip ] ; then
+	echo "$ffmpeg already exist"
+else
+
+	# Remove existing version
+	if [ -e /mnt/c/srv/installed-packages/ffmpeg ] ; then
+		sudo rm -R /mnt/c/srv/installed-packages/ffmpeg
+	fi
+
+	echo "Downloading: $ffmpeg"
+	cd /mnt/c/srv/packages/
+	wget -O $ffmpeg.zip $ffmpeg_path 
+
+	echo ""
+	echo "Installing $ffmpeg"
+	unzip $ffmpeg.zip -d /mnt/c/srv/installed-packages/ffmpeg
+
+fi
+echo ""
+
+
 
 
 echo ""
