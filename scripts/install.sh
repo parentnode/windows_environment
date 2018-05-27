@@ -362,10 +362,10 @@ else
 
 	echo ""
 	echo "Installing $redis"
-#	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$redis.msi" /qn
+	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$redis.msi" ADD_FIREWALL_RULE=1 /qn
 
 	# Remove installer
-#	rm /mnt/c/srv/packages/$redis.msi
+	rm /mnt/c/srv/packages/$redis.msi
 
 fi
 echo ""
