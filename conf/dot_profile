@@ -8,6 +8,27 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
+# ADMIN CHECK
+admin=$(/mnt/c/Windows/System32/net.exe session 2>/dev/null || echo "")
+if [ -z "$admin" ]; then
+	echo ""
+	echo ""
+	echo "          DING DING D       DING    DING D    DING      NG DING DI  "
+	echo "          DING DING DI      DING    DING DI   DING    DING DING DING"
+	echo "          DING    G DING    DING    DING DIN  DING    DING          "
+	echo "          DING      DING    DING    DING DING DING    DING   NG DIN "
+	echo "          DING    G DING    DING    DING  ING DING    DING      DING"
+	echo "          DING DING DI      DING    DING   NG DING    DING DING DING"
+	echo "          DING DING D       DING    DING    G DING      NG DING DI  "
+
+	echo ""
+	echo ""
+
+	echo "                    Is this supposed to be an Admin bash?"
+	echo ""
+fi
+
+
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
