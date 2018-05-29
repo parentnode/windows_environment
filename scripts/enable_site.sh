@@ -83,23 +83,24 @@ if [ -e "$PWD/apache/httpd-vhosts.conf" ] ; then
 			echo "" >> "$host_file_path"
 			echo "127.0.0.1	$server_name" >> "$host_file_path"
 
-			# # also add ServerAlias'
-			# if [ ! -z "$server_alias" ]; then
-			#
-			# 	echo ""
-			#
-			# 	# Get current IP
-			# 	# TODO: Does this work on windows (This need to find the network IP, not 127.0.0.1)
-			# 	ip=$(ifconfig en0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1')
-			#
-			# 	# loop through server alias'
-			# 	for domain in $(echo $server_alias | tr " " "\n")
-			# 	do
-			# 		echo "Adding $domain ($ip) to $host_file_path"
-			# 		echo "$ip	$domain" >> "$host_file_path"
-			# 	done
-			#
-			# fi
+			# Also add ServerAlias'
+			# Use localhost IP - we cannot detect network IP yet)
+			if [ ! -z "$server_alias" ]; then
+
+				echo ""
+
+				# Get current IP
+				# TODO: this does not work on windows (This need to find the network IP, not 127.0.0.1)
+				# ip=$(ifconfig en0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1')
+
+				# loop through server alias'
+				for domain in $(echo $server_alias | tr " " "\n")
+				do
+					echo "Adding $domain to $host_file_path"
+					echo "127.0.0.1	$domain" >> "$host_file_path"
+				done
+
+			fi
 
 			echo ""
 
@@ -114,11 +115,8 @@ if [ -e "$PWD/apache/httpd-vhosts.conf" ] ; then
 		# Restart apache after modification
 		echo ""
 		echo "Restating Apache"
-		# TODO: update to windows path
-		if [ -e "/opt/local/sbin/apachectl" ]; then
-			sudo /opt/local/sbin/apachectl restart
-		fi
 
+		sudo /mnt/c/Windows/System32/net.exe start Apache2.4 exit 2>/dev/null || echo ""
 
 		echo ""
 		echo "Site enabled: OK"
