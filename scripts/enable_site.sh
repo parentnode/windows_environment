@@ -116,7 +116,7 @@ if [ -e "$PWD/apache/httpd-vhosts.conf" ] ; then
 		echo ""
 		echo "Restating Apache"
 
-		sudo /mnt/c/Windows/System32/net.exe start Apache2.4 exit 2>/dev/null || echo ""
+		sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k restart
 
 		echo ""
 		echo "Site enabled: OK"
