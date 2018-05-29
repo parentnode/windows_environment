@@ -85,7 +85,7 @@ echo ""
 
 
 # MariaDB not installed, ask for new root password
-if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] ; then
+if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mariadb_alt]; then
 	read -s -p "Enter new root DB password: " db_root_password
 	export db_root_password
 	echo ""
