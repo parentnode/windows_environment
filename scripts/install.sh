@@ -436,6 +436,12 @@ cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/co
 echo ""
 
 
+# Adding SSL cert
+echo "Copying cacert.pem to installed-packages"
+cp "/mnt/c/srv/tools/conf/cacert.pem" "/mnt/c/srv/installed-packages/cacert.pem"
+echo ""
+
+
 # Setting up apache.conf (only once)
 if [ ! -f "/mnt/c/srv/sites/apache/apache.conf" ]; then
 
