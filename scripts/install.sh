@@ -68,6 +68,19 @@ else
 fi
 
 
+# tar command available
+if grep -qE "^bsdtar" tar --version &> /dev/null ; then
+    echo "System is updated"
+	echo ""
+else
+
+    echo "ERROR: Windows has not been fully updated"
+    echo "Update Windows and try again"
+    exit 1
+
+fi
+
+
 
 echo ""
 echo ""
