@@ -114,7 +114,7 @@ if [ -e "$PWD/apache/httpd-vhosts.conf" ] ; then
 
 		# Restart apache after modification
 		echo ""
-		echo "Restating Apache"
+		echo "Restarting Apache"
 
 		sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k restart
 
