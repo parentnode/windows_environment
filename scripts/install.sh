@@ -69,6 +69,7 @@ fi
 
 
 # tar command available
+# TODO: This finds the tar command in bash - we need to check if it exists in CMD
 if grep -qE "^bsdtar" tar --version &> /dev/null ; then
     echo "System is updated"
 	echo ""
