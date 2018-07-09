@@ -68,19 +68,35 @@ else
 fi
 
 
+## tar command available
+## TODO: This finds the tar command in bash - we need to check if it exists in CMD
+#if grep -qE "^bsdtar" tar --version &> /dev/null ; then
+#    echo "System is updated"
+#	echo ""
+#else
+#
+#    echo "ERROR: Windows has not been fully updated"
+#    echo "Update Windows and try again"
+#    exit 1
+#
+#fi
+
 # tar command available
-# TODO: This finds the tar command in bash - we need to check if it exists in CMD
-if grep -qE "^bsdtar" tar --version &> /dev/null ; then
-    echo "System is updated"
-	echo ""
-else
 
-    echo "ERROR: Windows has not been fully updated"
-    echo "Update Windows and try again"
-    exit 1
+# TODO: This finds Out whether Curl or Tar is present 
 
+tcpath="/mnt/c/Windows/System32"
+echo "Checking if curl or tar is installed"
+
+if [ ! -f "$tcpath/curl.exe" ] || [ ! -f "$tcpath/tar.exe" ]; 
+then
+	echo "Curl or Tar not found"
+	echo "Update your version of windows and try again"
+	exit
+else 
+	echo $($tcpath/curl.exe -V | grep -E "libcurl/7.55.1" || echo "")
+	echo $($tcpath/tar.exe --help | grep "^bsdtar" )
 fi
-
 
 
 echo ""
