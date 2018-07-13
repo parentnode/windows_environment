@@ -68,36 +68,26 @@ else
 fi
 
 
-## tar command available
-## TODO: This finds the tar command in bash - we need to check if it exists in CMD
-#if grep -qE "^bsdtar" tar --version &> /dev/null ; then
-#    echo "System is updated"
-#	echo ""
-#else
-#
-#    echo "ERROR: Windows has not been fully updated"
-#    echo "Update Windows and try again"
-#    exit 1
-#
-#fi
-
 # tar command available
-
 # TODO: This finds Out whether Curl or Tar is present 
 
-tcpath="/mnt/c/Windows/System32"
-echo "Checking if curl or tar is installed"
+# Root path for curl and tar 
+curl_tar_path="/mnt/c/Windows/System32"
 
-if [ ! -f "$tcpath/curl.exe" ] || [ ! -f "$tcpath/tar.exe" ]; 
-then
-	echo "Curl or Tar not found"
-	echo "Update your version of windows and try again"
+# Testing if the file exists and if the version number is above 7.5
+curlversion=$(($curl_tar_path/curl.exe -V) 2>/dev/null | grep -E "^curl (7\.[5-9]+|[8-9]\.[0-9]+)" || echo "")
+
+# Testing if the file exists and if the version number is above 3.3
+tarversion=$(($curl_tar_path/tar.exe --help) 2>/dev/null | grep -E "^bsdtar (3\.[3-9]+|[4-9]\.[0-9]+)" || echo "")
+
+# Testing if either conditions for tar or curl are met then you can proceed 
+if [ -z "$curlversion" ] || [ -z "$tarversion" ];then
+	echo "You seem to be missing curl or tar or running an older version of curl or tar"
+	echo "### Please Check you have all available updates ###"
 	exit
-else 
-	echo $($tcpath/curl.exe -V | grep -E "libcurl/7.55.1" || echo "")
-	echo $($tcpath/tar.exe --help | grep "^bsdtar" )
+else
+	echo "curl and tar are up to date you are all set"
 fi
-
 
 echo ""
 echo ""
