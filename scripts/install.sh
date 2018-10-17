@@ -106,9 +106,21 @@ echo ""
 
 # MariaDB not installed, ask for new root password
 if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mariadb_alt]; then
-	read -s -p "Enter new root DB password: " db_root_password
-	export db_root_password
-	echo ""
+	while [ true ]
+	do
+    	read -s -p "Enter new root DB password: " db_root_password
+    	echo "";
+    	read -s -p "Verify new root DB password: " db_root_password2    
+    	if [ $db_root_password != $db_root_password2 ]; then
+    		echo "";
+    		echo "Not same"
+    	else 
+    		echo "";
+    		echo "Same"
+    		export db_root_password
+    		break
+    	fi	
+	done
 fi
 
 
@@ -255,7 +267,8 @@ else
 	echo ""
 	echo "Installing $mariadb"
 	# Install MariaDB with password and servicename
-	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$mariadb.msi" PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
+	echo "$db_root_password"
+	#sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$mariadb.msi" PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
 
 	# Remove installer
 	rm /mnt/c/srv/packages/$mariadb.msi
