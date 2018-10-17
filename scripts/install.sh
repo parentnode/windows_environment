@@ -267,8 +267,8 @@ else
 	echo ""
 	echo "Installing $mariadb"
 	# Install MariaDB with password and servicename
-	echo "$db_root_password"
-	#sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$mariadb.msi" PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
+	echo "Dette er mariadb password $db_root_password"
+	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$mariadb.msi" PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
 
 	# Remove installer
 	rm /mnt/c/srv/packages/$mariadb.msi
