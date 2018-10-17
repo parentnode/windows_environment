@@ -106,21 +106,24 @@ echo ""
 echo "MariaDB Password section"
 # MariaDB not installed, ask for new root password
 if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mariadb_alt]; then
-	while [ true ]
-	do
-    	read -s -p "Enter new root DB password: " db_root_password
-    	echo ""
-    	read -s -p "Verify new root DB password: " db_root_password2    
-    	if [ $db_root_password != $db_root_password2 ]; then
-    		echo ""
-    		echo "Not same"
-    	else 
-    		echo ""
-    		echo "Same"
-    		export db_root_password
-    		break
-    	fi	
-	done
+	read -s -p "Enter new root DB password: " db_root_password
+	echo ""
+	export db_root_password
+	#while [ true ]
+	#do
+    #	read -s -p "Enter new root DB password: " db_root_password
+    #	echo ""
+    #	read -s -p "Verify new root DB password: " db_root_password2    
+    #	if [ $db_root_password != $db_root_password2 ]; then
+    #		echo ""
+    #		echo "Not same"
+    #	else 
+    #		echo ""
+    #		echo "Same"
+    #		export db_root_password
+    #		break
+    #	fi	
+	#done
 fi
 
 
