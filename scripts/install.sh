@@ -117,7 +117,7 @@ if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mari
     	else 
     		echo ""
     		echo "Same"
-    		export db_root_password
+    		export $db_root_password
     		break
     	fi	
 	done
@@ -267,7 +267,7 @@ else
 	echo ""
 	echo "Installing $mariadb"
 	# Install MariaDB with password and servicename
-	echo "Dette er mariadb password $db_root_password"
+	#echo "Dette er mariadb password $db_root_password"
 	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$mariadb.msi" PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
 
 	# Remove installer
