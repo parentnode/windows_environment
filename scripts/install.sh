@@ -48,26 +48,6 @@ echo "           DO NOT CLOSE UNTILL INSTALL IS COMPLETE"
 echo  "You will see 'Server install complete' message once it's done"
 
 
-
-echo ""
-echo ""
-echo "--- Confirming Windows environment ---"
-echo ""
-echo ""
-
-# Check if windows environment
-if grep -qE "(Microsoft|WSL)" /proc/version &> /dev/null ; then
-    echo "Windows 10 Bash: OK"
-	echo ""
-else
-
-    echo "ERROR: Linux Bash for Windows does not exist"
-    echo "Install Linux Bash for Windows and try again"
-    exit 1
-
-fi
-
-
 # tar command available
 # TODO: This finds Out whether Curl or Tar is present 
 
