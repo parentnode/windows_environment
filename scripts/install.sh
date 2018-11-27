@@ -118,7 +118,7 @@ git config --global credential.helper cache
 git config --global push.default simple
 git config --global core.autocrlf true
 
-sudo chown "$username:$username" "$HOME/.profile"
+#sudo chown "$username:$username" "$HOME/.profile"
 echo "Changed owner"
 
 #check_for_existing_parentnode_dot_profile=$(grep -E "# ADMIN CHECK" "$HOME/.profile")
