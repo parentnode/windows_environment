@@ -124,16 +124,16 @@ echo "Changed owner"
 #check_for_existing_parentnode_dot_profile=$(grep -E "# ADMIN CHECK" "$HOME/.profile")
 check_for_existing_alias=$(grep -o "alias" "$HOME/.profile")
 echo "Keys Checked"
-if [ -n "$check_for_existing_alias" ];
+if [ -z "$check_for_existing_alias" ];
 then
-	echo "Update my alias here"
-else
 	# Setting up bash config
 	echo ""
 	echo "Copying .profile to /home/$username"
 	sudo cp "/mnt/c/srv/tools/conf/dot_profile" "/home/$username/.profile"
 	sudo chown "$username:$username" "/home/$username/.profile"
 	echo ""
+else
+	echo "Update my alias here"
 fi
 
 
