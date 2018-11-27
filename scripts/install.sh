@@ -103,6 +103,7 @@ if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mari
 	done
 fi
 
+username=$(echo "$USER")
 
 # SETTING DEFAULT GIT USER
 echo ""
@@ -118,15 +119,16 @@ git config --global credential.helper cache
 git config --global push.default simple
 git config --global core.autocrlf true
 
-check_for_existing_parentnode_dot_profile=$(grep "# ADMIN CHECK" "/home/$SUDO_USER/.profile")
-check_for_existing_alias=$(grep "alias" "/home/$SUDO_USER/.profile")
+check_for_existing_parentnode_dot_profile=$(grep "# ADMIN CHECK" "/home/$username/.profile")
+check_for_existing_alias=$(grep "alias" "/home/$username/.profile")
+sudo chown "$SUDO_USER:$SUDO_USER" "/home/$username/.profile"
 if [ -z "$check_for_existing_alias" ] && [ -z $"check_for_existing_parentnode_dot_profile" ];
 then
 	# Setting up bash config
 	echo ""
-	echo "Copying .profile to /home/$SUDO_USER"
-	sudo cp "/mnt/c/srv/tools/conf/dot_profile" "/home/$SUDO_USER/.profile"
-	sudo chown "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.profile"
+	echo "Copying .profile to /home/$username"
+	sudo cp "/mnt/c/srv/tools/conf/dot_profile" "/home/$username/.profile"
+	sudo chown "$username:$username" "/home/$username/.profile"
 	echo ""
 else
 	echo "Update my alias here"
