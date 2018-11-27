@@ -103,7 +103,7 @@ if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mari
 	done
 fi
 
-username=$( echo "$whoami")
+username=$(whoami)
 
 # SETTING DEFAULT GIT USER
 echo ""
