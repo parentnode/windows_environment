@@ -173,6 +173,9 @@ then
 	sudo cp "/mnt/c/srv/tools/conf/dot_profile" "/home/$username/.profile"
 	sudo chown "$username:$username" "/home/$username/.profile"
 	echo ""
+elif [ -n "$check_for_existing_alias" ] && [ -z "$check_for_existing_parentnode_dot_profile" ];
+then
+	cat "/mnt/c/srv/tools/conf/dot_profile" >> "/home/$username/.profile"
 else
 	checkFileContent "/home/$username/.profile" "/mnt/c/srv/tools/conf/dot_profile"
 fi
