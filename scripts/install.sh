@@ -124,7 +124,7 @@ echo "Changed owner"
 check_for_existing_parentnode_dot_profile=$(grep -o "# ADMIN CHECK" "$HOME/.profile")
 check_for_existing_alias=$(grep -o "alias" "$HOME/.profile")
 echo "Keys Checked"
-if [ -n "$check_for_existing_alias" ] && [ -n "$check_for_existing_parentnode_dot_profile" ];
+if [[ -n "$check_for_existing_alias" && -n "$check_for_existing_parentnode_dot_profile" ]];
 then
 	echo "Update my alias here"
 else
