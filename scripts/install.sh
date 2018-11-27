@@ -175,11 +175,6 @@ else
 	checkFileContent "/$HOME/.profile" "/mnt/c/srv/tools/conf/dot_profile"
 fi
 
-
-
-
-
-
 echo ""
 echo "--- Checking Directories ---"
 echo ""
