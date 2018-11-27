@@ -121,7 +121,7 @@ git config --global core.autocrlf true
 
 check_for_existing_parentnode_dot_profile=$(grep "# ADMIN CHECK" "/home/$username/.profile")
 check_for_existing_alias=$(grep "alias" "/home/$username/.profile")
-sudo chown "$SUDO_USER:$SUDO_USER" "/home/$username/.profile"
+sudo chown "$username:$username" "/home/$username/.profile"
 if [ -z "$check_for_existing_alias" ] && [ -z $"check_for_existing_parentnode_dot_profile" ];
 then
 	# Setting up bash config
