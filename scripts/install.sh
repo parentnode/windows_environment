@@ -122,9 +122,9 @@ sudo chown "$username:$username" "$HOME/.profile"
 echo "Changed owner"
 
 #check_for_existing_parentnode_dot_profile=$(grep -E "# ADMIN CHECK" "$HOME/.profile")
-check_for_existing_alias=$(grep -o "alias" "$HOME/.profile" | echo "false")
+check_for_existing_alias=$(grep -o "alias" "$HOME/.profile")
 echo "Keys Checked"
-if [ "$check_for_existing_alias" != "false" ];
+if [ -n "$check_for_existing_alias" ];
 then
 	echo "Update my alias here"
 else
