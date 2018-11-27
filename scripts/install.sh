@@ -166,13 +166,13 @@ checkFileContent()
 #sudo chown "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.profile"
 #echo ""
 #install_bash_profile=$(grep -E "HOME\/\.profile" || echo "")
-localchanges=$(grep "alias" /$HOME/.profile)
+localchanges=$(grep "alias" $HOME/.profile)
 if [ -z "$localchanges" ]; then
 	# Add .bash_profile to .bashrc
 	echo "Copying .profile to /home/$USER"
-	sudo cp "/mnt/c/srv/tools/conf/dot_profile" "/home/$USER/.profile"
+	sudo cp "/mnt/c/srv/tools/conf/dot_profile" "$HOME/.profile"
 else
-	checkFileContent "/$HOME/.profile" "/mnt/c/srv/tools/conf/dot_profile"
+	checkFileContent "$HOME/.profile" "/mnt/c/srv/tools/conf/dot_profile"
 fi
 
 echo ""
