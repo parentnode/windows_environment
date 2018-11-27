@@ -118,65 +118,12 @@ git config --global credential.helper cache
 git config --global push.default simple
 git config --global core.autocrlf true
 
-#trimString(){
-#	trim=$1
-#	echo "${trim}" | sed -e 's/^[ \t]*//'
-#}
-## Setting up bash config
-#checkFileContent() 
-#{
-#	#dot_profile
-#	file=$1
-#	#bash_profile.default
-#	default=$2
-#	echo "Updating $file"
-#	# Splits output based on new lines
-#	IFS=$'\n'
-#	# Reads all of default int to an variable
-#	default=$( < "$default" )
-#
-#	# Every key value pair looks like this (taken from bash_profile.default )
-#	#
-#	# "alias mysql_grant" alias mysql_grant="php /srv/tools/scripts/mysql_grant.php"
-#	#
-#	# The key komprises of value between the first and second quotation '"'
-#	default_keys=( $( echo "$default" | grep ^\" |cut -d\" -f2))
-#	# The value komprises of value between the third, fourth and fifth quotation '"'
-#	default_values=( $( echo "$default" | grep ^\" |cut -d\" -f3,4,5))
-#	unset IFS
-#	
-#	for line in "${!default_keys[@]}"
-#	do		
-#		# do dot_profile contain any of the keys in bash_profile.default
-#		check_for_key=$(grep -R "${default_keys[line]}" "$file")
-#		# if there are any default keys in dot_profile
-#		if [[ -n $check_for_key ]];
-#		then
-#			# Update the values connected to the key
-#			sed -i -e "s,${default_keys[line]}\=.*,$(trimString "${default_values[line]}"),g" "$file"
-#			
-#		fi
-#		
-#	done
-#	
-#}
-
-
-#echo ""
-#echo "Copying .profile to /home/$SUDO_USER"
-#sudo cp "/mnt/c/srv/tools/conf/dot_profile" "/home/$SUDO_USER/.profile"
-#sudo chown "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.profile"
-#echo ""
-#install_bash_profile=$(grep -E "HOME\/\.profile" || echo "")
-localchanges=$(grep "alias" $HOME/.profile)
-if [ -z "$localchanges" ]; then
-	# Add .bash_profile to .bashrc
-	echo "Copying .profile to /home/$USER"
-	sudo cp "/mnt/c/srv/tools/conf/dot_profile" "$HOME/.profile"
-else
-	echo "checkFileContent should have gone here"
-	#checkFileContent "$HOME/.profile" "/mnt/c/srv/tools/conf/dot_profile"
-fi
+# Setting up bash config
+echo ""
+echo "Copying .profile to /home/$SUDO_USER"
+sudo cp "/mnt/c/srv/tools/conf/dot_profile" "/home/$SUDO_USER/.profile"
+sudo chown "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.profile"
+echo ""
 
 echo ""
 echo "--- Checking Directories ---"
