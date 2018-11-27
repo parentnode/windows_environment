@@ -172,7 +172,7 @@ if [ -z "$localchanges" ]; then
 	echo "Copying .profile to /home/$USER"
 	sudo cp "/mnt/c/srv/tools/conf/dot_profile" "/home/$USER/.profile"
 else
-	checkFileContent "/home/$USER/.profile" "/mnt/c/srv/tools/conf/dot_profile"
+	checkFileContent "/$HOME/.profile" "/mnt/c/srv/tools/conf/dot_profile"
 fi
 
 
