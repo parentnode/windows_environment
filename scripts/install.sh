@@ -122,7 +122,7 @@ git config --global core.autocrlf true
 echo "Changed owner"
 
 #check_for_existing_parentnode_dot_profile=$(grep -E "# ADMIN CHECK" "$HOME/.profile")
-check_for_existing_alias=$(grep -o "alias" "$HOME/.profile")
+check_for_existing_alias=$(grep -o "alias" "$HOME/.profile" || echo "")
 echo "Keys Checked"
 if [ -z "$check_for_existing_alias" ];
 then
