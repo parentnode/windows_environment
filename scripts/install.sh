@@ -102,8 +102,7 @@ if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mari
     	fi	
 	done
 fi
-
-username=$(whoami)
+username=$( echo $SUDO_USER)
 
 # SETTING DEFAULT GIT USER
 echo ""
