@@ -118,12 +118,20 @@ git config --global credential.helper cache
 git config --global push.default simple
 git config --global core.autocrlf true
 
-# Setting up bash config
-echo ""
-echo "Copying .profile to /home/$SUDO_USER"
-sudo cp "/mnt/c/srv/tools/conf/dot_profile" "/home/$SUDO_USER/.profile"
-sudo chown "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.profile"
-echo ""
+check_for_existing_parentnode_dot_profile=$(grep "# ADMIN CHECK" "/home/$SUDO_USER/.profile")
+check_for_existing_alias=$(grep "alias" "/home/$SUDO_USER/.profile")
+if [ -z "$check_for_existing_alias" ] && [ -z $"check_for_existing_parentnode_dot_profile" ];
+then
+	# Setting up bash config
+	echo ""
+	echo "Copying .profile to /home/$SUDO_USER"
+	sudo cp "/mnt/c/srv/tools/conf/dot_profile" "/home/$SUDO_USER/.profile"
+	sudo chown "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.profile"
+	echo ""
+else
+	echo "Update my alias here"
+fi
+
 
 echo ""
 echo "--- Checking Directories ---"
