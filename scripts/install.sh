@@ -175,7 +175,7 @@ then
 	echo ""
 elif [ -n "$check_for_existing_alias" ] && [ -z "$check_for_existing_parentnode_dot_profile" ];
 then
-	cat "/mnt/c/srv/tools/conf/dot_profile" >> "/home/$username/.profile"
+	cat "/mnt/c/srv/tools/conf/dot_profile\($check_for_existing_alias)" >> "/home/$username/.profile"
 else
 	checkFileContent "/home/$username/.profile" "/mnt/c/srv/tools/conf/dot_profile"
 fi
