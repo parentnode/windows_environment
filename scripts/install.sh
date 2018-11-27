@@ -120,6 +120,7 @@ git config --global core.autocrlf true
 
 sudo chown "$username:$username" "/home/$username/.profile"
 echo "Changed owner"
+ls -Fla
 check_for_existing_parentnode_dot_profile=$( grep "# ADMIN CHECK" "/home/$username/.profile" )
 check_for_existing_alias=$( grep "alias" "/home/$username/.profile" )
 if [ -z "$check_for_existing_alias" ] && [ -z $"check_for_existing_parentnode_dot_profile" ];
