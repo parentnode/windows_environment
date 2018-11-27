@@ -118,6 +118,47 @@ git config --global credential.helper cache
 git config --global push.default simple
 git config --global core.autocrlf true
 
+
+trimString(){
+	trim=$1
+	echo "${trim}" | sed -e 's/^[ \t]*//'
+}
+checkFileContent() 
+{
+	#dot_profile
+	file=$1
+	#bash_profile.default
+	default=$2
+	echo "Updating $file"
+	# Splits output based on new lines
+	IFS=$'\n'
+	# Reads all of default int to an variable
+	default=$( < "$default" )
+
+	# Every key value pair looks like this (taken from bash_profile.default )
+	# "alias mysql_grant" alias mysql_grant="php /srv/tools/scripts/mysql_grant.php"
+	# The key komprises of value between the first and second quotation '"'
+	default_keys=( $( echo "$default" | grep ^\" |cut -d\" -f2))
+	# The value komprises of value between the third, fourth and fifth quotation '"'
+	default_values=( $( echo "$default" | grep ^\" |cut -d\" -f3,4,5))
+	unset IFS
+	
+	for line in "${!default_keys[@]}"
+	do		
+		# do dot_profile contain any of the keys in bash_profile.default
+		check_for_key=$(grep -R "${default_keys[line]}" "$file")
+		# if there are any default keys in dot_profile
+		if [[ -n $check_for_key ]];
+		then
+			# Update the values connected to the key
+			sed -i -e "s,${default_keys[line]}\=.*,$(trimString "${default_values[line]}"),g" "$file"
+			
+		fi
+		
+	done
+	
+}
+
 #sudo chown "$username:$username" "$HOME/.profile"
 echo "Changed owner"
 
@@ -133,7 +174,7 @@ then
 	sudo chown "$username:$username" "/home/$username/.profile"
 	echo ""
 else
-	echo "Update my alias here"
+	checkFileContent "/home/$username/.profile" "/mnt/c/srv/tools/conf/dot_profile"
 fi
 
 
