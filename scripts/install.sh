@@ -102,7 +102,6 @@ if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mari
     	fi	
 	done
 fi
-username=$( echo $SUDO_USER)
 
 # SETTING DEFAULT GIT USER
 echo ""
@@ -118,6 +117,7 @@ git config --global credential.helper cache
 git config --global push.default simple
 git config --global core.autocrlf true
 
+username=$( echo $SUDO_USER)
 
 trimString(){
 	trim=$1
