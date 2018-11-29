@@ -117,6 +117,7 @@ git config --global credential.helper cache
 git config --global push.default simple
 git config --global core.autocrlf true
 
+
 username=$( echo $SUDO_USER)
 
 
@@ -156,7 +157,7 @@ checkFileContent()
 
 	#default_prompt=$(sed -n '/"# ADMIN CHECK"/,/"# Aliases"/p' "$prompt_default")
 	default_prompt=$( echo "$prompt_default" | sed -n '/# ADMIN CHECK/,/# Aliases/p')
-	echo "$default_prompt"
+	
 		
 	# Every key value pair looks like this (taken from bash_profile.default )
 	
@@ -169,16 +170,16 @@ checkFileContent()
 	# The value komprises of value between the third, fourth and fifth quotation '"'
 	
 	default_values=( $( echo "$default" | grep ^\" |cut -d\" -f3,4,5))
-	
-	check_for_prompt=$(grep -R "# ADMIN CHECK" "$file" || echo "")
-	if [ -n "$check_for_prompt" ];
-	then
-		sed -i -e "s,$default_prompt,$default_prompt,g" "$file"
-	else
-		echo "$default_prompt" >> "$file"
-	fi
+	check_for_prompt=$(grep "# ADMIN CHECK" "$file" || echo "")
 	
 	unset IFS
+	echo "$default_prompt"
+	#echo "$check_for_prompt"
+	if [ -z "$check_for_prompt" ];
+	then
+		echo "$default_prompt" >> "$file"
+		#echo "$check_for_prompt"
+	fi
 	
 	
 	for line in "${!default_keys[@]}"
@@ -216,9 +217,9 @@ checkFileContent()
 echo "Changed owner"
 
 	
-check_for_existing_parentnode_dot_profile=$(grep -E "# ADMIN CHECK" "$HOME/.profile" || echo "")
+check_for_existing_parentnode_dot_profile=$(grep -E "# ADMIN CHECK" "/home/$username/.profile" || echo "")
 
-check_for_existing_alias=$(grep -o "alias" "$HOME/.profile" || echo "")
+check_for_existing_alias=$(grep -o "alias" "/home/$username/.profile" || echo "")
 
 echo "Keys Checked"
 
