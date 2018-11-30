@@ -117,135 +117,94 @@ git config --global credential.helper cache
 git config --global push.default simple
 git config --global core.autocrlf true
 
-
 username=$( echo $SUDO_USER)
-
-
 
 trimString()
 {
-	
 	trim=$1
 	echo "${trim}" | sed -e 's/^[ \t]*//'
-
-
 }
 
 
-checkFileContent() 
-
-{
-	
+checkFileContent(){
 	#dot_profile
-	
 	file=$1
 	
-	#bash_profile.default
+	check=$2
 	
-	default=$2
-	
-	echo "Updating $file"
-	
-	# Splits output based on new lines
-	
-	IFS=$'\n'
-	
-	# Reads all of default int to an variable
-	
-	prompt_default=$( < "$default")
-	default=$( < "$default" )
+	statement=$(grep "$check" $file || echo "")
 
-	#default_prompt=$(sed -n '/"# ADMIN CHECK"/,/"# Aliases"/p' "$prompt_default")
-	default_prompt=$( echo "$prompt_default" | sed -n '/# ADMIN CHECK/,/# Aliases/p')
-	
-		
-	# Every key value pair looks like this (taken from bash_profile.default )
-	
-	# "alias mysql_grant" alias mysql_grant="php /srv/tools/scripts/mysql_grant.php"
-	
-	# The key komprises of value between the first and second quotation '"'
-	
-	default_keys=( $( echo "$default" | grep ^\" |cut -d\" -f2))
-	
-	# The value komprises of value between the third, fourth and fifth quotation '"'
-	
-	default_values=( $( echo "$default" | grep ^\" |cut -d\" -f3,4,5))
-	check_for_prompt=$(grep "# ADMIN CHECK" "$file" || echo "")
-	
-	unset IFS
-	echo "$default_prompt"
-	#echo "$check_for_prompt"
-	if [ -z "$check_for_prompt" ];
-	then
-		echo "$default_prompt" >> "$file"
-		#echo "$check_for_prompt"
+	if [ -n "$statement" ];
+	then 
+		echo "Found"
+    else 
+        echo "Not Found"
 	fi
-	
-	
-	for line in "${!default_keys[@]}"
-	do		
 		
-		# do dot_profile contain any of the keys in bash_profile.default
-		
-		check_for_key=$(grep -R "${default_keys[line]}" "$file")
-		
-		# if there are any default keys in dot_profile
-		
-		if [[ -n $check_for_key ]];
-		then
-			# Update the values connected to the key
-			sed -i -e "s,${default_keys[line]}\=.*,$(trimString "${default_values[line]}"),g" "$file"
-		else
-			# If no default keys are present add them anyway
-			echo "$(trimString "${default_values[line]}")" >> "$file"
-		fi
-		
-	
-	done
-	
+}
+copyParentNodepromptToFile(){
+    read_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile")
+    #echo "$source_file" | sed -n "/$source_text_start/,/$source_text_start/p" >> "$destination_file"
+    echo "$read_prompt_file" | sed -n '/# ADMIN CHECK/,/export PS1/p' >> "$HOME/.profile"
+    echo "Copied to file"
+}
+
+handleAlias(){
+    IFS=$'\n'
+    read_alias_file=$( < "/mnt/c/srv/tools/conf/dot_profile_alias" )
+
+    # The key komprises of value between the first and second quotation '"'
+    default_keys=( $( echo "$read_alias_file" | grep ^\" |cut -d\" -f2) )
+
+    #The value komprises of value between the third, fourth and fifth quotation '"'
+    default_values=( $( echo "$read_alias_file" | grep ^\" |cut -d\" -f3,4,5) )
+    unset IFS    
+    for line in "${!default_keys[@]}"
+    do		
+        if [ "$(checkFileContent "$HOME/.profile" "${default_keys[line]}")" == "Found" ];
+        then
+            echo "Updated ${default_values[line]}"
+            sed -i -e "s,${default_keys[line]}\=.*,$(trimString "${default_values[line]}"),g" "$HOME/.profile"
+        else 
+            echo "None or not all parentnode alias present" 
+            echo " copying $(trimString "${default_values[line]}") "
+            echo "$(trimString "${default_values[line]}")" >> "$HOME/.profile"
+        fi
+    done
 
 }
 
-
-#sudo chown "$username:$username" "$HOME/.profile"
-
-	
-echo "Changed owner"
-
-	
-check_for_existing_parentnode_dot_profile=$(grep -E "# ADMIN CHECK" "/home/$username/.profile" || echo "")
-
-check_for_existing_alias=$(grep -o "alias" "/home/$username/.profile" || echo "")
-
-echo "Keys Checked"
-
-if [ -z "$check_for_existing_alias" ] && [ -z "$check_for_existing_parentnode_dot_profile" ];
+if [ "$(checkFileContent "$HOME/.profile" "alias")" == "Found" ];
 then
-	
-	# Setting up bash config
-	
-	echo ""
-	
-	echo "Copying .profile to /home/$username"
-	
-	sudo cp "/mnt/c/srv/tools/conf/dot_profile" "/home/$username/.profile"
-	
-	sudo chown "$username:$username" "/home/$username/.profile"
-	
-	echo ""
-
-#elif [ -n "$check_for_existing_alias" ] && [ -z "$check_for_existing_parentnode_dot_profile" ];
-
-#then
-
-	#	cat "/mnt/c/srv/tools/conf/dot_profile" >> "/home/$username/.profile"
-
+    echo "Previous alias statement(s)"
+        if [ "$(checkFileContent "$HOME/.profile" "# ADMIN CHECK")" == "Found" ];
+        then
+            echo ""
+            echo "Seems like you have installed parentnode prompt"
+            echo ""
+        else 
+            echo ""
+            echo "Seems like you haven't installed parentnode prompt"
+            echo ""
+            echo "Installing"
+            copyParentNodepromptToFile
+            echo ""
+        fi
+    #sudo chown "$username:$username" "$HOME/.profile"
+    handleAlias 
+    
 else
-	
-	checkFileContent "$HOME/.profile" "/mnt/c/srv/tools/conf/dot_profile"
-
+    
+    if [ "$(checkFileContent "$HOME/.profile" "# ADMIN CHECK")" == "Found" ];
+    then
+        echo "You allready have parentNode Configuration"
+    else 
+        echo "Copying parentNode Configuration"
+        copyParentNodepromptToFile
+        
+    fi
+    handleAlias    
 fi
-
 
 
 echo ""
