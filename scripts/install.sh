@@ -3,21 +3,15 @@
 
 # Defining paths and download urls
 
-## Setting c++ compiler name and download link"
-#vc_compiler="vc_redist-x64"
-#vc_compiler_path="https://parentnode.dk/download/72/HTML-ikg9m2me/vc_redist-x64.zip"
+## Setting mariadb name and download link"
+#mariadb="mariadb-10-2-12-winx64"
+#mariadb_path="https://parentnode.dk/download/72/HTML-uwogdi5x/mariadb-10-2-12-winx64.zip"
 ## Old file is also valid (and should not cause re-install)
-#vc_compiler_alt="VC_redist.x64.exe"
+#mariadb_alt="mariadb-10.2.12-winx64.msi"
 
-# Setting mariadb name and download link"
-mariadb="mariadb-10-2-12-winx64"
-mariadb_path="https://parentnode.dk/download/72/HTML-uwogdi5x/mariadb-10-2-12-winx64.zip"
-# Old file is also valid (and should not cause re-install)
-mariadb_alt="mariadb-10.2.12-winx64.msi"
-
-# Setting apache name and download link"
-apache="apachehttpd-2-4-33-win64-vc15"
-apache_path="https://parentnode.dk/download/72/HTML-i59ty49r/apachehttpd-2-4-33-win64-vc15.zip"
+## Setting apache name and download link"
+#apache="apachehttpd-2-4-33-win64-vc15"
+#apache_path="https://parentnode.dk/download/72/HTML-i59ty49r/apachehttpd-2-4-33-win64-vc15.zip"
 
 # Setting php name and download link"
 php="php-7-2-2-win32-vc15-x64-redis-4"
@@ -246,7 +240,7 @@ echo ""
 
 
 # Check if Apache is installed
-apache_service_installed=$(/mnt/c/Windows/System32/sc.exe queryex type= service state= all | grep -E "Apache" || echo "")
+#apache_service_installed=$(/mnt/c/Windows/System32/sc.exe queryex type= service state= all | grep -E "Apache" || echo "")
 
 # Check if Apache is running
 apache_service_running=$(/mnt/c/Windows/System32/net.exe start | grep -E "Apache" || echo "")
@@ -262,57 +256,59 @@ if [ ! -z "$apache_service_running" ]; then
 fi
 
 
+# Installing software
+bash /mnt/c/srv/tools/scripts/install_software.sh
+#
+#echo ""
+#echo "--- Installing software ---"
+#echo ""
+#
+#
+## Install unzip to unpack downloaded packages
+#echo "Checking unzip:"
+#install_unzip=$(unzip || echo "")
+#if [ "$install_unzip" = "" ]; then
+#	sudo apt-get --assume-yes install unzip
+#else
+#	echo "unzip is installed"
+#fi
+#
+#
+## Clean up
+#echo ""
+#echo "Cleaning up:"
+#sudo apt-get --assume-yes autoremove
+#echo ""
+#
 
-echo ""
-echo "--- Installing software ---"
-echo ""
 
+## Downloading and installing c++ compiler
+#bash /mnt/c/srv/tools/scripts/install_vc_compiler.sh
 
-# Install unzip to unpack downloaded packages
-echo "Checking unzip:"
-install_unzip=$(unzip || echo "")
-if [ "$install_unzip" = "" ]; then
-	sudo apt-get --assume-yes install unzip
-else
-	echo "unzip is installed"
-fi
-
-
-# Clean up
-echo ""
-echo "Cleaning up:"
-sudo apt-get --assume-yes autoremove
-echo ""
-
-
-
-# Downloading and installing c++ compiler
-bash /mnt/c/srv/tools/scripts/install_vc_compiler.sh
-
-# Downloading and installing mariadb
-echo "Looking for $mariadb"
-if [ -e /mnt/c/srv/packages/$mariadb.zip ] || [ -e /mnt/c/srv/packages/$mariadb_alt ] ; then
-	echo "$mariadb already exists"
-else
-
-	echo "Downloading: $mariadb"
-	cd /mnt/c/srv/packages/
-	wget -O $mariadb.zip $mariadb_path
-
-	# Unpack zip
-	unzip $mariadb.zip -d /mnt/c/srv/packages/
-
-	echo ""
-	echo "Installing $mariadb"
-	# Install MariaDB with password and servicename
-	#echo "Dette er mariadb password $db_root_password"
-	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$mariadb.msi" PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
-
-	# Remove installer
-	rm /mnt/c/srv/packages/$mariadb.msi
-
-fi
-echo ""
+## Downloading and installing mariadb
+#echo "Looking for $mariadb"
+#if [ -e /mnt/c/srv/packages/$mariadb.zip ] || [ -e /mnt/c/srv/packages/$mariadb_alt ] ; then
+#	echo "$mariadb already exists"
+#else
+#
+#	echo "Downloading: $mariadb"
+#	cd /mnt/c/srv/packages/
+#	wget -O $mariadb.zip $mariadb_path
+#
+#	# Unpack zip
+#	unzip $mariadb.zip -d /mnt/c/srv/packages/
+#
+#	echo ""
+#	echo "Installing $mariadb"
+#	# Install MariaDB with password and servicename
+#	#echo "Dette er mariadb password $db_root_password"
+#	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$mariadb.msi" PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
+#
+#	# Remove installer
+#	rm /mnt/c/srv/packages/$mariadb.msi
+#
+#fi
+#echo ""
 
 # Downloading and installing php
 echo "Looking for $php"
@@ -338,52 +334,52 @@ fi
 echo ""
 
 
-# Downloading and installing Apache
-echo "Looking for $apache"
-if [ -e /mnt/c/srv/packages/$apache.zip ] ; then
-	echo "$apache already exists"
-else
-
-	# Uninstall existing service
-	if [ ! -z "$apache_service_installed" ]; then
-
-		echo "APACHE IS RUNNING"
-
-		# Old path
-		if [ -e /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe ] ; then
-			echo "OLD PATH"
-			sudo /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe -k uninstall
-		# New path
-		else
-			echo "NEW PATH"
-			sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k uninstall
-		fi
-
-	fi
-
-	# Remove existing version
-	if [ -e /mnt/c/srv/installed-packages/apache24 ] ; then
-		sudo rm -R /mnt/c/srv/installed-packages/apache24
-	fi
-
-
-	echo "Downloading: $apache"
-	cd /mnt/c/srv/packages/
-	wget -O $apache.zip $apache_path
-
-	echo ""
-	echo "Installing $apache"
-	# Unpack zip to install location
-	unzip $apache.zip -d /mnt/c/srv/installed-packages/apache24
-	
-	# Copy default apache config, before installing service to avoid error
-	cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
-	sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k install 
-	echo "apache installed"
-	
-
-fi
-echo ""
+## Downloading and installing Apache
+#echo "Looking for $apache"
+#if [ -e /mnt/c/srv/packages/$apache.zip ] ; then
+#	echo "$apache already exists"
+#else
+#
+#	# Uninstall existing service
+#	if [ ! -z "$apache_service_installed" ]; then
+#
+#		echo "APACHE IS RUNNING"
+#
+#		# Old path
+#		if [ -e /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe ] ; then
+#			echo "OLD PATH"
+#			sudo /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe -k uninstall
+#		# New path
+#		else
+#			echo "NEW PATH"
+#			sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k uninstall
+#		fi
+#
+#	fi
+#
+#	# Remove existing version
+#	if [ -e /mnt/c/srv/installed-packages/apache24 ] ; then
+#		sudo rm -R /mnt/c/srv/installed-packages/apache24
+#	fi
+#
+#
+#	echo "Downloading: $apache"
+#	cd /mnt/c/srv/packages/
+#	wget -O $apache.zip $apache_path
+#
+#	echo ""
+#	echo "Installing $apache"
+#	# Unpack zip to install location
+#	unzip $apache.zip -d /mnt/c/srv/installed-packages/apache24
+#	
+#	# Copy default apache config, before installing service to avoid error
+#	cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
+#	sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k install 
+#	echo "apache installed"
+#	
+#
+#fi
+#echo ""
 
 
 # Downloading and installing Imagick
