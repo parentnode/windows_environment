@@ -17,21 +17,21 @@
 #php="php-7-2-2-win32-vc15-x64-redis-4"
 #php_path="https://parentnode.dk/download/72/HTML-aqwla8g3/php-7-2-2-win32-vc15-x64-redis-4.zip"
 
-# Getting imagick name and download link"
-imagick="imagemagick-6-9-9-37-q16-x64-dll"
-imagick_path="https://parentnode.dk/download/72/HTML-940u1z9m/imagemagick-6-9-9-37-q16-x64-dll.zip"
+## Getting imagick name and download link"
+#imagick="imagemagick-6-9-9-37-q16-x64-dll"
+#imagick_path="https://parentnode.dk/download/72/HTML-940u1z9m/imagemagick-6-9-9-37-q16-x64-dll.zip"
 
-# Setting redis name and download link"
-redis="redis-x64-4-0-2-2"
-redis_path="https://parentnode.dk/download/72/HTML-wc8evnh2/redis-x64-4-0-2-2.zip"
+## Setting redis name and download link"
+#redis="redis-x64-4-0-2-2"
+#redis_path="https://parentnode.dk/download/72/HTML-wc8evnh2/redis-x64-4-0-2-2.zip"
 
-# Setting ffmpeg name and download link"
-ffmpeg="ffmpeg-20180129-d4967c0-win64"
-ffmpeg_path="https://parentnode.dk/download/72/HTML-knnkg3yn/ffmpeg-20180129-d4967c0-win64.zip"
+## Setting ffmpeg name and download link"
+#ffmpeg="ffmpeg-20180129-d4967c0-win64"
+#ffmpeg_path="https://parentnode.dk/download/72/HTML-knnkg3yn/ffmpeg-20180129-d4967c0-win64.zip"
 
-# Setting wkhtml name and download link"
-wkhtmltopdf="wkhtmltopdf-static-0-12-3"
-wkhtmltopdf_path="https://parentnode.dk/download/72/HTML-g2y0tm22/wkhtmltopdf-static-0-12-3.zip"
+## Setting wkhtml name and download link"
+#wkhtmltopdf="wkhtmltopdf-static-0-12-3"
+#wkhtmltopdf_path="https://parentnode.dk/download/72/HTML-g2y0tm22/wkhtmltopdf-static-0-12-3.zip"
 
 
 
@@ -382,100 +382,100 @@ bash /mnt/c/srv/tools/scripts/install_software.sh
 #echo ""
 
 
-# Downloading and installing Imagick
-echo "Looking for $imagick"
-if [ -e /mnt/c/srv/packages/$imagick.zip ] ; then
-	echo "$imagick already exist"
-else
-
-	echo "Downloading: $imagick"
-	cd /mnt/c/srv/packages/
-	wget -O $imagick.zip $imagick_path
-
-
-	# Unpack zip
-	unzip $imagick.zip -d /mnt/c/srv/packages/
-
-	echo ""
-	echo "Installing $imagick"
-	/mnt/c/srv/packages/$imagick.exe /NOICONS /SILENT
-
-	# Remove installer
-	rm /mnt/c/srv/packages/$imagick.exe
-
-fi
-echo ""
-
-
-# Downloading and installing Imagick
-echo "Looking for $redis"
-if [ -e /mnt/c/srv/packages/$redis.zip ] ; then
-	echo "$redis already exist"
-else
-
-	echo "Downloading: $redis"
-	cd /mnt/c/srv/packages/
-	wget -O $redis.zip $redis_path
+## Downloading and installing Imagick
+#echo "Looking for $imagick"
+#if [ -e /mnt/c/srv/packages/$imagick.zip ] ; then
+#	echo "$imagick already exist"
+#else
+#
+#	echo "Downloading: $imagick"
+#	cd /mnt/c/srv/packages/
+#	wget -O $imagick.zip $imagick_path
+#
+#
+#	# Unpack zip
+#	unzip $imagick.zip -d /mnt/c/srv/packages/
+#
+#	echo ""
+#	echo "Installing $imagick"
+#	/mnt/c/srv/packages/$imagick.exe /NOICONS /SILENT
+#
+#	# Remove installer
+#	rm /mnt/c/srv/packages/$imagick.exe
+#
+#fi
+#echo ""
 
 
-	# Unpack zip
-	unzip $redis.zip -d /mnt/c/srv/packages/
-
-	echo ""
-	echo "Installing $redis"
-	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$redis.msi" ADD_FIREWALL_RULE=1 /qn
-
-	# Remove installer
-	rm /mnt/c/srv/packages/$redis.msi
-
-fi
-echo ""
-
-
-# Downloading and installing ffmpeg
-echo "Looking for $ffmpeg"
-if [ -e /mnt/c/srv/packages/$ffmpeg.zip ] ; then
-	echo "$ffmpeg already exist"
-else
-
-	# Remove existing version
-	if [ -e /mnt/c/srv/installed-packages/ffmpeg ] ; then
-		sudo rm -R /mnt/c/srv/installed-packages/ffmpeg
-	fi
-
-	echo "Downloading: $ffmpeg"
-	cd /mnt/c/srv/packages/
-	wget -O $ffmpeg.zip $ffmpeg_path 
-
-	echo ""
-	echo "Installing $ffmpeg"
-	unzip $ffmpeg.zip -d /mnt/c/srv/installed-packages/ffmpeg
-
-fi
-echo ""
+## Downloading and installing redis
+#echo "Looking for $redis"
+#if [ -e /mnt/c/srv/packages/$redis.zip ] ; then
+#	echo "$redis already exist"
+#else
+#
+#	echo "Downloading: $redis"
+#	cd /mnt/c/srv/packages/
+#	wget -O $redis.zip $redis_path
+#
+#
+#	# Unpack zip
+#	unzip $redis.zip -d /mnt/c/srv/packages/
+#
+#	echo ""
+#	echo "Installing $redis"
+#	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$redis.msi" ADD_FIREWALL_RULE=1 /qn
+#
+#	# Remove installer
+#	rm /mnt/c/srv/packages/$redis.msi
+#
+#fi
+#echo ""
 
 
-# Downloading and installing wkhtmltopdf
-echo "Looking for $wkhtmltopdf"
-if [ -e /mnt/c/srv/packages/$wkhtmltopdf.zip ] ; then
-	echo "$wkhtmltopdf already exist"
-else
+## Downloading and installing ffmpeg
+#echo "Looking for $ffmpeg"
+#if [ -e /mnt/c/srv/packages/$ffmpeg.zip ] ; then
+#	echo "$ffmpeg already exist"
+#else
+#
+#	# Remove existing version
+#	if [ -e /mnt/c/srv/installed-packages/ffmpeg ] ; then
+#		sudo rm -R /mnt/c/srv/installed-packages/ffmpeg
+#	fi
+#
+#	echo "Downloading: $ffmpeg"
+#	cd /mnt/c/srv/packages/
+#	wget -O $ffmpeg.zip $ffmpeg_path 
+#
+#	echo ""
+#	echo "Installing $ffmpeg"
+#	unzip $ffmpeg.zip -d /mnt/c/srv/installed-packages/ffmpeg
+#
+#fi
+#echo ""
 
-	# Remove existing version
-	if [ -e /mnt/c/srv/installed-packages/wkhtmltopdf ] ; then
-		sudo rm -R /mnt/c/srv/installed-packages/wkhtmltopdf
-	fi
 
-	echo "Downloading: $wkhtmltopdf"
-	cd /mnt/c/srv/packages/
-	wget -O $wkhtmltopdf.zip $wkhtmltopdf_path 
-
-	echo ""
-	echo "Installing $wkhtmltopdf"
-	unzip $wkhtmltopdf.zip -d /mnt/c/srv/installed-packages/wkhtmltopdf
-
-fi
-echo ""
+## Downloading and installing wkhtmltopdf
+#echo "Looking for $wkhtmltopdf"
+#if [ -e /mnt/c/srv/packages/$wkhtmltopdf.zip ] ; then
+#	echo "$wkhtmltopdf already exist"
+#else
+#
+#	# Remove existing version
+#	if [ -e /mnt/c/srv/installed-packages/wkhtmltopdf ] ; then
+#		sudo rm -R /mnt/c/srv/installed-packages/wkhtmltopdf
+#	fi
+#
+#	echo "Downloading: $wkhtmltopdf"
+#	cd /mnt/c/srv/packages/
+#	wget -O $wkhtmltopdf.zip $wkhtmltopdf_path 
+#
+#	echo ""
+#	echo "Installing $wkhtmltopdf"
+#	unzip $wkhtmltopdf.zip -d /mnt/c/srv/installed-packages/wkhtmltopdf
+#
+#fi
+#echo ""
 
 
 echo ""

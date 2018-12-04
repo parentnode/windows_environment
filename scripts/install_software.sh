@@ -23,4 +23,21 @@ bash /mnt/c/srv/tools/scripts/install_php.sh
 # Downloading and installing apache
 bash /mnt/c/srv/tools/scripts/install_apache.sh
 
+# Downloading and installing imagick
+bash /mnt/c/srv/tools/scripts/install_imagick.sh
+
+# Downloading and installing redis
+bash /mnt/c/srv/tools/scripts/install_redis.sh
+
+# Downloading and installing ffmpeg
+bash /mnt/c/srv/tools/scripts/install_ffmpeg.sh
+
+# Downloading and installing wkhtmltopdf
+bash /mnt/c/srv/tools/scripts/install_wkhtmltopdf.sh
+
+
+
+
+
+
 
