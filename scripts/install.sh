@@ -195,7 +195,7 @@ then
     
 else
     
-    if [ "$(checkFileContent "$HOME/.profile" "# ADMIN CHECK")" == "Found" ];
+    if [ "$(checkFileContent "$HOME/.profile" "git_prompt ()")" == "Found" ];
     then
         echo "You allready have parentNode Configuration"
     else 
