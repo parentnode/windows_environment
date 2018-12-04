@@ -396,11 +396,11 @@ else
 	echo "Installing $apache"
 	# Unpack zip to install location
 	unzip $apache.zip -d /mnt/c/srv/installed-packages/apache24
-	echo "This should just take a couple of seconds"
-	sleep 5s
+	
 	# Copy default apache config, before installing service to avoid error
 	cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
-
+	echo "This should just take a couple of seconds"
+	sleep 5s
 	# Install service
 	sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k install
 	
