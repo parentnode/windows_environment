@@ -218,6 +218,11 @@ if [ ! -z "$apache_service_running" ]; then
 
 fi
 
+# Setting up httpd.conf
+echo "Copying httpd config file to apache24/conf"
+cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
+echo ""
+
 
 # Install software
 bash /mnt/c/srv/tools/scripts/install_software.sh
@@ -241,10 +246,6 @@ cp "/mnt/c/srv/installed-packages/php722/ssleay32.dll" "/mnt/c/srv/installed-pac
 echo ""
 
 
-# Setting up httpd.conf
-echo "Copying httpd config file to apache24/conf"
-cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
-echo ""
 
 
 # Adding SSL cert
