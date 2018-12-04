@@ -218,11 +218,14 @@ if [ ! -z "$apache_service_running" ]; then
 
 fi
 
-# Setting up httpd.conf
-echo "Copying httpd config file to apache24/conf"
-cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
-echo ""
+# Setting up apache.conf (only once)
+if [ ! -f "/mnt/c/srv/sites/apache/apache.conf" ]; then
 
+	echo "Adding apache config file to sites/apache/"
+	echo ""
+	cp "/mnt/c/srv/tools/conf/apache.conf" "/mnt/c/srv/sites/apache/apache.conf"
+
+fi
 
 # Install software
 bash /mnt/c/srv/tools/scripts/install_software.sh
@@ -246,23 +249,16 @@ cp "/mnt/c/srv/installed-packages/php722/ssleay32.dll" "/mnt/c/srv/installed-pac
 echo ""
 
 
+# Setting up httpd.conf
+echo "Copying httpd config file to apache24/conf"
+cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
+echo ""
 
 
 # Adding SSL cert
 echo "Copying cacert.pem to installed-packages"
 cp "/mnt/c/srv/tools/conf/cacert.pem" "/mnt/c/srv/installed-packages/cacert.pem"
 echo ""
-
-
-# Setting up apache.conf (only once)
-if [ ! -f "/mnt/c/srv/sites/apache/apache.conf" ]; then
-
-	echo "Adding apache config file to sites/apache/"
-	echo ""
-	cp "/mnt/c/srv/tools/conf/apache.conf" "/mnt/c/srv/sites/apache/apache.conf"
-
-fi
-
 
 
 echo ""
