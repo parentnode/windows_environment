@@ -249,7 +249,7 @@ echo ""
 
 # Check if Apache is installed
 apache_service_installed=$(/mnt/c/Windows/System32/sc.exe queryex type= service state= all | grep -E "Apache" || echo "")
-
+export apache_service_installed
 # Check if Apache is running
 apache_service_running=$(/mnt/c/Windows/System32/net.exe start | grep -E "Apache" || echo "")
 # Apache is running (possibly other version)
@@ -361,7 +361,7 @@ fi
 echo ""
 
 
-sudo /mnt/c/srv/tools/scripts/install_apache.sh
+sudo bash /mnt/c/srv/tools/scripts/install_apache.sh
 
 
 # Downloading and installing Imagick
