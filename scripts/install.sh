@@ -18,6 +18,8 @@ mariadb_alt="mariadb-10.2.12-winx64.msi"
 # Setting apache name and download link"
 apache="apachehttpd-2-4-33-win64-vc15"
 apache_path="https://parentnode.dk/download/72/HTML-i59ty49r/apachehttpd-2-4-33-win64-vc15.zip"
+export apache
+export apache_path
 
 # Setting php name and download link"
 php="php-7-2-2-win32-vc15-x64-redis-4"
