@@ -137,7 +137,7 @@ handleAlias(){
 if [ "$(checkFileContent "$HOME/.profile" "alias")" == "Found" ];
 then
     echo "Previous alias statement(s)"
-        if [ "$(checkFileContent "$HOME/.profile" "# ADMIN CHECK")" == "Found" ];
+        if [ "$(checkFileContent "$HOME/.profile" "git_prompt ()")" == "Found" ];
         then
             echo ""
             echo "Seems like you have installed parentnode prompt"
