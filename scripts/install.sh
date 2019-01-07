@@ -109,7 +109,7 @@ copyParentNodepromptToFile(){
     echo "Copied to file"
 }
 
-if [ -e "$HOME/.bash_profile"];
+if [ -e "$HOME/.bash_profile" ];
 then 
     echo ".bash_profile found"
 else 
