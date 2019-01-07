@@ -37,6 +37,7 @@ copyParentNodepromptToFile(){
     echo "$read_prompt_file" | sed -n '/# ADMIN CHECK/,/export PS1/p' >> "$HOME/.bash_profile"
     echo "Copied to file"
 }
+export -f copyParentNodepromptToFile
 
 echo ""
 echo ""
@@ -107,6 +108,7 @@ trimString()
 	trim=$1
 	echo "${trim}" | sed -e 's/^[ \t]*//'
 }
+export -f trimString
 
 
 checkFileContent(){
@@ -125,6 +127,7 @@ checkFileContent(){
 	fi
 		
 }
+export -f checkFileContent
 
 handleAlias(){
     IFS=$'\n'
@@ -150,6 +153,8 @@ handleAlias(){
     done
 
 }
+export -f handleAlias
+
 # If user want's to set up parentnode prompt else set alias
 if test $optional_prompt = "Y" ; then
     echo "Setting up install_prompt"
