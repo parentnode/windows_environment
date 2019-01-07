@@ -105,9 +105,17 @@ checkFileContent(){
 copyParentNodepromptToFile(){
     read_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile")
     #echo "$source_file" | sed -n "/$source_text_start/,/$source_text_start/p" >> "$destination_file"
-    echo "$read_prompt_file" | sed -n '/# ADMIN CHECK/,/export PS1/p' >> "$HOME/.profile"
+    echo "$read_prompt_file" | sed -n '/# ADMIN CHECK/,/export PS1/p' >> "$HOME/.bash_profile"
     echo "Copied to file"
 }
+
+if [ -e "$HOME/.bash_profile"];
+then 
+    echo ".bash_profile found"
+else 
+    touch "$HOME/.bash_profile"
+    echo ".bash_profile created"
+fi
 
 handleAlias(){
     IFS=$'\n'
@@ -121,23 +129,23 @@ handleAlias(){
     unset IFS    
     for line in "${!default_keys[@]}"
     do		
-        if [ "$(checkFileContent "$HOME/.profile" "${default_keys[line]}")" == "Found" ];
+        if [ "$(checkFileContent "$HOME/.bash_profile" "${default_keys[line]}")" == "Found" ];
         then
             echo "Updated ${default_values[line]}"
-            sed -i -e "s,${default_keys[line]}\=.*,$(trimString "${default_values[line]}"),g" "$HOME/.profile"
+            sed -i -e "s,${default_keys[line]}\=.*,$(trimString "${default_values[line]}"),g" "$HOME/.bash_profile"
         else 
             echo "None or not all parentnode alias present" 
             echo " copying $(trimString "${default_values[line]}") "
-            echo "$(trimString "${default_values[line]}")" >> "$HOME/.profile"
+            echo "$(trimString "${default_values[line]}")" >> "$HOME/.bash_profile"
         fi
     done
 
 }
 
-if [ "$(checkFileContent "$HOME/.profile" "alias")" == "Found" ];
+if [ "$(checkFileContent "$HOME/.bash_profile" "alias")" == "Found" ];
 then
     echo "Previous alias statement(s)"
-        if [ "$(checkFileContent "$HOME/.profile" "git_prompt ()")" == "Found" ];
+        if [ "$(checkFileContent "$HOME/.bash_profile" "git_prompt ()")" == "Found" ];
         then
             echo ""
             echo "Seems like you have installed parentnode prompt"
@@ -155,7 +163,7 @@ then
     
 else
     
-    if [ "$(checkFileContent "$HOME/.profile" "git_prompt ()")" == "Found" ];
+    if [ "$(checkFileContent "$HOME/.bash_profile" "git_prompt ()")" == "Found" ];
     then
         echo "You allready have parentNode Configuration"
     else 
