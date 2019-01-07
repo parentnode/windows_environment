@@ -1,3 +1,4 @@
+#!/bin/bash -e
 # Setting mariadb name and download link"
 mariadb="mariadb-10-2-12-winx64"
 mariadb_path="https://parentnode.dk/download/72/HTML-uwogdi5x/mariadb-10-2-12-winx64.zip"

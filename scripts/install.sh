@@ -20,6 +20,8 @@ curlversion=$(($curl_tar_path/curl.exe -V) 2>/dev/null | grep -E "^curl (7\.[5-9
 # Testing if the file exists and if the version number is above 3.3
 tarversion=$(($curl_tar_path/tar.exe --help) 2>/dev/null | grep -E "^bsdtar (3\.[3-9]+|[4-9]\.[0-9]+)" || echo "")
 
+
+
 # Testing if either conditions for tar or curl are met then you can proceed 
 if [ -z "$curlversion" ] || [ -z "$tarversion" ];then
 	echo "You seem to be missing curl or tar or running an older version of curl or tar"
@@ -28,6 +30,13 @@ if [ -z "$curlversion" ] || [ -z "$tarversion" ];then
 else
 	echo "curl and tar are up to date you are all set"
 fi
+
+copyParentNodepromptToFile(){
+    read_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile")
+    #echo "$source_file" | sed -n "/$source_text_start/,/$source_text_start/p" >> "$destination_file"
+    echo "$read_prompt_file" | sed -n '/# ADMIN CHECK/,/export PS1/p' >> "$HOME/.bash_profile"
+    echo "Copied to file"
+}
 
 echo ""
 echo ""
@@ -61,6 +70,20 @@ if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mari
     		break
     	fi	
 	done
+fi
+
+# Existing .bash_profile can show signs of professional use, if none exist create new and copy parentnode prompt
+if [ -e "$HOME/.bash_profile" ];
+then 
+    echo ".bash_profile found"
+    # Optional bash prompt setup
+    read -p "Do you wish to setup parentnode prompt Y/N: Pressing N may require experienced users   " optional_prompt
+    export optional_prompt
+    echo ""
+else 
+    touch "$HOME/.bash_profile"
+    echo ".bash_profile created"
+    copyParentNodepromptToFile
 fi
 
 # SETTING DEFAULT GIT USER
@@ -102,20 +125,6 @@ checkFileContent(){
 	fi
 		
 }
-copyParentNodepromptToFile(){
-    read_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile")
-    #echo "$source_file" | sed -n "/$source_text_start/,/$source_text_start/p" >> "$destination_file"
-    echo "$read_prompt_file" | sed -n '/# ADMIN CHECK/,/export PS1/p' >> "$HOME/.bash_profile"
-    echo "Copied to file"
-}
-
-if [ -e "$HOME/.bash_profile" ];
-then 
-    echo ".bash_profile found"
-else 
-    touch "$HOME/.bash_profile"
-    echo ".bash_profile created"
-fi
 
 handleAlias(){
     IFS=$'\n'
@@ -141,38 +150,15 @@ handleAlias(){
     done
 
 }
-
-if [ "$(checkFileContent "$HOME/.bash_profile" "alias")" == "Found" ];
+# If user want's to set up parentnode prompt else set alias
+if [ $optional_prompt == "Y" ];
 then
-    echo "Previous alias statement(s)"
-        if [ "$(checkFileContent "$HOME/.bash_profile" "git_prompt ()")" == "Found" ];
-        then
-            echo ""
-            echo "Seems like you have installed parentnode prompt"
-            echo ""
-        else 
-            echo ""
-            echo "Seems like you haven't installed parentnode prompt"
-            echo ""
-            echo "Installing"
-            copyParentNodepromptToFile
-            echo ""
-        fi
-    #sudo chown "$username:$username" "$HOME/.profile"
-    handleAlias 
-    
+    echo "Setting up install_prompt"
+    bash install_prompt.sh
 else
-    
-    if [ "$(checkFileContent "$HOME/.bash_profile" "git_prompt ()")" == "Found" ];
-    then
-        echo "You allready have parentNode Configuration"
-    else 
-        echo "Copying parentNode Configuration"
-        copyParentNodepromptToFile
-        
-    fi
-    handleAlias    
+    handleAlias
 fi
+
 
 
 echo ""

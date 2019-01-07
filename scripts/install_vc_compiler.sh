@@ -1,3 +1,4 @@
+#!/bin/bash -e
 # Setting c++ compiler name and download link"
 vc_compiler="vc_redist-x64"
 vc_compiler_path="https://parentnode.dk/download/72/HTML-ikg9m2me/vc_redist-x64.zip"

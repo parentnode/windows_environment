@@ -1,3 +1,4 @@
+#!/bin/bash -e
 # Setting redis name and download link"
 redis="redis-x64-4-0-2-2"
 redis_path="https://parentnode.dk/download/72/HTML-wc8evnh2/redis-x64-4-0-2-2.zip"
