@@ -78,7 +78,7 @@ if [ -e "$HOME/.bash_profile" ];
 then 
     echo ".bash_profile found"
     # Optional bash prompt setup
-    read -p "Do you wish to setup parentnode prompt Y/N: Pressing N may require experienced users   " optional_prompt
+    read -p "Do you wish to setup parentnode prompt Y/N (Pressing N may require experienced users):   " optional_prompt
     export optional_prompt
     echo ""
 else 
