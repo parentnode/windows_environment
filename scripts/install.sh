@@ -151,8 +151,7 @@ handleAlias(){
 
 }
 # If user want's to set up parentnode prompt else set alias
-if [ $optional_prompt == "Y" ];
-then
+if test $optional_prompt = "Y" ; then
     echo "Setting up install_prompt"
     bash install_prompt.sh
 else
