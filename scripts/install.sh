@@ -170,7 +170,7 @@ echo ""
 echo "--- Checking Directories ---"
 echo ""
 checkFolderOrCreate(){
-	folderName = $1
+	folderName=$1
 	if [ -e $folderName ];
 	then
 		echo "$folderName already exists"
