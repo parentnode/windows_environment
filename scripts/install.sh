@@ -31,14 +31,36 @@ else
 	echo "curl and tar are up to date you are all set"
 fi
 
-copyParentNodepromptToFile(){
-    read_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile")
+copyParentNodeGitPromptToFile(){
+    read_git_prompt_file=$( < "/mnt/c/srv/conf/dot_profile_git_prompt")
+	read_dot_bash_profile=$( < "$HOME/.bash_profile")
     #echo "$source_file" | sed -n "/$source_text_start/,/$source_text_start/p" >> "$destination_file"
-    echo "$read_prompt_file" | sed -n '/# ADMIN CHECK/,/export PS1/p' >> "$HOME/.bash_profile"
-    echo "Copied to file"
+    ref_prompt=$( echo "$read_git_prompt_file" | sed -n '/# enable git prompt/,/# end enable git prompt/p')
+	replace_prompt=$( echo "$read_dot_bash_profile" | sed -n '/# enable git prompt/,/# end enable git prompt/p')
+	if [ "$ref_prompt" != "$replace_prompt" ]; 
+	then
+		echo "Updated version of parentnode prompt available"
+		sed -i '/# enable git prompt/,/# end enable git prompt/d' $HOME/.bash_profile
+		echo "Deleted old version"
+		echo "$ref_prompt" >> $HOME/.bash_profile
+		echo "Added new one"
+	else
+		echo "Allready on newest version"
+	fi
 }
-export -f copyParentNodepromptToFile
-
+copyParentNodePromptToFile(){
+    read_prompt_file=$( < "/mnt/c/srv/conf/dot_profile")
+	
+	echo "$read_prompt_file" | sed -n '/# ADMIN CHECK WINDOWS ONLY/,/# END ADMIN CHECK WINDOWS ONLY/p') >> $HOME/.bash_profile
+	
+	echo "$read_prompt_file" | sed -n '/# if running bash/,/# end if running bash/p') >> $HOME/.bash_profile
+	
+	echo "$read_prompt_file" | sed -n '/# set PATH so it includes users private bin if it exists/,/# end set PATH so it includes users private bin if it exists/p') >> $HOME/.bash_profile
+	
+	copyParentNodeGitPromptToFile
+}
+export -f copyParentNodePromptToFile
+#copyParentNodePromptToFile
 echo ""
 echo ""
 echo "Please enter the information required for your install:"
@@ -84,7 +106,7 @@ then
 else 
     touch "$HOME/.bash_profile"
     echo ".bash_profile created"
-    copyParentNodepromptToFile
+    copyParentNodePromptToFile
 fi
 
 # SETTING DEFAULT GIT USER
