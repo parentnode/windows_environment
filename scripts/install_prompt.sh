@@ -13,7 +13,7 @@ then
         echo "Seems like you haven't installed parentnode prompt"
         echo ""
         echo "Installing"
-        copyParentNodepromptToFile
+        copyParentNodePromptToFile
         echo ""
     fi
     #sudo chown "$username:$username" "$HOME/.profile"
@@ -26,7 +26,7 @@ else
         echo "You allready have parentNode Configuration"
     else 
         echo "Copying parentNode Configuration"
-        copyParentNodepromptToFile
+        copyParentNodePromptToFile
 
     fi
     handleAlias    
