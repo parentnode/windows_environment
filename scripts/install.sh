@@ -32,7 +32,7 @@ else
 fi
 
 copyParentNodeGitPromptToFile(){
-    read_git_prompt_file=$( < "/mnt/c/srv/conf/dot_profile_git_prompt")
+    read_git_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile_git_promt")
 	read_dot_bash_profile=$( < "$HOME/.bash_profile")
     #echo "$source_file" | sed -n "/$source_text_start/,/$source_text_start/p" >> "$destination_file"
     ref_prompt=$( echo "$read_git_prompt_file" | sed -n '/# enable git prompt/,/# end enable git prompt/p')
@@ -49,7 +49,7 @@ copyParentNodeGitPromptToFile(){
 	fi
 }
 copyParentNodePromptToFile(){
-    read_prompt_file=$( < "/mnt/c/srv/conf/dot_profile")
+    read_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile")
 	
 	echo "$read_prompt_file" | sed -n '/# ADMIN CHECK WINDOWS ONLY/,/# END ADMIN CHECK WINDOWS ONLY/p' >> $HOME/.bash_profile
 	
