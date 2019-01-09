@@ -86,6 +86,7 @@ handleAlias(){
         else 
             echo "None or not all parentnode alias present" 
             echo " copying $(trimString "${default_values[line]}") "
+            echo "" >> "$HOME/.bash_profile"
             echo "$(trimString "${default_values[line]}")" >> "$HOME/.bash_profile"
         fi
     done
