@@ -78,7 +78,9 @@ then
     export optional_prompt
     echo ""
 else
+	
 	sudo touch $HOME/.bash_profile
+	chmod 777 $HOME/.bash_profile
 	copyParentNodePromptToFile
 fi
 
