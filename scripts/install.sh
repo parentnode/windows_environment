@@ -101,7 +101,7 @@ username=$( echo $SUDO_USER)
 
 
 # If user want's to set up parentnode prompt else set alias
-if test $optional_prompt = "Y" ; then
+if test "$optional_prompt" = "Y" ; then
     echo "Setting up install_prompt"
     bash /mnt/c/srv/tools/scripts/install_prompt.sh
 else
