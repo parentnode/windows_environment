@@ -31,7 +31,7 @@ else
 	echo "curl and tar are up to date you are all set"
 fi
 
-bash /mnt/c/srv/tools/scripts/functions.sh
+source /mnt/c/srv/tools/scripts/functions.sh
 
 
 echo ""
