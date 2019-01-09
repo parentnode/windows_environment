@@ -1,3 +1,4 @@
+#!/bin/bash -e
 copyParentNodeGitPromptToFile(){
     read_git_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile_git_promt")
 	read_dot_bash_profile=$( < "$HOME/.bash_profile")
