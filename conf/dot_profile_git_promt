@@ -7,9 +7,9 @@ git_prompt () {
 	git_branch=$(git branch 2>/dev/null| sed -n '/^\*/s/^\* //p')
 
 	if git diff --quiet 2>/dev/null >&2; then
-		git_color=`tput setaf 4`
+		git_color=`tput setaf 2`
 	else
-		git_color=`tput setaf 5`
+		git_color=`tput setaf 1`
 	fi
 
 	echo " $git_color($git_branch)"
