@@ -113,8 +113,11 @@ then
     read -p "Do you wish to setup parentnode prompt Y/N (Pressing N may require experienced users):   " optional_prompt
     export optional_prompt
     echo ""
-else 
-    touch "$HOME/.bash_profile"
+fi
+
+if [ ! -e "$HOME/.bash_profile" ];
+then
+	touch "$HOME/.bash_profile"
     echo ".bash_profile created"
 	if [ -e "$HOME/.bash_profile" ];
 	then
