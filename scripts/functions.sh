@@ -22,19 +22,22 @@ export -f copyParentNodeGitPromptToFile
 copyParentNodePromptToFile(){
     read_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile")
 	admin_check= $( echo "$read_prompt_file" | grep -E ^"# ADMIN CHECK WINDOWS ONLY" || echo "")
-	if [ -z "$admin_check" ]; 
+	if [ -n "$admin_check" ]; 
 	then
-		echo "$read_prompt_file" | sed -n '/# ADMIN CHECK WINDOWS ONLY/,/# END ADMIN CHECK WINDOWS ONLY/p' >> $HOME/.bash_profile
+		sed -i '/# ADMIN CHECK WINDOWS ONLY/,/# END ADMIN CHECK WINDOWS ONLY/d' $HOME/.bash_profile
+        echo "$read_prompt_file" | sed -n '/# ADMIN CHECK WINDOWS ONLY/,/# END ADMIN CHECK WINDOWS ONLY/p' >> $HOME/.bash_profile
 	fi
 	running_bash= $( echo "$read_prompt_file" | grep -E ^"# if running bash" || echo "")
-	if [ -z "$running_bash" ]; 
+	if [ -n "$running_bash" ]; 
 	then
-		echo "$read_prompt_file" | sed -n '/# if running bash/,/# end if running bash/p' >> $HOME/.bash_profile
+		sed -i '/# if running bash/,/# end if running bash/d' $HOME/.bash_profile
+        echo "$read_prompt_file" | sed -n '/# if running bash/,/# end if running bash/p' >> $HOME/.bash_profile
 	fi
 	set_path= $( echo "$read_prompt_file" | grep -E ^"# set PATH so it includes users private bin if it exists" || echo "")
-	if [ -z "$set_path" ]; 
+	if [ -n "$set_path" ]; 
 	then
-		echo "$read_prompt_file" | sed -n '/# set PATH so it includes users private bin if it exists/,/# end set PATH so it includes users private bin if it exists/p' >> $HOME/.bash_profile	
+		sed -i '/# set PATH so it includes users private bin if it exists/,/# end set PATH so it includes users private bin if it exists/d' $HOME/.bash_profile	
+        echo "$read_prompt_file" | sed -n '/# set PATH so it includes users private bin if it exists/,/# end set PATH so it includes users private bin if it exists/p' >> $HOME/.bash_profile	
 	fi
 	
 	copyParentNodeGitPromptToFile
