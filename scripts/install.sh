@@ -87,7 +87,7 @@ else
 	echo "" >> $HOME/.bash_profile
 	echo "$read_dot_profile_git_prompt" >> $HOME/.bash_profile
 	echo "" >> $HOME/.bash_profile
-	echo "$read_dot_profile_alias" >> $HOME/.bash_profile
+	handleAlias
 
 fi
 
