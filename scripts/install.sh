@@ -80,8 +80,15 @@ then
 else
 	
 	sudo touch $HOME/.bash_profile
-	chmod 777 $HOME/.bash_profile
-	copyParentNodePromptToFile
+	read_dot_profile=$( < "/mnt/c/srv/tools/conf/dot_profile")
+	read_dot_profile_git_prompt=$( < "/mnt/c/srv/tools/conf/dot_profile_git_promt")
+	read_dot_profile_alias=$( < "/mnt/c/srv/tools/conf/dot_profile_alias")
+	echo "$read_dot_profile" >> $HOME/.bash_profile
+	echo "" >> $HOME/.bash_profile
+	echo "$read_dot_profile_git_prompt" >> $HOME/.bash_profile
+	echo "" >> $HOME/.bash_profile
+	echo "$read_dot_profile_alias" >> $HOME/.bash_profile
+
 fi
 
 
