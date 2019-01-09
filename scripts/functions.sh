@@ -11,6 +11,7 @@ copyParentNodeGitPromptToFile(){
 		sed -i '/# enable git prompt/,/# end enable git prompt/d' $HOME/.bash_profile
 		echo "Deleted old version"
 		echo "$ref_prompt" >> $HOME/.bash_profile
+        echo "" >> $HOME/.bash_profile
 		echo "Added new one"
 	else
 		echo "Allready on newest version"
