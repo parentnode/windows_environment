@@ -7,7 +7,7 @@ then
     then
         echo ""
         echo "Seems like you have installed parentnode prompt"
-        copyParentNodeGitPromptToFile
+        copyParentNodePromptToFile
         echo ""
     else 
         echo ""
@@ -25,7 +25,7 @@ else
     if [ "$(checkFileContent "$HOME/.bash_profile" "git_prompt ()")" == "Found" ];
     then
         echo "You allready have parentNode Configuration"
-        copyParentNodeGitPromptToFile
+        copyParentNodePromptToFile
     else 
         echo "Copying parentNode Configuration"
         copyParentNodePromptToFile
