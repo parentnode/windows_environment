@@ -12,5 +12,17 @@ then
     fi
     #sudo chown "$username:$username" "$HOME/.profile"
     handleAlias 
+
+else
+
+    if [ "$(checkFileContent "$HOME/.bash_profile" "git_prompt ()")" == "Found" ];
+    then
+        echo "You allready have parentNode Configuration"
+    else 
+        echo "Copying parentNode Configuration"
+        copyParentNodePromptToFile
+
+    fi
+    handleAlias    
 fi
 
