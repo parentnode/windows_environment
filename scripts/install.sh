@@ -116,7 +116,10 @@ then
 else 
     touch "$HOME/.bash_profile"
     echo ".bash_profile created"
-    copyParentNodePromptToFile
+	if [ -e "$HOME/.bash_profile" ];
+	then
+    	copyParentNodePromptToFile
+	fi
 fi
 
 # SETTING DEFAULT GIT USER
