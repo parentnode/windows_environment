@@ -115,12 +115,7 @@ then
     export optional_prompt
     echo ""
 else
-	touch "$HOME/.bash_profile"
-    echo ".bash_profile created"
-	if [ -e "$HOME/.bash_profile" ];
-	then
-    	copyParentNodePromptToFile
-	fi
+	cp /mnt/c/srv/tools/conf/dot_profile $HOME/.bash_profile
 fi
 
 
