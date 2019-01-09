@@ -51,7 +51,6 @@ copyParentNodeGitPromptToFile(){
 export -f copyParentNodeGitPromptToFile
 copyParentNodePromptToFile(){
     read_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile")
-	echo "Copy started"
 	admin_check= $( echo $read_prompt_file | grep -E ^"# ADMIN CHECK WINDOWS ONLY")
 	if [ -z "$admin_check"]; 
 	then
