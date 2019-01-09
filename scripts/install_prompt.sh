@@ -7,6 +7,12 @@ then
     then
         echo ""
         echo "Seems like you have installed parentnode prompt"
+        echo ""
+    else 
+        echo ""
+        echo "Seems like you haven't installed parentnode prompt"
+        echo ""
+        echo "Installing"
         copyParentNodePromptToFile
         echo ""
     fi
