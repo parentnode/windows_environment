@@ -31,6 +31,7 @@ else
 	echo "curl and tar are up to date you are all set"
 fi
 
+# Including the functions we need for the installation
 source /mnt/c/srv/tools/scripts/functions.sh
 
 
