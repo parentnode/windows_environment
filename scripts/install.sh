@@ -78,7 +78,8 @@ then
     export optional_prompt
     echo ""
 else
-	cp /mnt/c/srv/tools/conf/dot_profile $HOME/.bash_profile
+	sudo touch $HOME/.bash_profile
+	copyParentNodePromptToFile
 fi
 
 
