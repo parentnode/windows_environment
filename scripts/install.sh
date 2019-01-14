@@ -33,7 +33,7 @@ fi
 
 # Including the functions we need for the installation
 source /mnt/c/srv/tools/scripts/functions.sh
-
+source /mnt/c/srv/tools/conf/download_name_link.sh
 
 echo ""
 echo ""

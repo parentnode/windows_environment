@@ -1,8 +1,4 @@
 #!/bin/bash -e
-# Setting php name and download link"
-php="php-7-2-2-win32-vc15-x64-redis-4"
-php_path="https://parentnode.dk/download/72/HTML-aqwla8g3/php-7-2-2-win32-vc15-x64-redis-4.zip"
-
 # Downloading and installing php
 echo ""
 echo "Looking for $php"

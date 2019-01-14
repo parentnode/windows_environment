@@ -1,8 +1,4 @@
 #!/bin/bash -e
-# Getting imagick name and download link"
-imagick="imagemagick-6-9-9-37-q16-x64-dll"
-imagick_path="https://parentnode.dk/download/72/HTML-940u1z9m/imagemagick-6-9-9-37-q16-x64-dll.zip"
-
 # Downloading and installing Imagick
 echo "Looking for $imagick"
 if [ -e /mnt/c/srv/packages/$imagick.zip ] ; then
