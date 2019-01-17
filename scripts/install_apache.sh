@@ -1,7 +1,4 @@
-# Setting apache name and download link"
-apache="apachehttpd-2-4-33-win64-vc15"
-apache_path="https://parentnode.dk/download/72/HTML-i59ty49r/apachehttpd-2-4-33-win64-vc15.zip"
-
+#!/bin/bash -e
 # Check if Apache is installed
 apache_service_installed=$(/mnt/c/Windows/System32/sc.exe queryex type= service state= all | grep -E "Apache" || echo "")
 

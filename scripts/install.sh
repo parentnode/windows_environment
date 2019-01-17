@@ -20,6 +20,8 @@ curlversion=$(($curl_tar_path/curl.exe -V) 2>/dev/null | grep -E "^curl (7\.[5-9
 # Testing if the file exists and if the version number is above 3.3
 tarversion=$(($curl_tar_path/tar.exe --help) 2>/dev/null | grep -E "^bsdtar (3\.[3-9]+|[4-9]\.[0-9]+)" || echo "")
 
+
+
 # Testing if either conditions for tar or curl are met then you can proceed 
 if [ -z "$curlversion" ] || [ -z "$tarversion" ];then
 	echo "You seem to be missing curl or tar or running an older version of curl or tar"
@@ -28,6 +30,10 @@ if [ -z "$curlversion" ] || [ -z "$tarversion" ];then
 else
 	echo "curl and tar are up to date you are all set"
 fi
+
+# Including the functions we need for the installation
+source /mnt/c/srv/tools/scripts/functions.sh
+source /mnt/c/srv/tools/conf/download_name_link.sh
 
 echo ""
 echo ""
@@ -63,6 +69,29 @@ if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mari
 	done
 fi
 
+# Existing .bash_profile can show signs of professional use, if none exist create new and copy parentnode prompt
+if [ -e "$HOME/.bash_profile" ];
+then 
+    echo ".bash_profile found"
+    # Optional bash prompt setup
+    read -p "Do you wish to setup parentnode prompt Y/N (Pressing N may require experienced users):   " optional_prompt
+    export optional_prompt
+    echo ""
+else
+	
+	sudo touch $HOME/.bash_profile
+	read_dot_profile=$( < "/mnt/c/srv/tools/conf/dot_profile")
+	read_dot_profile_git_prompt=$( < "/mnt/c/srv/tools/conf/dot_profile_git_promt")
+	read_dot_profile_alias=$( < "/mnt/c/srv/tools/conf/dot_profile_alias")
+	echo "$read_dot_profile" >> $HOME/.bash_profile
+	echo "" >> $HOME/.bash_profile
+	echo "$read_dot_profile_git_prompt" >> $HOME/.bash_profile
+	echo "" >> $HOME/.bash_profile
+	handleAlias
+
+fi
+
+
 # SETTING DEFAULT GIT USER
 echo ""
 echo "--- Setting up default user configuration ---"
@@ -79,129 +108,32 @@ git config --global core.autocrlf true
 
 username=$( echo $SUDO_USER)
 
-trimString()
-{
-	trim=$1
-	echo "${trim}" | sed -e 's/^[ \t]*//'
-}
 
 
-checkFileContent(){
-	#dot_profile
-	file=$1
-	
-	check=$2
-	
-	statement=$(grep "$check" $file || echo "")
-
-	if [ -n "$statement" ];
-	then 
-		echo "Found"
-    else 
-        echo "Not Found"
-	fi
-		
-}
-copyParentNodepromptToFile(){
-    read_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile")
-    #echo "$source_file" | sed -n "/$source_text_start/,/$source_text_start/p" >> "$destination_file"
-    echo "$read_prompt_file" | sed -n '/# ADMIN CHECK/,/export PS1/p' >> "$HOME/.profile"
-    echo "Copied to file"
-}
-
-handleAlias(){
-    IFS=$'\n'
-    read_alias_file=$( < "/mnt/c/srv/tools/conf/dot_profile_alias" )
-
-    # The key komprises of value between the first and second quotation '"'
-    default_keys=( $( echo "$read_alias_file" | grep ^\" |cut -d\" -f2) )
-
-    #The value komprises of value between the third, fourth and fifth quotation '"'
-    default_values=( $( echo "$read_alias_file" | grep ^\" |cut -d\" -f3,4,5) )
-    unset IFS    
-    for line in "${!default_keys[@]}"
-    do		
-        if [ "$(checkFileContent "$HOME/.profile" "${default_keys[line]}")" == "Found" ];
-        then
-            echo "Updated ${default_values[line]}"
-            sed -i -e "s,${default_keys[line]}\=.*,$(trimString "${default_values[line]}"),g" "$HOME/.profile"
-        else 
-            echo "None or not all parentnode alias present" 
-            echo " copying $(trimString "${default_values[line]}") "
-            echo "$(trimString "${default_values[line]}")" >> "$HOME/.profile"
-        fi
-    done
-
-}
-
-if [ "$(checkFileContent "$HOME/.profile" "alias")" == "Found" ];
-then
-    echo "Previous alias statement(s)"
-        if [ "$(checkFileContent "$HOME/.profile" "git_prompt ()")" == "Found" ];
-        then
-            echo ""
-            echo "Seems like you have installed parentnode prompt"
-            echo ""
-        else 
-            echo ""
-            echo "Seems like you haven't installed parentnode prompt"
-            echo ""
-            echo "Installing"
-            copyParentNodepromptToFile
-            echo ""
-        fi
-    #sudo chown "$username:$username" "$HOME/.profile"
-    handleAlias 
-    
+# If user want's to set up parentnode prompt else set alias
+if test "$optional_prompt" = "Y" ; then
+    echo "Setting up install_prompt"
+    bash /mnt/c/srv/tools/scripts/install_prompt.sh
 else
-    
-    if [ "$(checkFileContent "$HOME/.profile" "git_prompt ()")" == "Found" ];
-    then
-        echo "You allready have parentNode Configuration"
-    else 
-        echo "Copying parentNode Configuration"
-        copyParentNodepromptToFile
-        
-    fi
-    handleAlias    
+    handleAlias
 fi
+
 
 
 echo ""
 echo "--- Checking Directories ---"
 echo ""
 
+
 # Base parentnode project location
-if [ -e /mnt/c/srv/sites/parentnode ] ; then
-	echo "C:/srv/sites/parentnode already exists"
-else
-	echo "Create directory C:/srv/sites/parentnode"
-    mkdir -p /mnt/c/srv/sites/parentnode;
-fi;
-
+checkFolderOrCreate "/mnt/c/srv/sites/parentnode"
 # Base apache configuration location
-if [ -e /mnt/c/srv/sites/apache/logs ] ; then
-	echo "C:/srv/sites/apache/logs already exists"
-else
-	echo "Create directory C:/srv/sites/apache/logs"
-    mkdir -p /mnt/c/srv/sites/apache/logs;
-fi;
-
+checkFolderOrCreate "/mnt/c/srv/sites/apache/logs"
 # Creating packages folder
-if [ -e /mnt/c/srv/packages ] ; then
-	echo "C:/srv/packages already exists"
-else
-	echo "Create directory C:/srv/packages"
-    mkdir -p /mnt/c/srv/packages;
-fi;
-
+checkFolderOrCreate "/mnt/c/srv/packages"
 # Creating installed-packages folder
-if [ -e /mnt/c/srv/installed-packages ] ; then
-	echo "C:/srv/installed-packages already exists"
-else
-	echo "Create directory C:/srv/installed-packages"
-    mkdir -p /mnt/c/srv/installed-packages;
-fi;
+checkFolderOrCreate "/mnt/c/srv/installed-packages"
+
 echo ""
 
 

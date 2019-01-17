@@ -1,3 +1,4 @@
+#!/bin/bash -e
 # Install unzip to unpack downloaded packages
 echo "Checking unzip:"
 install_unzip=$(unzip || echo "")

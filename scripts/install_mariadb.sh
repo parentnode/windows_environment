@@ -1,9 +1,4 @@
-# Setting mariadb name and download link"
-mariadb="mariadb-10-2-12-winx64"
-mariadb_path="https://parentnode.dk/download/72/HTML-uwogdi5x/mariadb-10-2-12-winx64.zip"
-# Old file is also valid (and should not cause re-install)
-mariadb_alt="mariadb-10.2.12-winx64.msi"
-
+#!/bin/bash -e
 # Downloading and installing mariadb
 echo "Looking for $mariadb"
 if [ -e /mnt/c/srv/packages/$mariadb.zip ] || [ -e /mnt/c/srv/packages/$mariadb_alt ] ; then

@@ -1,6 +1,4 @@
-wkhtmltopdf="wkhtmltopdf-static-0-12-3"
-wkhtmltopdf_path="https://parentnode.dk/download/72/HTML-g2y0tm22/wkhtmltopdf-static-0-12-3.zip"
-
+#!/bin/bash -e
 # Downloading and installing wkhtmltopdf
 echo "Looking for $wkhtmltopdf"
 if [ -e /mnt/c/srv/packages/$wkhtmltopdf.zip ] ; then
