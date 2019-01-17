@@ -8,7 +8,7 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-# ADMIN CHECK
+# ADMIN CHECK WINDOWS ONLY
 admin=$(/mnt/c/Windows/System32/net.exe session 2>/dev/null || echo "")
 if [ -z "$admin" ]; then
 	echo ""
@@ -27,6 +27,7 @@ if [ -z "$admin" ]; then
 	echo "                    Is this supposed to be an Admin bash?"
 	echo ""
 fi
+# END ADMIN CHECK WINDOWS ONLY
 
 
 # if running bash
@@ -36,28 +37,10 @@ if [ -n "$BASH_VERSION" ]; then
         . "$HOME/.bashrc"
     fi
 fi
+# end if running bash
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
-
-
-# enable git prompt
-git_prompt () {
-	if ! git rev-parse --git-dir > /dev/null 2>&1; then
-	  return 0
-	fi
-
-	git_branch=$(git branch 2>/dev/null| sed -n '/^\*/s/^\* //p')
-
-	if git diff --quiet 2>/dev/null >&2; then
-		git_color=`tput setaf 2`
-	else
-		git_color=`tput setaf 1`
-	fi
-
-	echo " $git_color($git_branch)"
-}
-
-export PS1="\[$(tput bold)\]\[$(tput setaf 0)\]\u@\h \[$(tput setaf 2)\]\W\$(git_prompt)\[$(tput sgr0)\]\[$(tput setaf 7)\] \\$"
+# end set PATH so it includes user's private bin if it exists
