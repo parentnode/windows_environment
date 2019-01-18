@@ -7,10 +7,6 @@ echo "                 Starting server installation"
 echo "           DO NOT CLOSE UNTILL INSTALL IS COMPLETE" 
 echo  "You will see 'Server install complete' message once it's done"
 
-
-# tar command available
-# TODO: This finds Out whether Curl or Tar is present 
-
 # Root path for curl and tar 
 curl_tar_path="/mnt/c/Windows/System32"
 
@@ -33,6 +29,7 @@ fi
 
 # Including the functions we need for the installation
 source /mnt/c/srv/tools/scripts/functions.sh
+# Including the names and links used in install_software.sh
 source /mnt/c/srv/tools/conf/download_name_link.sh
 
 echo ""
@@ -40,14 +37,18 @@ echo ""
 echo "Please enter the information required for your install:"
 echo ""
 
+
 # Setting up git user and email
 read -p "Your git username: " git_user
 export git_user
 echo ""
 
+
 read -p "Your git email address: " git_email
 export git_email
 echo ""
+
+
 
 echo "MariaDB Password section"
 # MariaDB not installed, ask for new root password
