@@ -1,4 +1,6 @@
 #!/bin/bash -e
+
+# Updates the git_prompt function found in .bash_profile  
 copyParentNodeGitPromptToFile(){
     read_git_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile_git_promt")
 	read_dot_bash_profile=$( < "$HOME/.bash_profile")
@@ -19,6 +21,7 @@ copyParentNodeGitPromptToFile(){
 }
 export -f copyParentNodeGitPromptToFile
 
+# Updates all the sections in the .bash_profile file with files in parentnode dot_profile
 copyParentNodePromptToFile(){
     read_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile")
 	admin_check= $( echo "$read_prompt_file" | grep -E ^"# ADMIN CHECK WINDOWS ONLY" || echo "")
@@ -39,11 +42,12 @@ copyParentNodePromptToFile(){
 		sed -i '/# set PATH so it includes users private bin if it exists/,/# end set PATH so it includes users private bin if it exists/d' $HOME/.bash_profile	
         echo "$read_prompt_file" | sed -n '/# set PATH so it includes users private bin if it exists/,/# end set PATH so it includes users private bin if it exists/p' >> $HOME/.bash_profile	
 	fi
-	
+	# Executes a an update on git_prompt() for consistency in placement in script and because of functionality	
 	copyParentNodeGitPromptToFile
 }
 export -f copyParentNodePromptToFile
 
+# Removes leading and following spaces
 trimString()
 {
 	trim=$1
@@ -51,6 +55,7 @@ trimString()
 }
 export -f trimString
 
+# Checks a file for a content based on a string
 checkFileContent(){
 	#dot_profile
 	file=$1
@@ -96,6 +101,7 @@ handleAlias(){
 }
 export -f handleAlias
 
+# Checks if a folder exists if not it will be created
 checkFolderOrCreate(){
 	folderName=$1
 	if [ -e $folderName ];
