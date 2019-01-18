@@ -1,4 +1,5 @@
-# Aliases 
+# Aliases
+
 "alias sites" alias sites="cd /mnt/c/srv/sites"
 "alias enable_site" alias enable_site="sudo /mnt/c/srv/tools/scripts/enable_site.sh"
 "alias apache" alias apache="sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k"
