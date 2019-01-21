@@ -113,3 +113,22 @@ checkFolderOrCreate(){
 	fi
 
 }
+export -f checkFolderOrCreate
+
+# Setting Git credentials if needed
+git_configured(){
+	git_credential=$1
+	credential_configured=$(git config --global user.$git_credential || echo "")
+	if [ -z "$credential_configured" ];
+	then 
+		echo "No previous $git_credential entered"
+		echo
+		read -p "Enter your new $git_credential: " git_new_value
+		git config --global user.$git_credential "$git_new_value"
+		echo
+	else 
+		echo "Git user-$git_credential allready set"
+	fi
+}
+export -f git_configured
+
