@@ -1,8 +1,22 @@
 #!/bin/bash -e
+updateStatementInFile(){
+    check_statement=$1
+	input_file=$2
+	output_file=$3
+	read_prompt_file=$( < "$input_file")
+	check=$(echo "$read_prompt_file" | grep -E ^"$check_statement" || echo "")
+	if [ -n "$check" ];
+	then 
+		sed -i "/# $check_statement/,/# end $check_statement/d" "$output_file"
+		echo "$read_prompt_file" | sed -n "/# $check_statement/,/# end $check_statement/p" >> "$output_file"
+	fi	
+}
+
+export -f updateStatementInFile
 
 # Updates the git_prompt function found in .bash_profile  
 copyParentNodeGitPromptToFile(){
-    read_git_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile_git_promt")
+	read_git_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile_git_promt")
 	read_dot_bash_profile=$( < "$HOME/.bash_profile")
     #echo "$source_file" | sed -n "/$source_text_start/,/$source_text_start/p" >> "$destination_file"
     ref_prompt=$( echo "$read_git_prompt_file" | sed -n '/# enable git prompt/,/# end enable git prompt/p')
@@ -23,25 +37,31 @@ export -f copyParentNodeGitPromptToFile
 
 # Updates all the sections in the .bash_profile file with files in parentnode dot_profile
 copyParentNodePromptToFile(){
-    read_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile")
-	admin_check= $( echo "$read_prompt_file" | grep -E ^"# ADMIN CHECK WINDOWS ONLY" || echo "")
-	if [ -n "$admin_check" ]; 
-	then
-		sed -i '/# ADMIN CHECK WINDOWS ONLY/,/# END ADMIN CHECK WINDOWS ONLY/d' $HOME/.bash_profile
-        echo "$read_prompt_file" | sed -n '/# ADMIN CHECK WINDOWS ONLY/,/# END ADMIN CHECK WINDOWS ONLY/p' >> $HOME/.bash_profile
-	fi
-	running_bash= $( echo "$read_prompt_file" | grep -E ^"# if running bash" || echo "")
-	if [ -n "$running_bash" ]; 
-	then
-		sed -i '/# if running bash/,/# end if running bash/d' $HOME/.bash_profile
-        echo "$read_prompt_file" | sed -n '/# if running bash/,/# end if running bash/p' >> $HOME/.bash_profile
-	fi
-	set_path= $( echo "$read_prompt_file" | grep -E ^"# set PATH so it includes users private bin if it exists" || echo "")
-	if [ -n "$set_path" ]; 
-	then
-		sed -i '/# set PATH so it includes users private bin if it exists/,/# end set PATH so it includes users private bin if it exists/d' $HOME/.bash_profile	
-        echo "$read_prompt_file" | sed -n '/# set PATH so it includes users private bin if it exists/,/# end set PATH so it includes users private bin if it exists/p' >> $HOME/.bash_profile	
-	fi
+	updateStatementInFile "admin check" "/mnt/c/srv/tools/conf/dot_profile" "$HOME/.bash_profile"
+	updateStatementInFile "running bash" "/mnt/c/srv/tools/conf/dot_profile" "$HOME/.bash_profile"
+	updateStatementInFile "set path" "/mnt/c/srv/tools/conf/dot_profile" "$HOME/.bash_profile"
+	# simpler version instead of copyParentNodeGitPromptToFile. awaiting approval 
+	#updateStatementInFile "enable git prompt" "/mnt/c/srv/tools/conf/dot_profile_git_promt" "$HOME/.bash_profile"
+	
+	#read_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile")
+	#admin_check= $( echo "$read_prompt_file" | grep -E ^"# admin check" || echo "")
+	#if [ -n "$admin_check" ]; 
+	#then
+	#	sed -i '/# admin check/,/# end admin check/d' $HOME/.bash_profile
+    #    echo "$read_prompt_file" | sed -n '/# admin check/,/# end admin check/p' >> $HOME/.bash_profile
+	#fi
+	#running_bash= $( echo "$read_prompt_file" | grep -E ^"# running bash" || echo "")
+	#if [ -n "$running_bash" ]; 
+	#then
+	#	sed -i '/# running bash/,/# end running bash/d' $HOME/.bash_profile
+    #    echo "$read_prompt_file" | sed -n '/# running bash/,/# end running bash/p' >> $HOME/.bash_profile
+	#fi
+	#set_path= $( echo "$read_prompt_file" | grep -E ^"# set path" || echo "")
+	#if [ -n "$set_path" ]; 
+	#then
+	#	sed -i '/# set path/,/# end set path/d' $HOME/.bash_profile	
+    #    echo "$read_prompt_file" | sed -n '/# set path/,/# end set path/p' >> $HOME/.bash_profile	
+	#fi
 	# Executes a an update on git_prompt() for consistency in placement in script and because of functionality	
 	copyParentNodeGitPromptToFile
 }
