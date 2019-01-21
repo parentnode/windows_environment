@@ -8,7 +8,7 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-# ADMIN CHECK WINDOWS ONLY
+# admin check
 admin=$(/mnt/c/Windows/System32/net.exe session 2>/dev/null || echo "")
 if [ -z "$admin" ]; then
 	echo ""
@@ -27,20 +27,20 @@ if [ -z "$admin" ]; then
 	echo "                    Is this supposed to be an Admin bash?"
 	echo ""
 fi
-# END ADMIN CHECK WINDOWS ONLY
+# end admin check
 
 
-# if running bash
+# running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
     if [ -f "$HOME/.bashrc" ]; then
         . "$HOME/.bashrc"
     fi
 fi
-# end if running bash
+# end running bash
 
-# set PATH so it includes user's private bin if it exists
+# set path
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
-# end set PATH so it includes user's private bin if it exists
+# end set path
