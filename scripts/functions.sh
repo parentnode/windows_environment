@@ -3,12 +3,17 @@ updateStatementInFile(){
     check_statement=$1
 	input_file=$2
 	output_file=$3
-	read_prompt_file=$( < "$output_file")
-	check=$(echo "$read_prompt_file" | grep -E ^"$check_statement" || echo "")
+	read_input_file=$(<"$input_file")
+	read_output_file=$( < "$output_file")
+	check=$(echo "$read_output_file" | grep -E ^"$check_statement" || echo "")
 	if [ -n "$check" ];
 	then 
 		sed -i "/# $check_statement/,/# end $check_statement/d" "$output_file"
-		echo "$read_prompt_file" | sed -n "/# $check_statement/,/# end $check_statement/p" >> "$output_file"
+		echo "$read_input_file" | sed -n "/# $check_statement/,/# end $check_statement/p" >> "$output_file"
+	else
+		echo ""
+		echo "$read_input_file" | sed -n "/# $check_statement/,/# end $check_statement/p" >> "$output_file"
+		echo ""
 	fi	
 }
 
