@@ -15,26 +15,26 @@ updateStatementInFile(){
 
 export -f updateStatementInFile
 
-# Updates the git_prompt function found in .bash_profile  
-copyParentNodeGitPromptToFile(){
-	read_git_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile_git_promt")
-	read_dot_bash_profile=$( < "$HOME/.bash_profile")
-    #echo "$source_file" | sed -n "/$source_text_start/,/$source_text_start/p" >> "$destination_file"
-    ref_prompt=$( echo "$read_git_prompt_file" | sed -n '/# enable git prompt/,/# end enable git prompt/p')
-	replace_prompt=$( echo "$read_dot_bash_profile" | sed -n '/# enable git prompt/,/# end enable git prompt/p')
-	if [ "$ref_prompt" != "$replace_prompt" ]; 
-	then
-		echo "Updated version of parentnode prompt available"
-		sed -i '/# enable git prompt/,/# end enable git prompt/d' $HOME/.bash_profile
-		echo "Deleted old version"
-		echo "$ref_prompt" >> $HOME/.bash_profile
-        echo "" >> $HOME/.bash_profile
-		echo "Added new one"
-	else
-		echo "Allready on newest version"
-	fi
-}
-export -f copyParentNodeGitPromptToFile
+## Updates the git_prompt function found in .bash_profile  
+#copyParentNodeGitPromptToFile(){
+#	read_git_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile_git_promt")
+#	read_dot_bash_profile=$( < "$HOME/.bash_profile")
+#    #echo "$source_file" | sed -n "/$source_text_start/,/$source_text_start/p" >> "$destination_file"
+#    ref_prompt=$( echo "$read_git_prompt_file" | sed -n '/# enable git prompt/,/# end enable git prompt/p')
+#	replace_prompt=$( echo "$read_dot_bash_profile" | sed -n '/# enable git prompt/,/# end enable git prompt/p')
+#	if [ "$ref_prompt" != "$replace_prompt" ]; 
+#	then
+#		echo "Updated version of parentnode prompt available"
+#		sed -i '/# enable git prompt/,/# end enable git prompt/d' $HOME/.bash_profile
+#		echo "Deleted old version"
+#		echo "$ref_prompt" >> $HOME/.bash_profile
+#        echo "" >> $HOME/.bash_profile
+#		echo "Added new one"
+#	else
+#		echo "Allready on newest version"
+#	fi
+#}
+#export -f copyParentNodeGitPromptToFile
 
 # Updates all the sections in the .bash_profile file with files in parentnode dot_profile
 copyParentNodePromptToFile(){
@@ -42,7 +42,7 @@ copyParentNodePromptToFile(){
 	updateStatementInFile "running bash" "/mnt/c/srv/tools/conf/dot_profile" "$HOME/.bash_profile"
 	updateStatementInFile "set path" "/mnt/c/srv/tools/conf/dot_profile" "$HOME/.bash_profile"
 	# simpler version instead of copyParentNodeGitPromptToFile. awaiting approval 
-	#updateStatementInFile "enable git prompt" "/mnt/c/srv/tools/conf/dot_profile_git_promt" "$HOME/.bash_profile"
+	updateStatementInFile "enable git prompt" "/mnt/c/srv/tools/conf/dot_profile_git_promt" "$HOME/.bash_profile"
 	
 	#read_prompt_file=$( < "/mnt/c/srv/tools/conf/dot_profile")
 	#admin_check= $( echo "$read_prompt_file" | grep -E ^"# admin check" || echo "")
@@ -64,7 +64,7 @@ copyParentNodePromptToFile(){
     #    echo "$read_prompt_file" | sed -n '/# set path/,/# end set path/p' >> $HOME/.bash_profile	
 	#fi
 	# Executes a an update on git_prompt() for consistency in placement in script and because of functionality	
-	copyParentNodeGitPromptToFile
+	#copyParentNodeGitPromptToFile
 }
 export -f copyParentNodePromptToFile
 
