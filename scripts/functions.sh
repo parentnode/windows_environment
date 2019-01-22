@@ -3,7 +3,7 @@ updateStatementInFile(){
     check_statement=$1
 	input_file=$2
 	output_file=$3
-	read_prompt_file=$( < "$input_file")
+	read_prompt_file=$( < "$output_file")
 	check=$(echo "$read_prompt_file" | grep -E ^"$check_statement" || echo "")
 	if [ -n "$check" ];
 	then 
