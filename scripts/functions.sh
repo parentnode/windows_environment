@@ -10,10 +10,6 @@ updateStatementInFile(){
 	then 
 		sed -i "/# $check_statement/,/# end $check_statement/d" "$output_file"
 		echo "$read_input_file" | sed -n "/# $check_statement/,/# end $check_statement/p" >> "$output_file"
-	else
-		echo ""
-		echo "$read_input_file" | sed -n "/# $check_statement/,/# end $check_statement/p" >> "$output_file"
-		echo ""
 	fi	
 }
 
