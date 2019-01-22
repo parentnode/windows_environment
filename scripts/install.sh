@@ -16,7 +16,8 @@ curlversion=$(($curl_tar_path/curl.exe -V) 2>/dev/null | grep -E "^curl (7\.[5-9
 # Testing if the file exists and if the version number is above 3.3
 tarversion=$(($curl_tar_path/tar.exe --help) 2>/dev/null | grep -E "^bsdtar (3\.[3-9]+|[4-9]\.[0-9]+)" || echo "")
 
-
+username=$( echo $SUDO_USER)
+export username
 
 # Testing if either conditions for tar or curl are met then you can proceed 
 if [ -z "$curlversion" ] || [ -z "$tarversion" ];then
@@ -36,18 +37,6 @@ echo ""
 echo ""
 echo "Please enter the information required for your install:"
 echo ""
-
-
-# Setting up git user and email
-read -p "Your git username: " git_user
-export git_user
-echo ""
-
-
-read -p "Your git email address: " git_email
-export git_email
-echo ""
-
 
 
 echo "MariaDB Password section"
@@ -101,13 +90,16 @@ echo ""
 echo ""
 echo "Setting Git variables"
 git config --global core.filemode false
-git config --global user.name "$git_user"
-git config --global user.email "$git_email"
+
+# Checks if git credential are allready set, promts for input if not
+git_configured "name"
+git_configured "email"
+
 git config --global credential.helper cache
 git config --global push.default simple
 git config --global core.autocrlf true
 
-username=$( echo $SUDO_USER)
+
 
 
 
