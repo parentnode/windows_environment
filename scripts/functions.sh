@@ -10,7 +10,8 @@ updateStatementInFile(){
 	then 
 		sed -i "/# $check_statement/,/# end $check_statement/d" "$output_file"
 		echo "$read_input_file" | sed -n "/# $check_statement/,/# end $check_statement/p" >> "$output_file"
-	fi	
+	fi
+	echo ""	
 }
 
 export -f updateStatementInFile
@@ -77,7 +78,7 @@ handleAlias(){
             echo "$(trimString "${default_values[line]}")" >> "$HOME/.bash_profile"
         fi
     done
-
+	echo ""
 }
 export -f handleAlias
 
@@ -91,7 +92,7 @@ checkFolderOrCreate(){
 		echo "Create directory $folderName"
     	mkdir -p $folderName;
 	fi
-
+	echo ""
 }
 export -f checkFolderOrCreate
 
@@ -109,6 +110,7 @@ git_configured(){
 	else 
 		echo "Git user-$git_credential allready set"
 	fi
+	echo ""
 }
 export -f git_configured
 
