@@ -1,24 +1,33 @@
 #!/bin/bash -e
 # Downloading and installing redis
-echo "Looking for $redis"
+echo ""
+echo "---Looking for $redis---"
+echo ""
 if [ -e /mnt/c/srv/packages/$redis.zip ] ; then
-	echo "$redis already exist"
+	echo ""
+	echo "---$redis already exist---"
+	echo ""
 else
-
-	echo "Downloading: $redis"
+	echo ""
+	echo "---Downloading: $redis---"
+	echo ""
 	cd /mnt/c/srv/packages/
 	wget -O $redis.zip $redis_path
-
-
-	# Unpack zip
-	unzip $redis.zip -d /mnt/c/srv/packages/
+	echo ""
 
 	echo ""
-	echo "Installing $redis"
+	echo "---Installing $redis---"
+	echo ""
+	# Unpack zip
+	unzip $redis.zip -d /mnt/c/srv/packages/
+	echo ""
+	
 	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$redis.msi" ADD_FIREWALL_RULE=1 /qn
-
+	echo ""
+	echo "---Removing installation files for $redis---"
+	echo ""
 	# Remove installer
 	rm /mnt/c/srv/packages/$redis.msi
-
+	echo ""
 fi
 echo ""

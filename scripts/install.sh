@@ -4,9 +4,15 @@
 echo "--------------------------------------------------------------"
 echo ""
 echo "                 Starting server installation"
-echo "           DO NOT CLOSE UNTILL INSTALL IS COMPLETE" 
-echo  "You will see 'Server install complete' message once it's done"
+echo "           DO NOT CLOSE UNTIL INSTALL ARE COMPLETE" 
+echo " You will see 'Server install complete' message once it's done"
+echo ""
+echo ""
 
+
+echo ""
+echo "--- Curl and Tar ---"
+echo ""
 # Root path for curl and tar 
 curl_tar_path="/mnt/c/Windows/System32"
 
@@ -34,12 +40,14 @@ source /mnt/c/srv/tools/scripts/functions.sh
 source /mnt/c/srv/tools/conf/download_name_link.sh
 
 echo ""
-echo ""
-echo "Please enter the information required for your install:"
+echo "----------------------------------------------------------------------"
+echo "			Please enter the information required for your install:		"
+echo "----------------------------------------------------------------------"
 echo ""
 
-
-echo "MariaDB Password section"
+echo ""
+echo "--- Mariadb Password ---"
+echo ""
 # MariaDB not installed, ask for new root password
 if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mariadb_alt ]; then
 	while [ true ]
@@ -59,12 +67,22 @@ if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mari
 	done
 fi
 
+echo ""
+echo "--- parentNode .bash_profile ---"
+echo ""
 # Existing .bash_profile can show signs of professional use, if none exist create new and copy parentnode prompt
 if [ -e "$HOME/.bash_profile" ];
 then 
     echo ".bash_profile found"
     # Optional bash prompt setup
-    read -p "Do you wish to setup parentnode prompt Y/N (Pressing N may require experienced users):   " optional_prompt
+    echo ""
+	echo "----------------------------------------------------------------------"
+	echo "	Setting up parentnode prompt replaces existing .bash_profile file   "
+	echo "	This is optional but be aware choosing 'N' 'should' only be done  	"
+	echo "				by people who know what they are doing!					"
+	echo "----------------------------------------------------------------------"
+	echo ""
+	read -p "Do you wish to setup parentnode prompt Y/N? :   " optional_prompt
     export optional_prompt
     echo ""
 else
@@ -78,17 +96,19 @@ else
 	echo "$read_dot_profile_git_prompt" >> $HOME/.bash_profile
 	echo "" >> $HOME/.bash_profile
 	handleAlias
-
+	echo ""
+	echo "----------------------------------------------------------------------"
+	echo "				Parentnode .bash_profile are installed					"
+	echo "----------------------------------------------------------------------"
+	echo ""
 fi
 
 
 # SETTING DEFAULT GIT USER
 echo ""
-echo "--- Setting up default user configuration ---"
+echo "--- Setting up Git user configuration ---"
 echo ""
 
-echo ""
-echo "Setting Git variables"
 git config --global core.filemode false
 
 # Checks if git credential are allready set, promts for input if not
@@ -130,11 +150,14 @@ checkFolderOrCreate "/mnt/c/srv/installed-packages"
 echo ""
 
 
+echo ""
+echo "--- Stop Apache if running ---"
+echo ""
+
 # Check if Apache is running
 apache_service_running=$(/mnt/c/Windows/System32/net.exe start | grep -E "Apache" || echo "")
 # Apache is running (possibly other version)
 if [ ! -z "$apache_service_running" ]; then
-
 	echo ""
 	echo "Apache is running. Stopping Apache to continue."
 	# Stop Apache before continuing
@@ -142,6 +165,13 @@ if [ ! -z "$apache_service_running" ]; then
 	echo ""
 
 fi
+
+echo ""
+echo "----------------------------------------------------------------------"
+echo "						Setting up apache.conf"
+echo "					You only need to do this once"
+echo "----------------------------------------------------------------------"
+echo ""
 
 # Setting up apache.conf (only once)
 if [ ! -f "/mnt/c/srv/sites/apache/apache.conf" ]; then
@@ -160,7 +190,12 @@ echo ""
 echo "--- Configuring Apache server and PHP ---"
 echo ""
 
-
+echo ""
+echo "----------------------------------------------------------------------"
+echo "						Setting up php.ini"
+echo "					and required files for CURL"
+echo "----------------------------------------------------------------------"
+echo ""
 # Setting up php.ini
 echo "Copying php.ini to php722/php.ini"
 cp "/mnt/c/srv/tools/conf/php.ini" "/mnt/c/srv/installed-packages/php722/php.ini"
@@ -173,28 +208,34 @@ cp "/mnt/c/srv/installed-packages/php722/libeay32.dll" "/mnt/c/srv/installed-pac
 cp "/mnt/c/srv/installed-packages/php722/ssleay32.dll" "/mnt/c/srv/installed-packages/apache24/bin/ssleay32.dll"
 echo ""
 
+echo ""
+echo "--- Setting up httpd.conf ---"
+echo ""
 
 # Setting up httpd.conf
 echo "Copying httpd config file to apache24/conf"
 cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
 echo ""
 
+echo ""
+echo "--- Adding SSL cert ---"
+echo ""
 
 # Adding SSL cert
 echo "Copying cacert.pem to installed-packages"
 cp "/mnt/c/srv/tools/conf/cacert.pem" "/mnt/c/srv/installed-packages/cacert.pem"
 echo ""
 
-
 echo ""
-echo "Starting apache server"
+echo "--- Starting apache server ---"
+echo ""
 sudo /mnt/c/Windows/System32/net.exe start Apache2.4 exit 2>/dev/null || echo ""
 
 
 
 echo ""
 echo "        Server install complete "
-echo "---------------------------------------------"
+echo "--------------------------------------------------------------"
 echo ""
 
 

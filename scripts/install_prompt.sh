@@ -3,20 +3,26 @@
 # First check makes sure we don't override a user's custom alias
 if [ "$(checkFileContent "$HOME/.bash_profile" "alias")" == "Found" ];
 then
-    echo "Previous alias statement(s)"
+    echo ""
+    echo "---Previous alias statement(s)---"
+    echo ""
     # Second tjeck if git_prompt are found
     if [ "$(checkFileContent "$HOME/.bash_profile" "git_prompt ()")" == "Found" ];
     then
         echo ""
-        echo "Seems like you have installed parentnode prompt"
+        echo "---Seems like you have installed parentnode prompt---"
+        echo ""
         # Updates git_prompt()
         copyParentNodePromptToFile
         echo ""
     else 
         echo ""
-        echo "Seems like you haven't installed parentnode prompt"
+        echo "---Seems like you haven't installed parentnode prompt---"
         echo ""
-        echo "Installing"
+        
+        echo ""
+        echo "---Installing---"
+        echo ""
         # Installs git_prompt()
         copyParentNodePromptToFile
         echo ""
@@ -29,14 +35,19 @@ else
     # or if only base .bash_profile are created 
     if [ "$(checkFileContent "$HOME/.bash_profile" "git_prompt ()")" == "Found" ];
     then
-        echo "You allready have parentNode Configuration"
+        echo ""
+        echo "---You allready have parentNode Configuration---"
         copyParentNodePromptToFile
+        echo ""
     else 
-        echo "Copying parentNode Configuration"
+        echo ""
+        echo "---Copying parentNode Configuration---"
         copyParentNodePromptToFile
-
+        echo ""
     fi
     # Installs alias
-    handleAlias    
+    echo ""
+    handleAlias
+    echo ""    
 fi
 
