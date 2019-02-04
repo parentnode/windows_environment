@@ -69,9 +69,11 @@ echo ""
 if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mariadb_alt ]; then
 	while [ true ]
 	do
-    	read -s -p "Enter new root DB password: " db_root_password
+    	echo "Passwords can only start with a letter and only contain letters and numbers"
 		echo ""
-    	read -s -p "Verify new root DB password: " db_root_password2    
+		read -s -p "Enter mariaDB password: " db_root_password
+		echo ""
+    	read -s -p "Verify mariaDB password: " db_root_password2    
     	if [ $db_root_password != $db_root_password2 ]; then
     		echo ""
     		echo "Not same"
