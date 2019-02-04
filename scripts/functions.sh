@@ -102,13 +102,13 @@ git_configured(){
 	credential_configured=$(git config --global user.$git_credential || echo "")
 	if [ -z "$credential_configured" ];
 	then 
-		echo "No previous $git_credential entered"
+		echo "No previous git user.$git_credential entered"
 		echo
-		read -p "Enter your new $git_credential: " git_new_value
+		read -p "Enter your new user.$git_credential: " git_new_value
 		git config --global user.$git_credential "$git_new_value"
 		echo
 	else 
-		echo "Git user-$git_credential allready set"
+		echo "Git user.$git_credential allready set"
 	fi
 	echo ""
 }

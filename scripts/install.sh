@@ -9,9 +9,9 @@ echo ""
 echo ""
 
 
-echo ""
+echo "--------------------"
 echo "--- Curl and Tar ---"
-echo ""
+echo "--------------------"
 # Root path for curl and tar 
 curl_tar_path="/mnt/c/Windows/System32"
 
@@ -44,8 +44,9 @@ echo "Please enter the information required for your install:"
 echo "-------------------------------------------------------"
 echo ""
 
-echo ""
+echo "------------------------"
 echo "--- Mariadb Password ---"
+echo "------------------------"
 echo ""
 # MariaDB not installed, ask for new root password
 if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mariadb_alt ]; then
@@ -68,8 +69,9 @@ if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mari
 	done
 fi
 
-echo ""
-echo "--- parentNode .bash_profile ---"
+echo "------------------------"
+echo "Parentnode .bash_profile"
+echo "------------------------"
 echo ""
 
 # Existing .bash_profile can show signs of professional use, if none exist create new and copy parentnode prompt
@@ -108,9 +110,9 @@ fi
 
 
 # SETTING DEFAULT GIT USER
-echo ""
+echo "-----------------------------------------"
 echo "--- Setting up Git user configuration ---"
-echo ""
+echo "-----------------------------------------"
 
 git config --global core.filemode false
 
@@ -136,9 +138,9 @@ fi
 
 
 
-echo ""
+echo "----------------------------"
 echo "--- Checking Directories ---"
-echo ""
+echo "----------------------------"
 
 
 # Base parentnode project location
@@ -153,9 +155,9 @@ checkFolderOrCreate "/mnt/c/srv/installed-packages"
 echo ""
 
 
-echo ""
+echo "------------------------------"
 echo "--- Stop Apache if running ---"
-echo ""
+echo "------------------------------"
 
 # Check if Apache is running
 apache_service_running=$(/mnt/c/Windows/System32/net.exe start | grep -E "Apache" || echo "")
@@ -189,9 +191,9 @@ fi
 bash /mnt/c/srv/tools/scripts/install_software.sh
 
 
-echo ""
+echo "-----------------------------------------"
 echo "--- Configuring Apache server and PHP ---"
-echo ""
+echo "-----------------------------------------"
 
 echo ""
 echo "----------------------------------------------"
@@ -210,27 +212,27 @@ cp "/mnt/c/srv/installed-packages/php722/libeay32.dll" "/mnt/c/srv/installed-pac
 cp "/mnt/c/srv/installed-packages/php722/ssleay32.dll" "/mnt/c/srv/installed-packages/apache24/bin/ssleay32.dll"
 echo ""
 
-echo ""
+echo "-----------------------------"
 echo "--- Setting up httpd.conf ---"
-echo ""
+echo "-----------------------------"
 
 # Setting up httpd.conf
 echo "Copying httpd config file to apache24/conf"
 cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
 echo ""
 
-echo ""
+echo "-----------------------"
 echo "--- Adding SSL cert ---"
-echo ""
+echo "-----------------------"
 
 # Adding SSL cert
 echo "Copying cacert.pem to installed-packages"
 cp "/mnt/c/srv/tools/conf/cacert.pem" "/mnt/c/srv/installed-packages/cacert.pem"
 echo ""
 
-echo ""
+echo "------------------------------"
 echo "--- Starting apache server ---"
-echo ""
+echo "------------------------------"
 sudo /mnt/c/Windows/System32/net.exe start Apache2.4 exit 2>/dev/null || echo ""
 
 
