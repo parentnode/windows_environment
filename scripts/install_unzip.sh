@@ -3,7 +3,7 @@
 echo ""
 echo "---Checking unzip---"
 echo ""
-install_unzip=$(unzip || echo "")
+install_unzip=$(unzip 2>/dev/null || echo "")
 if [ "$install_unzip" = "" ]; then
 	sudo apt-get --assume-yes install unzip
 else
