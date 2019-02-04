@@ -1,68 +1,77 @@
 #!/bin/bash -e
-echo ""
+echo "---------------------------"
 echo "--- Installing software ---"
+echo "---------------------------"
 echo ""
 
 # Clean up
-echo ""
+echo "------------"
 echo "Cleaning up:"
 sudo apt-get --assume-yes autoremove
+echo "------------"
 echo ""
 
 # Install unzip to unpack downloaded packages
-echo ""
+echo "-----"
 echo "Unzip"
-echo ""
+echo "-----"
 bash /mnt/c/srv/tools/scripts/install_unzip.sh
+echo ""
 
 # Downloading and installing c++ compiler
-echo ""
+echo "------------"
 echo "C++ Compiler"
-echo ""
+echo "------------"
 bash /mnt/c/srv/tools/scripts/install_vc_compiler.sh
+echo ""
 
 # Downloading and installing mariaDB
-echo ""
+echo "-------"
 echo "MariaDB"
-echo ""
+echo "-------"
 bash /mnt/c/srv/tools/scripts/install_mariadb.sh
+echo ""
 
 # Downloading and installing php
-echo ""
+echo "---"
 echo "PHP"
-echo ""
+echo "---"
 bash /mnt/c/srv/tools/scripts/install_php.sh
+echo ""
 
 # Downloading and installing apache
-echo ""
+echo "------"
 echo "Apache"
-echo ""
+echo "------"
 bash /mnt/c/srv/tools/scripts/install_apache.sh
+echo ""
 
 # Downloading and installing imagick
-echo ""
+echo "-----------"
 echo "ImageMagick"
-echo ""
+echo "-----------"
 bash /mnt/c/srv/tools/scripts/install_imagick.sh
+echo ""
 
 # Downloading and installing redis
-echo ""
+echo "-----"
 echo "Redis"
-echo ""
+echo "-----"
 bash /mnt/c/srv/tools/scripts/install_redis.sh
+echo ""
 
 # Downloading and installing ffmpeg
-echo ""
+echo "------"
 echo "FFMPEG"
-echo ""
+echo "------"
 bash /mnt/c/srv/tools/scripts/install_ffmpeg.sh
+echo ""
 
 # Downloading and installing wkhtmltopdf
-echo ""
+echo "-------------"
 echo "WKHTML to PDF"
-echo ""
+echo "-------------"
 bash /mnt/c/srv/tools/scripts/install_wkhtmltopdf.sh
-
 echo ""
 
 
