@@ -53,15 +53,15 @@ if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mari
 	while [ true ]
 	do
     	read -s -p "Enter new root DB password: " db_root_password
-    	export $db_root_password
 		echo ""
     	read -s -p "Verify new root DB password: " db_root_password2    
-    	if [ "$db_root_password" != "$db_root_password2" ]; then
+    	if [ db_root_password != db_root_password2 ]; then
     		echo ""
     		echo "Not same"
     	else 
     		echo ""
     		echo "Same"
+    		export db_root_password
     		break
     	fi	
 	done
