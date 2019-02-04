@@ -65,7 +65,6 @@ if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mari
     		break
     	fi	
 	done
-	export $db_root_password
 fi
 
 echo ""
