@@ -1,23 +1,5 @@
 #!/bin/bash -e
 
-echo " oddddddddddhso/::::/+shddddddddddo  "                               
-echo " oddddddho:`            `:ohddddddo "                                
-echo " oddddy:                    -sddddo "                                
-echo " oddd/      ...---::-.`       :hddo "                                
-echo " odh.       -/hdh:::+sdy/      `ydo "                                
-echo " sd.          sdy     -dds      `hy "                                
-echo ".d/           sdy      ydd       :d-"                                
-echo "/d`           sdy     .dds        ho"                                
-echo "+h            sdh---:ody/         yo"                                
-echo "/d.           sdh///:-`          `d+"                                
-echo "`do           sdy                /d."                                
-echo " sd:          sdy               -ds "                                
-echo " odd:       /ohdho+.           -hdo "                                
-echo " odddo`                      `+dddo "                                
-echo " odddddo.                  .+hddddo "                                
-echo " odddddddho:.          `:+ydddddddo "                                
-echo " oddddddddddddysoo+osyhdddddddddddo  "
-  
 echo "--------------------------------------------------------------"
 echo ""
 echo " Installing parentNode in windows subsystem for linux"
