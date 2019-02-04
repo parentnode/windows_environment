@@ -8,6 +8,10 @@ if [ -e /mnt/c/srv/packages/$vc_compiler.zip ] || [ -e /mnt/c/srv/packages/$vc_c
 	echo "---$vc_compiler already exists---"
 	echo "---------------------------------"
 else
+	echo "----------------------------------"
+	echo "---$vc_compiler does not exists---"
+	echo "----------------------------------"
+	echo ""
 	echo "------------------------------"
 	echo "---Downloading $vc_compiler---"
 	echo "------------------------------"

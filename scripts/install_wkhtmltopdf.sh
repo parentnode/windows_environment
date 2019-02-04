@@ -15,15 +15,16 @@ else
 	if [ -e /mnt/c/srv/installed-packages/wkhtmltopdf ] ; then
 		sudo rm -R /mnt/c/srv/installed-packages/wkhtmltopdf
 	fi
-	echo ""
+	echo "-------------------------"
 	echo "Downloading: $wkhtmltopdf"
-	echo ""
+	echo "-------------------------"
 	cd /mnt/c/srv/packages/
 	wget -O $wkhtmltopdf.zip $wkhtmltopdf_path 
 	echo ""
 	
-	echo ""
+	echo "-----------------------------"
 	echo "---Installing $wkhtmltopdf---"
+	echo "-----------------------------"
 	unzip $wkhtmltopdf.zip -d /mnt/c/srv/installed-packages/wkhtmltopdf
 	echo ""
 fi
