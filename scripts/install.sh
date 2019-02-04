@@ -40,9 +40,9 @@ source /mnt/c/srv/tools/scripts/functions.sh
 source /mnt/c/srv/tools/conf/download_name_link.sh
 
 echo ""
-echo "----------------------------------------------------------------------"
-echo "			Please enter the information required for your install:		"
-echo "----------------------------------------------------------------------"
+echo "-------------------------------------------------------"
+echo "Please enter the information required for your install:"
+echo "-------------------------------------------------------"
 echo ""
 
 echo ""
@@ -99,9 +99,9 @@ else
 	echo "" >> $HOME/.bash_profile
 	handleAlias
 	echo ""
-	echo "----------------------------------------------------------------------"
-	echo "				Parentnode .bash_profile are installed					"
-	echo "----------------------------------------------------------------------"
+	echo "--------------------------------------"
+	echo "Parentnode .bash_profile are installed"
+	echo "--------------------------------------"
 	echo ""
 fi
 
@@ -169,10 +169,10 @@ if [ ! -z "$apache_service_running" ]; then
 fi
 
 echo ""
-echo "----------------------------------------------------------------------"
-echo "						Setting up apache.conf"
-echo "					You only need to do this once"
-echo "----------------------------------------------------------------------"
+echo "-----------------------------"
+echo "	 Setting up apache.conf    "
+echo "You only need to do this once"
+echo "-----------------------------"
 echo ""
 
 # Setting up apache.conf (only once)
@@ -193,10 +193,9 @@ echo "--- Configuring Apache server and PHP ---"
 echo ""
 
 echo ""
-echo "----------------------------------------------------------------------"
-echo "						Setting up php.ini"
-echo "					and required files for CURL"
-echo "----------------------------------------------------------------------"
+echo "----------------------------------------------"
+echo "Setting up php.ini and required files for CURL"
+echo "----------------------------------------------"
 echo ""
 # Setting up php.ini
 echo "Copying php.ini to php722/php.ini"
