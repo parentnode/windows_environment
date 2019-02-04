@@ -12,6 +12,7 @@ echo ""
 echo "--------------------"
 echo "--- Curl and Tar ---"
 echo "--------------------"
+echo ""
 # Root path for curl and tar 
 curl_tar_path="/mnt/c/Windows/System32"
 
@@ -21,6 +22,7 @@ curlversion=$(($curl_tar_path/curl.exe -V) 2>/dev/null | grep -E "^curl (7\.[5-9
 # Testing if the file exists and if the version number is above 3.3
 tarversion=$(($curl_tar_path/tar.exe --help) 2>/dev/null | grep -E "^bsdtar (3\.[3-9]+|[4-9]\.[0-9]+)" || echo "")
 
+echo ""
 username=$( echo $SUDO_USER)
 export username
 
@@ -30,7 +32,9 @@ if [ -z "$curlversion" ] || [ -z "$tarversion" ];then
 	echo "### Please Check you have all available updates ###"
 	exit
 else
+	echo ""
 	echo "curl and tar are up to date you are all set"
+	echo ""
 fi
 
 # Including the functions we need for the installation
@@ -56,19 +60,23 @@ if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mari
 		echo ""
 		read -s -p "Enter mariaDB password: " db_root_password
 		echo ""
-    	read -s -p "Verify mariaDB password: " db_root_password2    
+    	read -s -p "Verify mariaDB password: " db_root_password2
+		echo ""    
     	if [ $db_root_password != $db_root_password2 ]; then
     		echo ""
     		echo "Not same"
+			echo ""
     	else 
     		echo ""
     		echo "Same"
+			echo ""
     		export db_root_password
     		break
     	fi	
 	done
 fi
 
+echo ""
 echo "------------------------"
 echo "Parentnode .bash_profile"
 echo "------------------------"
@@ -113,7 +121,7 @@ fi
 echo "-----------------------------------------"
 echo "--- Setting up Git user configuration ---"
 echo "-----------------------------------------"
-
+echo ""
 git config --global core.filemode false
 
 # Checks if git credential are allready set, promts for input if not
@@ -137,11 +145,11 @@ else
 fi
 
 
-
+echo ""
 echo "----------------------------"
 echo "--- Checking Directories ---"
 echo "----------------------------"
-
+echo ""
 
 # Base parentnode project location
 checkFolderOrCreate "/mnt/c/srv/sites/parentnode"
