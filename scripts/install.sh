@@ -61,9 +61,9 @@ if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mari
     	else 
     		echo ""
     		echo "Same"
-    		export $db_root_password
     		break
     	fi	
+		export $db_root_password
 	done
 fi
 
