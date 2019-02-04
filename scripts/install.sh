@@ -70,6 +70,7 @@ fi
 echo ""
 echo "--- parentNode .bash_profile ---"
 echo ""
+
 # Existing .bash_profile can show signs of professional use, if none exist create new and copy parentnode prompt
 if [ -e "$HOME/.bash_profile" ];
 then 
@@ -86,8 +87,9 @@ then
     export optional_prompt
     echo ""
 else
-	
-	sudo touch $HOME/.bash_profile
+	echo ".bash_profile not found"
+	sudo touch "$HOME/.bash_profile"
+	sudo chmod 777 "$HOME/.bash_profile"
 	read_dot_profile=$( < "/mnt/c/srv/tools/conf/dot_profile")
 	read_dot_profile_git_prompt=$( < "/mnt/c/srv/tools/conf/dot_profile_git_promt")
 	read_dot_profile_alias=$( < "/mnt/c/srv/tools/conf/dot_profile_alias")
