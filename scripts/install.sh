@@ -2,9 +2,9 @@
 
 echo "--------------------------------------------------------------"
 echo ""
-echo " Installing parentNode in windows subsystem for linux"
-echo "        DO NOT CLOSE UNTIL INSTALL ARE COMPLETE" 
-echo " You will see 'Server install complete' message once it's done"
+echo "Installing parentNode in windows subsystem for linux"
+echo "DO NOT CLOSE UNTIL INSTALL ARE COMPLETE" 
+echo "You will see 'Install complete' message once it's done"
 echo ""
 echo ""
 
@@ -246,7 +246,9 @@ sudo /mnt/c/Windows/System32/net.exe start Apache2.4 exit 2>/dev/null || echo ""
 
 
 echo ""
-echo "        parentNode installed in windows subsystem for linux "
+echo "parentNode installed in windows subsystem for linux "
+ehco ""
+echo "Install complete"
 echo "--------------------------------------------------------------"
 echo ""
 
