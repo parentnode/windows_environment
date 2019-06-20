@@ -22,7 +22,7 @@ getUsername(){
 export -f getUsername
 
 enableSuperCow(){
-	echo "$1 power"
+	echo "cow power"
 	#sudo ls &>/dev/null
 }
 export -f enableSuperCow
