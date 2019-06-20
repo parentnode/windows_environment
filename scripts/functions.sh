@@ -22,8 +22,7 @@ getUsername(){
 export -f getUsername
 
 enableSuperCow(){
-	echo "cow power"
-	#sudo ls &>/dev/null
+	sudo ls &>/dev/null
 }
 export -f enableSuperCow
 
