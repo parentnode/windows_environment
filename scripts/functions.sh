@@ -16,6 +16,10 @@ updateStatementInFile(){
 
 export -f updateStatementInFile
 
+getUsername(){
+	echo "$SUDO_USER"
+}
+export -f getUsername
 # Updates all the sections in the .bash_profile file with files in parentnode dot_profile
 copyParentNodePromptToFile(){
 	updateStatementInFile "admin check" "/mnt/c/srv/tools/conf/dot_profile" "$HOME/.bash_profile"
