@@ -5,3 +5,4 @@
 /mnt/c/srv/sites/parentnode/windows_environment/tests/enable_super_cow.sh
 sudo /mnt/c/srv/sites/parentnode/windows_environment/tests/get_username.sh
 sudo /mnt/c/srv/sites/parentnode/windows_environment/tests/output_handler.sh
+sudo /mnt/c/srv/sites/parentnode/windows_environment/tests/ask.sh
