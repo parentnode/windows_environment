@@ -102,6 +102,18 @@ ask(){
 }
 export -f ask
 
+# Check if program/service are installed
+testCommand(){
+# Usage: returns a true if a program or service are located in 
+# P1: kommando
+# P2: array of valid responses
+	
+
+
+
+}
+export -f testCommand
+
 updateStatementInFile(){
     check_statement=$1
 	input_file=$2
