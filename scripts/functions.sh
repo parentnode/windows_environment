@@ -120,6 +120,13 @@ testCommand(){
 }
 export -f testCommand
 
+checkGitCredential(){
+	value=$(git config user.$1)
+	echo "$value"
+
+}
+export -f checkGitCredential
+
 updateStatementInFile(){
     check_statement=$1
 	input_file=$2
