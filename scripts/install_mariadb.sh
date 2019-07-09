@@ -26,7 +26,7 @@ else
 	echo "-------------------------"
 	# Install MariaDB with password and servicename
 	#echo "Dette er mariadb password $db_root_password"
-	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$mariadb.msi" PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
+	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$mariadb.msi" /qn ACCEPT_EULA=1 PASSWORD="$db_root_password" SERVICENAME="MariaDB"
 	echo ""
 
 	echo "----------------------------------------------"
