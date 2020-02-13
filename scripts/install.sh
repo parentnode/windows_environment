@@ -217,7 +217,7 @@ echo ""
 
 
 # Prepare for download
-wget --spider --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --save-cookies cookies.txt --header="Referer: https://parentnode.dk" https://parentnode.dk
+wget --spider --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --save-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" https://parentnode.dk
 
 # Custom parameters for wget download from parentNode website
 wget_params='--user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies cookies.txt --header="Referer: https://parentnode.dk"'
@@ -231,7 +231,7 @@ else
 
 	echo "Downloading $vc_compiler"
 	cd /mnt/c/srv/packages/
-	wget -O $vc_compiler.zip $wget_params $vc_compiler_path
+	wget -O $vc_compiler.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $vc_compiler_path
 
 	# Unpack zip
 	unzip $vc_compiler.zip -d /mnt/c/srv/packages/
@@ -255,7 +255,7 @@ else
 
 	echo "Downloading: $mariadb"
 	cd /mnt/c/srv/packages/
-	wget -O $mariadb.zip $wget_params $mariadb_path
+	wget -O $mariadb.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $mariadb_path
 
 	# Unpack zip
 	unzip $mariadb.zip -d /mnt/c/srv/packages/
@@ -303,7 +303,7 @@ else
 
 	echo "Downloading: $apache"
 	cd /mnt/c/srv/packages/
-	wget -O $apache.zip $wget_params $apache_path
+	wget -O $apache.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $apache_path
 
 	echo ""
 	echo "Installing $apache"
@@ -333,7 +333,7 @@ else
 
 	echo "Downloading $php"
     cd /mnt/c/srv/packages
-	wget -O $php.zip $wget_params $php_path 
+	wget -O $php.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $php_path 
 
 	echo ""
 	echo "Installing $php"
@@ -352,7 +352,7 @@ else
 
 	echo "Downloading: $imagick"
 	cd /mnt/c/srv/packages/
-	wget -O $imagick.zip $wget_params $imagick_path
+	wget -O $imagick.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $imagick_path
 
 
 	# Unpack zip
@@ -377,7 +377,7 @@ else
 
 	echo "Downloading: $redis"
 	cd /mnt/c/srv/packages/
-	wget -O $redis.zip $wget_params $redis_path
+	wget -O $redis.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $redis_path
 
 
 	# Unpack zip
@@ -407,7 +407,7 @@ else
 
 	echo "Downloading: $ffmpeg"
 	cd /mnt/c/srv/packages/
-	wget -O $ffmpeg.zip $wget_params $ffmpeg_path 
+	wget -O $ffmpeg.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $ffmpeg_path 
 
 	echo ""
 	echo "Installing $ffmpeg"
@@ -430,7 +430,7 @@ else
 
 	echo "Downloading: $wkhtmltopdf"
 	cd /mnt/c/srv/packages/
-	wget -O $wkhtmltopdf.zip $wget_params $wkhtmltopdf_path 
+	wget -O $wkhtmltopdf.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $wkhtmltopdf_path 
 
 	echo ""
 	echo "Installing $wkhtmltopdf"
