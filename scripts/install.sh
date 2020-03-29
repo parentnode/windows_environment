@@ -86,7 +86,6 @@ else
     exit 1
 
 fi
-exit
 
 # tar command available
 # TODO: This finds the tar command in bash - we need to check if it exists in CMD
@@ -101,6 +100,7 @@ else
 
 fi
 
+exit
 
 
 echo ""
