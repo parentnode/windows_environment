@@ -100,7 +100,6 @@ else
 
 fi
 
-exit
 
 
 echo ""
