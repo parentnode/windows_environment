@@ -5,48 +5,58 @@
 
 # Setting c++ compiler name and download link"
 vc_compiler="vc_redist-x64"
+export vc_compiler
 #vc_compiler_path="https://parentnode.dk/download/72/HTML-ikg9m2me/vc_redist-x64.zip"
 vc_compiler_path="https://parentnode.dk/download/72/HTMLEDITOR-html-k41fmkh4/vc_redist-x64.zip"
+export vc_compiler_path
 # Old file is also valid (and should not cause re-install)
 vc_compiler_alt="VC_redist.x64.exe"
-
+export vc_compiler_alt
 # Setting mariadb name and download link"
 mariadb="mariadb-10-2-12-winx64"
+export mariadb
 #mariadb_path="https://parentnode.dk/download/72/HTML-uwogdi5x/mariadb-10-2-12-winx64.zip"
 mariadb_path="https://parentnode.dk/download/72/HTMLEDITOR-html-8yadxckk/mariadb-10-2-12-winx64.zip"
+export mariadb_path
 # Old file is also valid (and should not cause re-install)
 mariadb_alt="mariadb-10.2.12-winx64.msi"
-
+export mariadb_alt
 # Setting apache name and download link"
 apache="apachehttpd-2-4-33-win64-vc15"
+export apache
 #apache_path="https://parentnode.dk/download/72/HTML-i59ty49r/apachehttpd-2-4-33-win64-vc15.zip"
 apache_path="https://parentnode.dk/download/72/HTMLEDITOR-html-476aartg/apachehttpd-2-4-33-win64-vc15.zip"
-
+export apache_path
 # Setting php name and download link"
 php="php-7-2-2-win32-vc15-x64-redis-4"
+export php
 #php_path="https://parentnode.dk/download/72/HTML-aqwla8g3/php-7-2-2-win32-vc15-x64-redis-4.zip"
 php_path="https://parentnode.dk/download/72/HTMLEDITOR-html-qxzr9nzg/php-7-2-2-win32-vc15-x64-redis-4.zip"
-
+export php_path
 # Getting imagick name and download link"
 imagick="imagemagick-6-9-9-37-q16-x64-dll"
+export imagick
 #imagick_path="https://parentnode.dk/download/72/HTML-940u1z9m/imagemagick-6-9-9-37-q16-x64-dll.zip"
 imagick_path="https://parentnode.dk/download/72/HTMLEDITOR-html-j4spicwi/imagemagick-6-9-9-37-q16-x64-dll.zip"
-
+export imagick_path
 # Setting redis name and download link"
 redis="redis-x64-4-0-2-2"
+export redis
 #redis_path="https://parentnode.dk/download/72/HTML-wc8evnh2/redis-x64-4-0-2-2.zip"
 redis_path="https://parentnode.dk/download/72/HTMLEDITOR-html-7up44f85/redis-x64-4-0-2-2.zip"
-
+export redis_path
 # Setting ffmpeg name and download link"
 ffmpeg="ffmpeg-20180129-d4967c0-win64"
+export ffmpeg
 #ffmpeg_path="https://parentnode.dk/download/72/HTML-knnkg3yn/ffmpeg-20180129-d4967c0-win64.zip"
 ffmpeg_path="https://parentnode.dk/download/72/HTMLEDITOR-html-f8ocphuu/ffmpeg-20180129-d4967c0-win64.zip"
-
+export ffmpeg_path
 # Setting wkhtml name and download link"
 wkhtmltopdf="wkhtmltopdf-static-0-12-3"
+export wkhtmltopdf
 #wkhtmltopdf_path="https://parentnode.dk/download/72/HTML-g2y0tm22/wkhtmltopdf-static-0-12-3.zip"
 wkhtmltopdf_path="https://parentnode.dk/download/72/HTMLEDITOR-html-bnyx276m/wkhtmltopdf-static-0-12-3.zip"
-
+export wkhtmltopdf_path
 
 
 echo "--------------------------------------------------------------"
@@ -76,7 +86,7 @@ else
     exit 1
 
 fi
-
+exit
 
 # tar command available
 # TODO: This finds the tar command in bash - we need to check if it exists in CMD
