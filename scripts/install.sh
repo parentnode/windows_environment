@@ -1,7 +1,5 @@
 #!/bin/bash -e
 
-<<<<<<< HEAD
-=======
 
 # Defining paths and download urls
 
@@ -51,7 +49,6 @@ wkhtmltopdf_path="https://parentnode.dk/download/72/HTMLEDITOR-html-bnyx276m/wkh
 
 
 
->>>>>>> a0b7a97315844fef9056b98b52755915317438ea
 echo "--------------------------------------------------------------"
 echo ""
 echo "Installing parentNode in windows subsystem for linux"
