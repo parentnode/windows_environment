@@ -57,16 +57,6 @@ echo "You will see 'Install complete' message once it's done"
 echo ""
 echo ""
 
-<<<<<<< HEAD
-
-echo "--------------------"
-echo "--- Curl and Tar ---"
-echo "--------------------"
-echo ""
-# Root path for curl and tar 
-curl_tar_path="/mnt/c/Windows/System32"
-=======
->>>>>>> a0b7a97315844fef9056b98b52755915317438ea
 
 
 echo ""
@@ -75,17 +65,11 @@ echo "--- Confirming Windows environment ---"
 echo ""
 echo ""
 
-<<<<<<< HEAD
-echo ""
-username=$( echo $SUDO_USER)
-export username
-=======
 # Check if windows environment
 if grep -qE "(Microsoft|WSL)" /proc/version &> /dev/null ; then
     echo "Windows 10 Bash: OK"
 	echo ""
 else
->>>>>>> a0b7a97315844fef9056b98b52755915317438ea
 
     echo "ERROR: Linux Bash for Windows does not exist"
     echo "Install Linux Bash for Windows and try again"
@@ -100,17 +84,11 @@ if grep -qE "^bsdtar" tar --version &> /dev/null ; then
     echo "System is updated"
 	echo ""
 else
-<<<<<<< HEAD
-	echo ""
-	echo "curl and tar are up to date you are all set"
-	echo ""
-=======
 
     echo "ERROR: Windows has not been fully updated"
     echo "Update Windows and try again"
     exit 1
 
->>>>>>> a0b7a97315844fef9056b98b52755915317438ea
 fi
 
 
@@ -121,73 +99,6 @@ echo "Please enter the information required for your install:"
 echo "-------------------------------------------------------"
 echo ""
 
-<<<<<<< HEAD
-echo "------------------------"
-echo "--- Mariadb Password ---"
-echo "------------------------"
-echo ""
-# MariaDB not installed, ask for new root password
-if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mariadb_alt ]; then
-	while [ true ]
-	do
-    	echo "Passwords can only start with a letter and only contain letters and numbers"
-		echo ""
-		read -s -p "Enter mariaDB password: " db_root_password
-		echo ""
-    	read -s -p "Verify mariaDB password: " db_root_password2
-		echo ""    
-    	if [ $db_root_password != $db_root_password2 ]; then
-    		echo ""
-    		echo "Not same"
-			echo ""
-    	else 
-    		echo ""
-    		echo "Same"
-			echo ""
-    		export db_root_password
-    		break
-    	fi	
-	done
-fi
-
-echo ""
-echo "------------------------"
-echo "Parentnode .bash_profile"
-echo "------------------------"
-echo ""
-
-# Existing .bash_profile can show signs of professional use, if none exist create new and copy parentnode prompt
-if [ -e "$HOME/.bash_profile" ];
-then 
-    echo ".bash_profile found"
-    # Optional bash prompt setup
-    echo ""
-	echo "----------------------------------------------------------------------"
-	echo "	Setting up parentnode prompt replaces existing .bash_profile file   "
-	echo "	This is optional but be aware choosing 'N' 'should' only be done  	"
-	echo "				by people who know what they are doing!					"
-	echo "----------------------------------------------------------------------"
-	echo ""
-	read -p "Do you wish to setup parentnode prompt Y/N? :   " optional_prompt
-    export optional_prompt
-    echo ""
-else
-	echo ".bash_profile not found"
-	sudo touch "$HOME/.bash_profile"
-	sudo chmod 777 "$HOME/.bash_profile"
-	read_dot_profile=$( < "/mnt/c/srv/tools/conf/dot_profile")
-	read_dot_profile_git_prompt=$( < "/mnt/c/srv/tools/conf/dot_profile_git_promt")
-	read_dot_profile_alias=$( < "/mnt/c/srv/tools/conf/dot_profile_alias")
-	echo "$read_dot_profile" >> $HOME/.bash_profile
-	echo "" >> $HOME/.bash_profile
-	echo "$read_dot_profile_git_prompt" >> $HOME/.bash_profile
-	echo "" >> $HOME/.bash_profile
-	handleAlias
-	echo ""
-	echo "--------------------------------------"
-	echo "Parentnode .bash_profile are installed"
-	echo "--------------------------------------"
-=======
 # Setting up git user and email
 read -p "Your git username: " git_user
 export git_user
@@ -202,7 +113,6 @@ echo ""
 if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mariadb_alt]; then
 	read -s -p "Enter new root DB password: " db_root_password
 	export db_root_password
->>>>>>> a0b7a97315844fef9056b98b52755915317438ea
 	echo ""
 fi
 
@@ -268,14 +178,8 @@ fi;
 echo ""
 
 
-<<<<<<< HEAD
-echo "------------------------------"
-echo "--- Stop Apache if running ---"
-echo "------------------------------"
-=======
 # Check if Apache is installed
 apache_service_installed=$(/mnt/c/Windows/System32/sc.exe queryex type= service state= all | grep -E "Apache" || echo "")
->>>>>>> a0b7a97315844fef9056b98b52755915317438ea
 
 # Check if Apache is running
 apache_service_running=$(/mnt/c/Windows/System32/net.exe start | grep -E "Apache" || echo "")
@@ -289,18 +193,6 @@ if [ ! -z "$apache_service_running" ]; then
 
 fi
 
-<<<<<<< HEAD
-echo ""
-echo "-----------------------------"
-echo "	 Setting up apache.conf    "
-echo "You only need to do this once"
-echo "-----------------------------"
-echo ""
-
-# Setting up apache.conf (only once)
-if [ ! -f "/mnt/c/srv/sites/apache/apache.conf" ]; then
-=======
->>>>>>> a0b7a97315844fef9056b98b52755915317438ea
 
 
 echo ""
@@ -589,11 +481,6 @@ echo "Copying cacert.pem to installed-packages"
 cp "/mnt/c/srv/tools/conf/cacert.pem" "/mnt/c/srv/installed-packages/cacert.pem"
 echo ""
 
-<<<<<<< HEAD
-echo "------------------------------"
-echo "--- Starting apache server ---"
-echo "------------------------------"
-=======
 
 # Setting up apache.conf (only once)
 if [ ! -f "/mnt/c/srv/sites/apache/apache.conf" ]; then
@@ -608,7 +495,6 @@ fi
 
 echo ""
 echo "Starting apache server"
->>>>>>> a0b7a97315844fef9056b98b52755915317438ea
 sudo /mnt/c/Windows/System32/net.exe start Apache2.4 exit 2>/dev/null || echo ""
 
 
