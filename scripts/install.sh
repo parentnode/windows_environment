@@ -152,7 +152,6 @@ echo "--- Checking Directories ---"
 echo "----------------------------"
 echo ""
 . /mnt/c/srv/tools/scripts/checking_directories.sh
-exit
 #
 ## Base parentnode project location
 #if [ -e /mnt/c/srv/sites/parentnode ] ; then
@@ -452,6 +451,7 @@ echo ""
 #
 #
 #
+exit
 . /mnt/c/srv/tools/scripts/install_software.sh
 echo "-----------------------------------------"
 echo "--- Configuring Apache server and PHP ---"
