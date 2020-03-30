@@ -133,3 +133,18 @@ echo "Copying .profile to /home/$SUDO_USER"
 sudo cp "/mnt/c/srv/tools/conf/dot_profile" "/home/$SUDO_USER/.profile"
 sudo chown "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.profile"
 echo ""
+
+apache_service_installed=$(/mnt/c/Windows/System32/sc.exe queryex type= service state= all | grep -E "Apache" || echo "")
+export apache_service_installed
+# Check if Apache is running
+apache_service_running=$(/mnt/c/Windows/System32/net.exe start | grep -E "Apache" || echo "")
+export apache_service_running
+# Apache is running (possibly other version)
+if [ ! -z "$apache_service_running" ]; then
+	echo ""
+	echo "Apache is running. Stopping Apache to continue."
+	# Stop Apache before continuing
+	sudo /mnt/c/Windows/System32/net.exe stop Apache2.4
+	echo ""
+
+fi
