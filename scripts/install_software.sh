@@ -184,13 +184,13 @@ else
 
 
 	echo "Downloading: $apache"
-	cd /mnt/c/srv/packages/
-	wget -O $apache.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $apache_path
+	#cd /mnt/c/srv/packages/
+	wget -O /mnt/c/srv/packages/$apache.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $apache_path
 
 	echo ""
 	echo "Installing $apache"
 	# Unpack zip to install location
-	unzip $apache.zip -d /mnt/c/srv/installed-packages/apache24
+	unzip /mnt/c/srv/packages/$apache.zip -d /mnt/c/srv/installed-packages/apache24
 
 	# Copy default apache config, before installing service to avoid error
     sudo rm "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
