@@ -495,13 +495,13 @@ echo ""
 
 
 # Setting up apache.conf (only once)
-if [ ! -f "/mnt/c/srv/sites/apache/apache.conf" ]; then
-
-	echo "Adding apache config file to sites/apache/"
-	echo ""
-	cp "/mnt/c/srv/tools/conf/apache.conf" "/mnt/c/srv/sites/apache/apache.conf"
-
-fi
+#if [ ! -f "/mnt/c/srv/sites/apache/apache.conf" ]; then
+#
+#	echo "Adding apache config file to sites/apache/"
+#	echo ""
+#	cp "/mnt/c/srv/tools/conf/apache.conf" "/mnt/c/srv/sites/apache/apache.conf"
+#
+#fi
 
 
 
