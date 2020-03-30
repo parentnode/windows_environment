@@ -193,6 +193,7 @@ else
 	unzip $apache.zip -d /mnt/c/srv/installed-packages/apache24
 
 	# Copy default apache config, before installing service to avoid error
+    sudo rm "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
 	sudo cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
 
 	# Install service
