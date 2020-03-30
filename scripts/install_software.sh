@@ -195,7 +195,13 @@ else
 	# Copy default apache config, before installing service to avoid error
     sudo rm "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
 	sudo cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
+    if [ ! -f "/mnt/c/srv/sites/apache/apache.conf" ]; then
 
+	    echo "Adding apache config file to sites/apache/"
+	    echo ""
+	    cp "/mnt/c/srv/tools/conf/apache.conf" "/mnt/c/srv/sites/apache/apache.conf"
+
+    fi
 	# Install service
 	
 
