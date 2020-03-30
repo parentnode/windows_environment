@@ -146,61 +146,62 @@ echo ""
 #sudo chown "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.profile"
 #echo ""
 . /mnt/c/srv/tools/scripts/pre_install_check.sh
-exit
 echo ""
 echo "----------------------------"
 echo "--- Checking Directories ---"
 echo "----------------------------"
 echo ""
-
-# Base parentnode project location
-if [ -e /mnt/c/srv/sites/parentnode ] ; then
-	echo "C:/srv/sites/parentnode already exists"
-else
-	echo "Create directory C:/srv/sites/parentnode"
-    mkdir -p /mnt/c/srv/sites/parentnode;
-fi;
-
-# Base apache configuration location
-if [ -e /mnt/c/srv/sites/apache/logs ] ; then
-	echo "C:/srv/sites/apache/logs already exists"
-else
-	echo "Create directory C:/srv/sites/apache/logs"
-    mkdir -p /mnt/c/srv/sites/apache/logs;
-fi;
-
-# Creating packages folder
-if [ -e /mnt/c/srv/packages ] ; then
-	echo "C:/srv/packages already exists"
-else
-	echo "Create directory C:/srv/packages"
-    mkdir -p /mnt/c/srv/packages;
-fi;
-
-# Creating installed-packages folder
-if [ -e /mnt/c/srv/installed-packages ] ; then
-	echo "C:/srv/installed-packages already exists"
-else
-	echo "Create directory C:/srv/installed-packages"
-    mkdir -p /mnt/c/srv/installed-packages;
-fi;
-echo ""
-
+. /mnt/c/srv/tools/scripts/checking_directories.sh
+exit
+#
+## Base parentnode project location
+#if [ -e /mnt/c/srv/sites/parentnode ] ; then
+#	echo "C:/srv/sites/parentnode already exists"
+#else
+#	echo "Create directory C:/srv/sites/parentnode"
+#    mkdir -p /mnt/c/srv/sites/parentnode;
+#fi;
+#
+## Base apache configuration location
+#if [ -e /mnt/c/srv/sites/apache/logs ] ; then
+#	echo "C:/srv/sites/apache/logs already exists"
+#else
+#	echo "Create directory C:/srv/sites/apache/logs"
+#    mkdir -p /mnt/c/srv/sites/apache/logs;
+#fi;
+#
+## Creating packages folder
+#if [ -e /mnt/c/srv/packages ] ; then
+#	echo "C:/srv/packages already exists"
+#else
+#	echo "Create directory C:/srv/packages"
+#    mkdir -p /mnt/c/srv/packages;
+#fi;
+#
+## Creating installed-packages folder
+#if [ -e /mnt/c/srv/installed-packages ] ; then
+#	echo "C:/srv/installed-packages already exists"
+#else
+#	echo "Create directory C:/srv/installed-packages"
+#    mkdir -p /mnt/c/srv/installed-packages;
+#fi;
+#echo ""
+#
 
 # Check if Apache is installed
-apache_service_installed=$(/mnt/c/Windows/System32/sc.exe queryex type= service state= all | grep -E "Apache" || echo "")
-
-# Check if Apache is running
-apache_service_running=$(/mnt/c/Windows/System32/net.exe start | grep -E "Apache" || echo "")
-# Apache is running (possibly other version)
-if [ ! -z "$apache_service_running" ]; then
-	echo ""
-	echo "Apache is running. Stopping Apache to continue."
-	# Stop Apache before continuing
-	sudo /mnt/c/Windows/System32/net.exe stop Apache2.4
-	echo ""
-
-fi
+#apache_service_installed=$(/mnt/c/Windows/System32/sc.exe queryex type= service state= all | grep -E "Apache" || echo "")
+#
+## Check if Apache is running
+#apache_service_running=$(/mnt/c/Windows/System32/net.exe start | grep -E "Apache" || echo "")
+## Apache is running (possibly other version)
+#if [ ! -z "$apache_service_running" ]; then
+#	echo ""
+#	echo "Apache is running. Stopping Apache to continue."
+#	# Stop Apache before continuing
+#	sudo /mnt/c/Windows/System32/net.exe stop Apache2.4
+#	echo ""
+#
+#fi
 
 
 
@@ -208,249 +209,250 @@ echo ""
 echo "--- Installing software ---"
 echo ""
 
-
-# Install unzip to unpack downloaded packages
-echo "Checking unzip:"
-install_unzip=$(unzip || echo "")
-if [ "$install_unzip" = "" ]; then
-	sudo apt-get --assume-yes install unzip
-else
-	echo "unzip is installed"
-fi
-
-
-# Clean up
-echo ""
-echo "Cleaning up:"
-sudo apt-get --assume-yes autoremove
-echo ""
-
-
-# Prepare for download
-wget --spider --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --save-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" https://parentnode.dk
-
-# Custom parameters for wget download from parentNode website
-wget_params='--user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies cookies.txt --header="Referer: https://parentnode.dk"'
-
-
-# Downloading and installing c++ compiler
-echo "Looking for $vc_compiler"
-if [ -e /mnt/c/srv/packages/$vc_compiler.zip ] || [ -e /mnt/c/srv/packages/$vc_compiler_alt ]; then
-	echo "$vc_compiler already exists"
-else
-
-	echo "Downloading $vc_compiler"
-	cd /mnt/c/srv/packages/
-	wget -O $vc_compiler.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $vc_compiler_path
-
-	# Unpack zip
-	unzip $vc_compiler.zip -d /mnt/c/srv/packages/
-
-	echo ""
-	echo "Installing $vc_compiler"
-	/mnt/c/srv/packages/$vc_compiler.exe /passive /norestart
-
-	# Remove installer
-	rm /mnt/c/srv/packages/$vc_compiler.exe
-
-fi
-echo ""
-
-
-# Downloading and installing mariadb
-echo "Looking for $mariadb"
-if [ -e /mnt/c/srv/packages/$mariadb.zip ] || [ -e /mnt/c/srv/packages/$mariadb_alt ] ; then
-	echo "$mariadb already exists"
-else
-
-	echo "Downloading: $mariadb"
-	cd /mnt/c/srv/packages/
-	wget -O $mariadb.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $mariadb_path
-
-	# Unpack zip
-	unzip $mariadb.zip -d /mnt/c/srv/packages/
-
-	echo ""
-	echo "Installing $mariadb"
-	# Install MariaDB with password and servicename
-	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$mariadb.msi" PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
-
-	# Remove installer
-	rm /mnt/c/srv/packages/$mariadb.msi
-
-fi
-echo ""
-
-
-# Downloading and installing Apache
-echo "Looking for $apache"
-if [ -e /mnt/c/srv/packages/$apache.zip ] ; then
-	echo "$apache already exists"
-else
-
-	# Uninstall existing service
-	if [ ! -z "$apache_service_installed" ]; then
-
-		echo "APACHE IS RUNNING"
-
-		# Old path
-		if [ -e /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe ] ; then
-			echo "OLD PATH"
-			sudo /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe -k uninstall
-		# New path
-		else
-			echo "NEW PATH"
-			sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k uninstall
-		fi
-
-	fi
-
-	# Remove existing version
-	if [ -e /mnt/c/srv/installed-packages/apache24 ] ; then
-		sudo rm -R /mnt/c/srv/installed-packages/apache24
-	fi
-
-
-	echo "Downloading: $apache"
-	cd /mnt/c/srv/packages/
-	wget -O $apache.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $apache_path
-
-	echo ""
-	echo "Installing $apache"
-	# Unpack zip to install location
-	unzip $apache.zip -d /mnt/c/srv/installed-packages/apache24
-
-	# Copy default apache config, before installing service to avoid error
-	cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
-
-	# Install service
-	sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k install
-
-fi
-echo ""
-
-
-# Downloading and installing php
-echo "Looking for $php"
-if [ -e /mnt/c/srv/packages/$php.zip ] ; then
-	echo "$php already exists"
-else
-
-	# Remove existing version
-	if [ -e /mnt/c/srv/installed-packages/php722 ] ; then
-		sudo rm -R /mnt/c/srv/installed-packages/php722
-	fi
-
-	echo "Downloading $php"
-    cd /mnt/c/srv/packages
-	wget -O $php.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $php_path 
-
-	echo ""
-	echo "Installing $php"
-	# Unpack zip to install location
-	unzip $php.zip -d /mnt/c/srv/installed-packages/php722
-
-fi
-echo ""
-
-
-# Downloading and installing Imagick
-echo "Looking for $imagick"
-if [ -e /mnt/c/srv/packages/$imagick.zip ] ; then
-	echo "$imagick already exist"
-else
-
-	echo "Downloading: $imagick"
-	cd /mnt/c/srv/packages/
-	wget -O $imagick.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $imagick_path
-
-
-	# Unpack zip
-	unzip $imagick.zip -d /mnt/c/srv/packages/
-
-	echo ""
-	echo "Installing $imagick"
-	/mnt/c/srv/packages/$imagick.exe /NOICONS /SILENT
-
-	# Remove installer
-	rm /mnt/c/srv/packages/$imagick.exe
-
-fi
-echo ""
-
-
-# Downloading and installing Imagick
-echo "Looking for $redis"
-if [ -e /mnt/c/srv/packages/$redis.zip ] ; then
-	echo "$redis already exist"
-else
-
-	echo "Downloading: $redis"
-	cd /mnt/c/srv/packages/
-	wget -O $redis.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $redis_path
-
-
-	# Unpack zip
-	unzip $redis.zip -d /mnt/c/srv/packages/
-
-	echo ""
-	echo "Installing $redis"
-	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$redis.msi" ADD_FIREWALL_RULE=1 /qn
-
-	# Remove installer
-	rm /mnt/c/srv/packages/$redis.msi
-
-fi
-echo ""
-
-
-# Downloading and installing ffmpeg
-echo "Looking for $ffmpeg"
-if [ -e /mnt/c/srv/packages/$ffmpeg.zip ] ; then
-	echo "$ffmpeg already exist"
-else
-
-	# Remove existing version
-	if [ -e /mnt/c/srv/installed-packages/ffmpeg ] ; then
-		sudo rm -R /mnt/c/srv/installed-packages/ffmpeg
-	fi
-
-	echo "Downloading: $ffmpeg"
-	cd /mnt/c/srv/packages/
-	wget -O $ffmpeg.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $ffmpeg_path 
-
-	echo ""
-	echo "Installing $ffmpeg"
-	unzip $ffmpeg.zip -d /mnt/c/srv/installed-packages/ffmpeg
-
-fi
-echo ""
-
-
-# Downloading and installing wkhtmltopdf
-echo "Looking for $wkhtmltopdf"
-if [ -e /mnt/c/srv/packages/$wkhtmltopdf.zip ] ; then
-	echo "$wkhtmltopdf already exist"
-else
-
-	# Remove existing version
-	if [ -e /mnt/c/srv/installed-packages/wkhtmltopdf ] ; then
-		sudo rm -R /mnt/c/srv/installed-packages/wkhtmltopdf
-	fi
-
-	echo "Downloading: $wkhtmltopdf"
-	cd /mnt/c/srv/packages/
-	wget -O $wkhtmltopdf.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $wkhtmltopdf_path 
-
-	echo ""
-	echo "Installing $wkhtmltopdf"
-	unzip $wkhtmltopdf.zip -d /mnt/c/srv/installed-packages/wkhtmltopdf
-
-fi
-echo ""
-
-
-
+#
+## Install unzip to unpack downloaded packages
+#echo "Checking unzip:"
+#install_unzip=$(unzip || echo "")
+#if [ "$install_unzip" = "" ]; then
+#	sudo apt-get --assume-yes install unzip
+#else
+#	echo "unzip is installed"
+#fi
+#
+#
+## Clean up
+#echo ""
+#echo "Cleaning up:"
+#sudo apt-get --assume-yes autoremove
+#echo ""
+#
+#
+## Prepare for download
+#wget --spider --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --save-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" https://parentnode.dk
+#
+## Custom parameters for wget download from parentNode website
+#wget_params='--user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies cookies.txt --header="Referer: https://parentnode.dk"'
+#
+#
+## Downloading and installing c++ compiler
+#echo "Looking for $vc_compiler"
+#if [ -e /mnt/c/srv/packages/$vc_compiler.zip ] || [ -e /mnt/c/srv/packages/$vc_compiler_alt ]; then
+#	echo "$vc_compiler already exists"
+#else
+#
+#	echo "Downloading $vc_compiler"
+#	cd /mnt/c/srv/packages/
+#	wget -O $vc_compiler.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $vc_compiler_path
+#
+#	# Unpack zip
+#	unzip $vc_compiler.zip -d /mnt/c/srv/packages/
+#
+#	echo ""
+#	echo "Installing $vc_compiler"
+#	/mnt/c/srv/packages/$vc_compiler.exe /passive /norestart
+#
+#	# Remove installer
+#	rm /mnt/c/srv/packages/$vc_compiler.exe
+#
+#fi
+#echo ""
+#
+#
+## Downloading and installing mariadb
+#echo "Looking for $mariadb"
+#if [ -e /mnt/c/srv/packages/$mariadb.zip ] || [ -e /mnt/c/srv/packages/$mariadb_alt ] ; then
+#	echo "$mariadb already exists"
+#else
+#
+#	echo "Downloading: $mariadb"
+#	cd /mnt/c/srv/packages/
+#	wget -O $mariadb.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $mariadb_path
+#
+#	# Unpack zip
+#	unzip $mariadb.zip -d /mnt/c/srv/packages/
+#
+#	echo ""
+#	echo "Installing $mariadb"
+#	# Install MariaDB with password and servicename
+#	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$mariadb.msi" PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
+#
+#	# Remove installer
+#	rm /mnt/c/srv/packages/$mariadb.msi
+#
+#fi
+#echo ""
+#
+#
+## Downloading and installing Apache
+#echo "Looking for $apache"
+#if [ -e /mnt/c/srv/packages/$apache.zip ] ; then
+#	echo "$apache already exists"
+#else
+#
+#	# Uninstall existing service
+#	if [ ! -z "$apache_service_installed" ]; then
+#
+#		echo "APACHE IS RUNNING"
+#
+#		# Old path
+#		if [ -e /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe ] ; then
+#			echo "OLD PATH"
+#			sudo /mnt/c/srv/installed-packages/apache24/Apache24/bin/httpd.exe -k uninstall
+#		# New path
+#		else
+#			echo "NEW PATH"
+#			sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k uninstall
+#		fi
+#
+#	fi
+#
+#	# Remove existing version
+#	if [ -e /mnt/c/srv/installed-packages/apache24 ] ; then
+#		sudo rm -R /mnt/c/srv/installed-packages/apache24
+#	fi
+#
+#
+#	echo "Downloading: $apache"
+#	cd /mnt/c/srv/packages/
+#	wget -O $apache.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $apache_path
+#
+#	echo ""
+#	echo "Installing $apache"
+#	# Unpack zip to install location
+#	unzip $apache.zip -d /mnt/c/srv/installed-packages/apache24
+#
+#	# Copy default apache config, before installing service to avoid error
+#	cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
+#
+#	# Install service
+#	sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k install
+#
+#fi
+#echo ""
+#
+#
+## Downloading and installing php
+#echo "Looking for $php"
+#if [ -e /mnt/c/srv/packages/$php.zip ] ; then
+#	echo "$php already exists"
+#else
+#
+#	# Remove existing version
+#	if [ -e /mnt/c/srv/installed-packages/php722 ] ; then
+#		sudo rm -R /mnt/c/srv/installed-packages/php722
+#	fi
+#
+#	echo "Downloading $php"
+#    cd /mnt/c/srv/packages
+#	wget -O $php.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $php_path 
+#
+#	echo ""
+#	echo "Installing $php"
+#	# Unpack zip to install location
+#	unzip $php.zip -d /mnt/c/srv/installed-packages/php722
+#
+#fi
+#echo ""
+#
+#
+## Downloading and installing Imagick
+#echo "Looking for $imagick"
+#if [ -e /mnt/c/srv/packages/$imagick.zip ] ; then
+#	echo "$imagick already exist"
+#else
+#
+#	echo "Downloading: $imagick"
+#	cd /mnt/c/srv/packages/
+#	wget -O $imagick.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $imagick_path
+#
+#
+#	# Unpack zip
+#	unzip $imagick.zip -d /mnt/c/srv/packages/
+#
+#	echo ""
+#	echo "Installing $imagick"
+#	/mnt/c/srv/packages/$imagick.exe /NOICONS /SILENT
+#
+#	# Remove installer
+#	rm /mnt/c/srv/packages/$imagick.exe
+#
+#fi
+#echo ""
+#
+#
+## Downloading and installing Imagick
+#echo "Looking for $redis"
+#if [ -e /mnt/c/srv/packages/$redis.zip ] ; then
+#	echo "$redis already exist"
+#else
+#
+#	echo "Downloading: $redis"
+#	cd /mnt/c/srv/packages/
+#	wget -O $redis.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $redis_path
+#
+#
+#	# Unpack zip
+#	unzip $redis.zip -d /mnt/c/srv/packages/
+#
+#	echo ""
+#	echo "Installing $redis"
+#	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$redis.msi" ADD_FIREWALL_RULE=1 /qn
+#
+#	# Remove installer
+#	rm /mnt/c/srv/packages/$redis.msi
+#
+#fi
+#echo ""
+#
+#
+## Downloading and installing ffmpeg
+#echo "Looking for $ffmpeg"
+#if [ -e /mnt/c/srv/packages/$ffmpeg.zip ] ; then
+#	echo "$ffmpeg already exist"
+#else
+#
+#	# Remove existing version
+#	if [ -e /mnt/c/srv/installed-packages/ffmpeg ] ; then
+#		sudo rm -R /mnt/c/srv/installed-packages/ffmpeg
+#	fi
+#
+#	echo "Downloading: $ffmpeg"
+#	cd /mnt/c/srv/packages/
+#	wget -O $ffmpeg.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $ffmpeg_path 
+#
+#	echo ""
+#	echo "Installing $ffmpeg"
+#	unzip $ffmpeg.zip -d /mnt/c/srv/installed-packages/ffmpeg
+#
+#fi
+#echo ""
+#
+#
+## Downloading and installing wkhtmltopdf
+#echo "Looking for $wkhtmltopdf"
+#if [ -e /mnt/c/srv/packages/$wkhtmltopdf.zip ] ; then
+#	echo "$wkhtmltopdf already exist"
+#else
+#
+#	# Remove existing version
+#	if [ -e /mnt/c/srv/installed-packages/wkhtmltopdf ] ; then
+#		sudo rm -R /mnt/c/srv/installed-packages/wkhtmltopdf
+#	fi
+#
+#	echo "Downloading: $wkhtmltopdf"
+#	cd /mnt/c/srv/packages/
+#	wget -O $wkhtmltopdf.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $wkhtmltopdf_path 
+#
+#	echo ""
+#	echo "Installing $wkhtmltopdf"
+#	unzip $wkhtmltopdf.zip -d /mnt/c/srv/installed-packages/wkhtmltopdf
+#
+#fi
+#echo ""
+#
+#
+#
+. /mnt/c/srv/tools/scripts/install_software.sh
 echo "-----------------------------------------"
 echo "--- Configuring Apache server and PHP ---"
 echo "-----------------------------------------"
