@@ -197,7 +197,7 @@ else
 	sudo cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
 
 	# Install service
-	sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k install
+	
 
 fi
 echo ""
@@ -225,7 +225,7 @@ else
 
 fi
 echo ""
-
+sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k install
 
 # Downloading and installing Imagick
 echo "Looking for $imagick"
