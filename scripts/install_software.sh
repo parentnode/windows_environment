@@ -83,7 +83,7 @@
 
 # Install unzip to unpack downloaded packages
 echo "Checking unzip:"
-install_unzip=$(unzip || echo "")
+install_unzip=$(unzip --version | grep ^"UnZip" || echo "")
 if [ "$install_unzip" = "" ]; then
 	sudo apt-get --assume-yes install unzip
 else
