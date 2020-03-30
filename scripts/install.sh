@@ -451,8 +451,9 @@ echo ""
 #
 #
 #
-exit
+
 . /mnt/c/srv/tools/scripts/install_software.sh
+exit
 echo "-----------------------------------------"
 echo "--- Configuring Apache server and PHP ---"
 echo "-----------------------------------------"
