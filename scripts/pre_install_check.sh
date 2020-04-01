@@ -161,15 +161,16 @@ outputHandler "comment" "git credential.helper: $(git config --global push.defau
 git config --global core.autocrlf true
 outputHandler "comment" "git credential.helper: $(git config --global core.autocrlf)"
 
-outputHandler "comment" "Setting Time zone"
-
-look_for_ex_timezone=$(sudo timedatectl status | grep "Time zone: " | cut -d ':' -f2)
-if [ -z "$look_for_ex_timezone" ]; then
-	outputHandler "comment" "Setting Time zone to Europe/Copenhagen"
-	sudo timedatectl set-timezone "Europe/Copenhagen"
-else 
-	outputHandler "comment" "Existing time zone values: $look_for_ex_timezone"
-fi
+#Being done with a symlink allready remove when done
+#outputHandler "comment" "Setting Time zone"
+#
+#look_for_ex_timezone=$(sudo timedatectl status | grep "Time zone: " | cut -d ':' -f2)
+#if [ -z "$look_for_ex_timezone" ]; then
+#	outputHandler "comment" "Setting Time zone to Europe/Copenhagen"
+#	sudo timedatectl set-timezone "Europe/Copenhagen"
+#else 
+#	outputHandler "comment" "Existing time zone values: $look_for_ex_timezone"
+#fi
 
 
 # Setting up bash config
