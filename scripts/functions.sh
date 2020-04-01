@@ -71,26 +71,27 @@ ask(){
 	## Password hide prompt input, allow special chars, allow min and max length for the string 
 	## Email: valid characters(restrict to email format (something@somewhere.com))
 	## Username: valid characters(letters and numbers)
+	## Choice yes and no: Y/n
 	valid_answers=("$2")
 	
 	
-	if [ "$3" = "Password" ]; then
+	if [ "$3" = "password" ]; then
 		read -s -p "$1: "$'\n' question
 	else 
 		read -p "$1: " question 
 	fi
-	for ((i = 0; i < ${#valid_answers[@]}; i++))
+	for ((answer = 0; answer < ${#valid_answers[@]}; answer++))
     do
-        if [[ "$question" =~ ^(${valid_answers[$i]})$ ]];
+        if [[ "$question" =~ ^(${valid_answers[$answer]})$ ]];
         then 
            	#echo "Valid"
 			echo "$question"
         else
 			
 			#ask "$1" "${valid_answers[@]}"
-			if [ "$3" = "Password" ];
+			if [ "$3" = "password" ];
 			then
-				ask "Invalid $3, try again" "$2" "$3"
+				ask "Invalid $3, try with specified password format" "$2" "$3"
 			else
 				ask "Invalid $3, try again" "$2" "$3"
 			fi
