@@ -197,71 +197,80 @@ if [ "$install_software" = "Y" ]; then
     fi
 
 
+	if [ "$install_ffmpeg" = "Y" ]; then
+    	echo "Looking for $ffmpeg"
+    	if [ -e /mnt/c/srv/packages/$ffmpeg.zip ] ; then
+    		echo "$ffmpeg already exist"
+    	else
 
-    echo "Looking for $ffmpeg"
-    if [ -e /mnt/c/srv/packages/$ffmpeg.zip ] ; then
-    	echo "$ffmpeg already exist"
-    else
+    		# Remove existing version
+    		if [ -e /mnt/c/srv/installed-packages/ffmpeg ] ; then
+    			sudo rm -R /mnt/c/srv/installed-packages/ffmpeg
+    		fi
 
-    	# Remove existing version
-    	if [ -e /mnt/c/srv/installed-packages/ffmpeg ] ; then
-    		sudo rm -R /mnt/c/srv/installed-packages/ffmpeg
+    		echo "Downloading: $ffmpeg"
+    		cd /mnt/c/srv/packages/
+    		wget -O $ffmpeg.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $ffmpeg_path 
+    	    unzip $ffmpeg.zip -d /mnt/c/srv/installed-packages/ffmpeg
     	fi
+	else
+		echo "Skipping FFMPEG installation"
+	fi
+	if [ "$install_wkhtml" = "Y" ]; then 
+		echo "Looking for $wkhtmltopdf"
+    	if [ -e /mnt/c/srv/packages/$wkhtmltopdf.zip ] ; then
+    		echo "$wkhtmltopdf already exist"
+    	else
 
-    	echo "Downloading: $ffmpeg"
-    	cd /mnt/c/srv/packages/
-    	wget -O $ffmpeg.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $ffmpeg_path 
-        unzip $ffmpeg.zip -d /mnt/c/srv/installed-packages/ffmpeg
-    fi
+    		# Remove existing version
+    		if [ -e /mnt/c/srv/installed-packages/wkhtmltopdf ] ; then
+    			sudo rm -R /mnt/c/srv/installed-packages/wkhtmltopdf
+    		fi
 
-
-    echo "Looking for $wkhtmltopdf"
-    if [ -e /mnt/c/srv/packages/$wkhtmltopdf.zip ] ; then
-    	echo "$wkhtmltopdf already exist"
-    else
-
-    	# Remove existing version
-    	if [ -e /mnt/c/srv/installed-packages/wkhtmltopdf ] ; then
-    		sudo rm -R /mnt/c/srv/installed-packages/wkhtmltopdf
+    		echo "Downloading: $wkhtmltopdf"
+    		cd /mnt/c/srv/packages/
+    		wget -O $wkhtmltopdf.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $wkhtmltopdf_path 
+    	    unzip $wkhtmltopdf.zip -d /mnt/c/srv/installed-packages/wkhtmltopdf
     	fi
+	else
+		echo "Skipping WKHTMLTOPDF installation"
+	fi
+    
+	echo "Installing $vc_compiler"
+	/mnt/c/srv/packages/$vc_compiler.exe /passive /norestart
+	# Remove installer
+	rm /mnt/c/srv/packages/$vc_compiler.exe
 
-    	echo "Downloading: $wkhtmltopdf"
-    	cd /mnt/c/srv/packages/
-    	wget -O $wkhtmltopdf.zip --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0" --load-cookies "/mnt/c/srv/cookies.txt" --header="Referer: https://parentnode.dk" $wkhtmltopdf_path 
-        unzip $wkhtmltopdf.zip -d /mnt/c/srv/installed-packages/wkhtmltopdf
-    fi
-	#echo "Installing $vc_compiler"
-	#/mnt/c/srv/packages/$vc_compiler.exe /passive /norestart
-	## Remove installer
-	#rm /mnt/c/srv/packages/$vc_compiler.exe
+	if [ "$install_webserver_conf" = "Y" ]; then 
+		echo "Installing $mariadb"
+		sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$mariadb.msi" PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
+		# Remove installer
+		rm /mnt/c/srv/packages/$mariadb.msi
 
-	#echo "Installing $mariadb"
-	#sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$mariadb.msi" PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
-	## Remove installer
-	#rm /mnt/c/srv/packages/$mariadb.msi
+		# Copy default apache config, before installing service to avoid error
+		sudo rm "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
+		sudo cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
+		if [ ! -f "/mnt/c/srv/sites/apache/apache.conf" ]; then
+		   echo "Adding apache config file to sites/apache/"
+		   echo ""
+		   cp "/mnt/c/srv/tools/conf/apache.conf" "/mnt/c/srv/sites/apache/apache.conf"
+		fi
+		sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k install
+	else 
+		echo "Skipping Webserver installation"
+	fi
 
-	## Copy default apache config, before installing service to avoid error
-	#sudo rm "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
-	#sudo cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
-	#if [ ! -f "/mnt/c/srv/sites/apache/apache.conf" ]; then
-	 #   echo "Adding apache config file to sites/apache/"
-	 #   echo ""
-	 #   cp "/mnt/c/srv/tools/conf/apache.conf" "/mnt/c/srv/sites/apache/apache.conf"
-	#fi
-	#sudo /mnt/c/srv/installed-packages/apache24/bin/httpd.exe -k install
-
-
-	#echo "Installing $imagick"
-	#/mnt/c/srv/packages/$imagick.exe /NOICONS /SILENT
-	## Remove installer
-	#rm /mnt/c/srv/packages/$imagick.exe
+	echo "Installing $imagick"
+	/mnt/c/srv/packages/$imagick.exe /NOICONS /SILENT
+	# Remove installer
+	rm /mnt/c/srv/packages/$imagick.exe
 
 
-	#echo "Installing $redis"
-	#sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$redis.msi" ADD_FIREWALL_RULE=1 /qn
-	#
-	## Remove installer
-	#rm /mnt/c/srv/packages/$redis.msi
+	echo "Installing $redis"
+	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$redis.msi" ADD_FIREWALL_RULE=1 /qn
+	
+	# Remove installer
+	rm /mnt/c/srv/packages/$redis.msi
 
 
 else 

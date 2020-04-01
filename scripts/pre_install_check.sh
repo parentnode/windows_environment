@@ -85,18 +85,19 @@ install_software_array=("[Yn]")
 install_software=$(ask "Install Software (Y/n)" "${install_software_array[@]}" "option software")
 export install_software
 
-install_webserver_conf_array=("[Yn]")
-install_webserver_conf=$(ask "Install Webserver Configuration (Y/n)" "${install_webserver_conf_array[@]}" "option webserver conf")
-export install_webserver_conf
+if [ "$install_software" = "Y" ]; then
+	install_webserver_conf_array=("[Yn]")
+	install_webserver_conf=$(ask "Install Webserver Configuration (Y/n)" "${install_webserver_conf_array[@]}" "option webserver conf")
+	export install_webserver_conf
 
-install_ffmpeg_array=("[Yn]")
-install_ffmpeg=$(ask "Install FFMPEG (Y/n)" "${install_ffmpeg_array[@]}" "option ffmpeg")
-export install_ffmpeg
+	install_ffmpeg_array=("[Yn]")
+	install_ffmpeg=$(ask "Install FFMPEG (Y/n)" "${install_ffmpeg_array[@]}" "option ffmpeg")
+	export install_ffmpeg
 
-install_wkhtml_array=("[Yn]")
-install_wkhtml=$(ask "Install WKHTMLTOPDF (Y/n)" "${install_wkhtml_array[@]}" "option wkhtml")
-export install_wkhtml
-
+	install_wkhtml_array=("[Yn]")
+	install_wkhtml=$(ask "Install WKHTMLTOPDF (Y/n)" "${install_wkhtml_array[@]}" "option wkhtml")
+	export install_wkhtml
+fi
 # Setting up git user and email
 #read -p "Your git username: " git_user
 #export git_user
@@ -107,12 +108,7 @@ export install_wkhtml
 #echo ""
 
 
-# MariaDB not installed, ask for new root password
-#if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mariadb_alt ]; then
-#	read -s -p "Enter new root DB password: " db_root_password
-#	export db_root_password
-#	echo ""
-#fi
+
 
 
 ## SETTING DEFAULT GIT USER
@@ -162,6 +158,46 @@ git config --global core.autocrlf true
 outputHandler "comment" "git core.autocrlf: $(git config --global core.autocrlf)"
 
 createOrModifyBashProfile
+
+# MariaDB not installed, ask for new root password
+if [ "$install_software" = "Y" ]; then
+	if [ "$(checkMariadbPassword)" = "false" ]; then
+		password_array=("[A-Za-z0-9\!\@\$\#]{8,30}")
+		echo "For security measures the terminal will not display how many characters you input"
+		echo ""
+		echo "Password format: between 8 and 30 characters, non casesensitive letters, numbers and  # ! @ \$ special characters "
+		db_root_password1=$( ask "Enter mariadb password" "${password_array[@]}" "password")
+		echo ""
+		db_root_password2=$( ask "Confirm mariadb password" "${password_array[@]}" "password")
+		echo ""
+
+		# While loop if not a match
+		if [  "$db_root_password1" != "$db_root_password2"  ]; then
+		    while [ true ]
+		    do
+		        echo "Password doesn't match"
+		        echo
+		        #password1=$( ask "Enter mariadb password" "${password_array[@]}" "Password")
+		        db_root_password1=$( ask "Enter mariadb password anew" "${password_array[@]}" "password")
+		        echo ""
+		        db_root_password2=$( ask "Confirm mariadb password" "${password_array[@]}" "password")
+		        echo "" 
+		        if [ "$db_root_password1" == "$db_root_password2" ];
+		        then
+		            echo "Password Match"
+		            break
+		        fi
+		        export db_root_password1
+		    done
+		else
+		    echo "Password Match"
+			export db_root_password1
+		fi
+	else 
+		outputHandler "comment" "Mariadb password allready set up"
+	fi	
+fi
+
 #Being done with a symlink allready remove when done
 #outputHandler "comment" "Setting Time zone"
 #
