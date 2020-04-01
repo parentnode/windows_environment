@@ -157,9 +157,9 @@ outputHandler "comment" "git user email: $(git config --global user.email)"
 git config --global credential.helper cache
 outputHandler "comment" "git credential.helper: $(git config --global credential.helper)"
 git config --global push.default simple
-outputHandler "comment" "git credential.helper: $(git config --global push.default)"
+outputHandler "comment" "git push.default: $(git config --global push.default)"
 git config --global core.autocrlf true
-outputHandler "comment" "git credential.helper: $(git config --global core.autocrlf)"
+outputHandler "comment" "git core.autocrlf: $(git config --global core.autocrlf)"
 
 #Being done with a symlink allready remove when done
 #outputHandler "comment" "Setting Time zone"
