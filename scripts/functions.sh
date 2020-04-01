@@ -154,6 +154,20 @@ fileExists(){
 }
 export -f fileExists
 
+checkMariadbPassword(){
+	! -e /mnt/c/srv/packages/$mariadb.zip ] 
+	&& 
+	[ ! -e /mnt/c/srv/packages/$mariadb_alt
+	if [ "$(fileExists "/mnt/c/srv/packages/$mariadb.zip")" = false ]; then
+		if [ "$(fileExists "/mnt/c/srv/packages/$mariadb_alt")" = false ]; then
+			password_is_set="false"
+		fi	
+	else
+		password_is_set="true"
+	fi
+	echo "$password_is_set"
+}
+export -f checkMariadbPassword
 deleteAndAppendSection(){
     sed -i "/$1/,/$1/d" "$3" 
     readdata=$( < $2)
