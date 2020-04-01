@@ -57,20 +57,14 @@ export wkhtmltopdf
 wkhtmltopdf_path="https://parentnode.dk/download/72/HTMLEDITOR-html-bnyx276m/wkhtmltopdf-static-0-12-3.zip"
 export wkhtmltopdf_path
 
-echo ""
-echo ""
-echo "--- Confirming Windows environment ---"
-echo ""
-echo ""
+outputHandler "comment" "Confirming Windows environment"
 
 # Check if windows environment
 if grep -qE "(Microsoft|WSL)" /proc/version &> /dev/null ; then
-    echo "Windows 10 Bash: OK"
-	echo ""
+    outputHandler "comment" "Windows 10 Bash: OK"
 else
 
-    echo "ERROR: Linux Bash for Windows does not exist"
-    echo "Install Linux Bash for Windows and try again"
+    outputHandler "comment" "ERROR: Linux Bash for Windows does not exist" "Install Linux Bash for Windows and try again"
     exit 1
 
 fi
@@ -78,28 +72,30 @@ fi
 # tar command available
 # TODO: This finds the tar command in bash - we need to check if it exists in CMD
 if grep -qE "^bsdtar" tar --version &> /dev/null ; then
-    echo "System is updated"
-	echo ""
+    outputHandler "comment" "System is updated"
 else
 
-    echo "ERROR: Windows has not been fully updated"
-    echo "Update Windows and try again"
+    outputHandler "comment" "ERROR: Windows has not been fully updated" "Update Windows and try again"
     exit 1
 
 fi
-
-
-
-echo ""
-echo "-------------------------------------------------------"
-echo "Please enter the information required for your install:"
-echo "-------------------------------------------------------"
-echo ""
-
+outputHandler "comment" "To speed up the process, please select your install options now:"
 
 install_software_array=("[Yn]")
 install_software=$(ask "Install Software (Y/n)" "${install_software_array[@]}" "option software")
 export install_software
+
+install_webserver_conf_array=("[Yn]")
+install_webserver_conf=$(ask "Install Webserver Configuration (Y/n)" "${install_webserver_conf_array[@]}" "option webserver conf")
+export install_webserver_conf
+
+install_ffmpeg_array=("[Yn]")
+install_ffmpeg=$(ask "Install FFMPEG (Y/n)" "${install_ffmpeg_array[@]}" "option ffmpeg")
+export install_ffmpeg
+
+install_wkhtml_array=("[Yn]")
+install_wkhtml=$(ask "Install WKHTMLTOPDF (Y/n)" "${install_wkhtml_array[@]}" "option wkhtml")
+export install_wkhtml
 
 # Setting up git user and email
 read -p "Your git username: " git_user
@@ -119,17 +115,61 @@ if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mari
 fi
 
 
+## SETTING DEFAULT GIT USER
+#echo "-----------------------------------------"
+#echo "--- Setting up Git user configuration ---"
+#echo "-----------------------------------------"
+#echo ""
+#git config --global core.filemode false
+#git config --global user.name "$git_user"
+#git config --global user.email "$git_email"
+#git config --global credential.helper cache
+#git config --global push.default simple
+#git config --global core.autocrlf true
+
+outputHandler "comment" "Setting Default GIT User setting"
 # SETTING DEFAULT GIT USER
-echo "-----------------------------------------"
-echo "--- Setting up Git user configuration ---"
-echo "-----------------------------------------"
-echo ""
+
+# Checks if git credential are allready set, promts for input if not
+if [ -z "$(checkGitCredential "name")" ]; then
+	git_username_array=("[A-Za-z0-9[:space:]*]{2,50}")
+	git_username=$(ask "Enter git username" "${git_username_array[@]}" "git username")
+	export git_username
+else
+	git_username="$(checkGitCredential "name")"
+	export git_username
+fi
+if [ -z "$(checkGitCredential "email")" ]; then
+	git_email_array=("[A-Za-z0-9\.\-]+@[A-Za-z0-9\.\-]+\.[a-z]{2,10}")
+	git_email=$(ask "Enter git email" "${git_email_array[@]}" "git email")
+	export git_email
+else
+	git_email="$(checkGitCredential "email")"
+	export git_email
+fi
+
 git config --global core.filemode false
-git config --global user.name "$git_user"
+outputHandler "comment" "git core.filemode: $(git config --global core.filemode)"
+git config --global user.name "$git_username"
+outputHandler "comment" "git user name: $(git config --global user.name)"
 git config --global user.email "$git_email"
+outputHandler "comment" "git user email: $(git config --global user.email)"
 git config --global credential.helper cache
+outputHandler "comment" "git credential.helper: $(git config --global credential.helper)"
 git config --global push.default simple
+outputHandler "comment" "git credential.helper: $(git config --global push.default)"
 git config --global core.autocrlf true
+outputHandler "comment" "git credential.helper: $(git config --global core.autocrlf)"
+
+outputHandler "comment" "Setting Time zone"
+
+look_for_ex_timezone=$(sudo timedatectl status | grep "Time zone: " | cut -d ':' -f2)
+if [ -z "$look_for_ex_timezone" ]; then
+	outputHandler "comment" "Setting Time zone to Europe/Copenhagen"
+	sudo timedatectl set-timezone "Europe/Copenhagen"
+else 
+	outputHandler "comment" "Existing time zone values: $look_for_ex_timezone"
+fi
 
 
 # Setting up bash config
