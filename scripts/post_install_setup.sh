@@ -1,5 +1,5 @@
 #!/bin/bash -e
-
+outputHandler "section" "Setting up configuration files for the webserver"
 echo "-----------------------------------------"
 echo "--- Configuring Apache server and PHP ---"
 echo "-----------------------------------------"

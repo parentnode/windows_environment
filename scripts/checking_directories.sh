@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-
+outputHandler "section" "Checking directories"
 # Base parentnode project location
 if [ -e /mnt/c/srv/sites/parentnode ] ; then
 	echo "C:/srv/sites/parentnode already exists"

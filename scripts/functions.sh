@@ -18,7 +18,7 @@ outputHandler(){
 	#$2 - text for output
 	#$3,4,5 are extra text when needed
 	case $1 in 
-		"Comment")
+		"comment")
 			echo
 			echo "$2"
 			if [ -n "$3" ];
@@ -39,14 +39,14 @@ outputHandler(){
 			fi
 			echo
 			;;
-		"Section")
+		"section")
 			echo
 			echo 
 			echo "{---$2---}"	
 			echo
 			echo
 			;;
-		"Exit")
+		"exit")
 			echo
 			echo "$2 -- Goodbye see you soon"
 			exit 0

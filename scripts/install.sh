@@ -1,6 +1,8 @@
 #!/bin/bash -e
 
+source /mnt/c/srv/tools/scripts/functions.sh
 
+enableSuperCow
 ## Defining paths and download urls
 #
 ## Setting c++ compiler name and download link"
@@ -145,12 +147,13 @@ echo ""
 #sudo cp "/mnt/c/srv/tools/conf/dot_profile" "/home/$SUDO_USER/.profile"
 #sudo chown "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.profile"
 #echo ""
+
 . /mnt/c/srv/tools/scripts/pre_install_check.sh
-echo ""
-echo "----------------------------"
-echo "--- Checking Directories ---"
-echo "----------------------------"
-echo ""
+#echo ""
+#echo "----------------------------"
+#echo "--- Checking Directories ---"
+#echo "----------------------------"
+#echo ""
 . /mnt/c/srv/tools/scripts/checking_directories.sh
 #
 ## Base parentnode project location
@@ -514,7 +517,7 @@ sudo /mnt/c/Windows/System32/net.exe start Apache2.4 exit 2>/dev/null || echo ""
 
 echo ""
 echo "parentNode installed in windows subsystem for linux "
-ehco ""
+echo ""
 echo "Install complete"
 echo "--------------------------------------------------------------"
 echo ""
