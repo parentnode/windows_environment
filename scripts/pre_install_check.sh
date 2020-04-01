@@ -1,5 +1,5 @@
 #!/bin/bash -e
-
+outputHandler "section" "Checking Software Prerequisites are met"
 # Defining paths and download urls
 
 # Setting c++ compiler name and download link"
@@ -95,6 +95,11 @@ echo "-------------------------------------------------------"
 echo "Please enter the information required for your install:"
 echo "-------------------------------------------------------"
 echo ""
+
+
+install_software_array=("[Yn]")
+install_software=$(ask "Install Software (Y/n)" "${install_software_array[@]}" "option software")
+export install_software
 
 # Setting up git user and email
 read -p "Your git username: " git_user
