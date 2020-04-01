@@ -161,6 +161,7 @@ outputHandler "comment" "git push.default: $(git config --global push.default)"
 git config --global core.autocrlf true
 outputHandler "comment" "git core.autocrlf: $(git config --global core.autocrlf)"
 
+createOrModifyBashProfile
 #Being done with a symlink allready remove when done
 #outputHandler "comment" "Setting Time zone"
 #
@@ -174,11 +175,12 @@ outputHandler "comment" "git core.autocrlf: $(git config --global core.autocrlf)
 
 
 # Setting up bash config
-echo ""
-echo "Copying .profile to /home/$SUDO_USER"
-sudo cp "/mnt/c/srv/tools/conf/dot_profile" "/home/$SUDO_USER/.profile"
-sudo chown "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.profile"
-echo ""
+#echo ""
+#echo "Copying .profile to /home/$SUDO_USER"
+#sudo cp "/mnt/c/srv/tools/conf/dot_profile" "/home/$SUDO_USER/.profile"
+#sudo chown "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.profile"
+#echo ""
+exit
 
 apache_service_installed=$(/mnt/c/Windows/System32/sc.exe queryex type= service state= all | grep -E "Apache" || echo "")
 export apache_service_installed
@@ -194,4 +196,3 @@ if [ ! -z "$apache_service_running" ]; then
 	echo ""
 
 fi
-exit
