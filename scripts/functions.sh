@@ -253,20 +253,12 @@ export -f trimString
 
 # Checks a file for a content based on a string
 checkFileContent(){
-	#dot_profile
-	file=$1
-	
-	check=$2
-	
-	statement=$(grep "$check" $file || echo "")
-
-	if [ -n "$statement" ];
-	then 
-		echo "Found"
-    else 
-        echo "Not Found"
-	fi
-		
+	query=$1
+	source=$(<$2)
+	check_query=$(echo "$source" | grep "$query" || echo "")
+	if [ -n "$check_query" ]; then
+		echo "true"
+	fi 
 }
 export -f checkFileContent
 
