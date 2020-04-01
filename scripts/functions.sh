@@ -144,17 +144,94 @@ updateStatementInFile(){
 
 export -f updateStatementInFile
 
+deleteAndAppendSection(){
+    sed -i "/$1/,/$1/d" "$3" 
+    readdata=$( < $2)
+    echo "$readdata" | sed -n "/$1/,/$1/p" >> "$3"
+}
+export -f deleteAndAppendSection
+
+syncronizeAlias(){
+    
+	# Uncomment this source and destination when testing, comment out when done
+	#source=$(</srv/sites/parentnode/ubuntu_environment/tests/test_syncronize_alias/source)
+	#destination=/srv/sites/parentnode/ubuntu_environment/tests/test_syncronize_alias/destination
+	
+	# Comment out this source and destination when testing, uncomment when done
+	source=$(<$2)
+	destination=$3
+
+	readarray -t source_key <<< $(echo "$source" | grep "$1" | cut -d \" -f2) 
+    readarray -t source_value <<< $(echo "$source" | grep "$1" | cut -d \" -f3,4,5) 
+    
+    for i in "${!source_key[@]}"
+    do
+        sed -i 's%'"${source_key[$i]}.*"'%'"$(trimString "${source_value[$i]}")"'%g' $destination
+        
+    done
+}
+export -f syncronizeAlias
+
 # Updates all the sections in the .bash_profile file with files in parentnode dot_profile
-copyParentNodePromptToFile(){
-	updateStatementInFile "admin check" "/mnt/c/srv/tools/conf/dot_profile" "$HOME/.bash_profile"
-	updateStatementInFile "running bash" "/mnt/c/srv/tools/conf/dot_profile" "$HOME/.bash_profile"
-	updateStatementInFile "set path" "/mnt/c/srv/tools/conf/dot_profile" "$HOME/.bash_profile"
-	## Updates the git_prompt function found in .bash_profile 
-	# simpler version instead of copyParentNodeGitPromptToFile. awaiting approval 
-	updateStatementInFile "enable git prompt" "/mnt/c/srv/tools/conf/dot_profile_git_promt" "$HOME/.bash_profile"
+createOrModifyBashProfile(){
+	# if $shell_interactive have value, the computer is accessed with an login prompt normally a server
+	conf="/mnt/c/srv/tools/conf/dot_profile"
+	conf_alias="/mnt/c/srv/tools/conf/dot_profile_alias"
+	install_bash_profile=$(grep -E ". $HOME/.bash_profile" $HOME/.bashrc || echo "")
+	#install_bash_profile=$(grep -E "\$HOME\/\.bash_profile" /home/$install_user/.bashrc || echo "")
+	if [ -z "$install_bash_profile" ]; then
+		outputHandler "comment" "Setting up .bash_profile"
+		# Add .bash_profile to .bashrc
+		echo "" >> $HOME/.bashrc
+		echo "if [ -f \"$HOME/.bash_profile\" ]; then" >> $HOME/.bashrc
+		echo " . $HOME/.bash_profile" >> $HOME/.bashrc
+		echo "fi" >> $HOME/.bashrc
+	else
+		outputHandler "comment" ".bash_profile Installed"
+	fi
+	if [ "$(fileExists "$HOME/.bash_profile")" = true ]; then
+		outputHandler "comment" ".bash_profile Exist"
+		bash_profile_modify_array=("[Yn]")
+		bash_profile_modify=$(ask "Do you want to modify existing .bash_profile (Y/n) !this will override existing .bash_profile!" "${bash_profile_modify_array[@]}" "option bash profile")
+		export bash_profile_modify
+	else
+		#outputHandler "comment" "Installing \.bash_profile"´
+		sudo cp $conf $HOME/.bash_profile
+	fi
+	if [ "$bash_profile_modify" = "Y" ]; then 
+		outputHandler "comment" "Modifying existing .bash_profile"
+		# Switch case checking for either a git prompt definition is present or alias is present allready
+		case "true" in 
+			$(checkFileContent "git_prompt ()" "$HOME/.bash_profile") | $(checkFileContent "alias" "$HOME/.bash_profile"))
+				# if git prompt definition is provided by parentnode
+				if [ "$(checkFileContent "# parentnode_git_prompt" "$HOME/.bash_profile")" = "true" ]; then
+					# update existing git prompt definition section
+					deleteAndAppendSection "# parentnode_git_prompt" "$conf" "$HOME/.bash_profile"
+				fi
+				# if alias is provided by parentnode
+				if [ "$(checkFileContent "# parentnode_alias" "$HOME/.bash_profile")" = "true" ]; then
+					# update existing alias section
+					deleteAndAppendSection "# parentnode_alias" "$conf" "$HOME/.bash_profile"
+				else
+					# if alias is not parentnode alias add them  
+					syncronizeAlias
+				fi	
+				# if more than one user is present at the system (client only) add the multiuser section
+				deleteAndAppendSection "# parentnode_multi_user" "$conf" "$HOME/.bash_profile"
+				;;
+			# if .bash_profile is not listing any of the above, we must asume .bash_profile is broken.
+			*)
+				sudo rm $HOME/.bash_profile
+				sudo cp $conf $HOME/.bash_profile
+				;;
+		esac
+	else
+		# parentnode alias is necessary for a parentnode environment
+		syncronizeAlias "alias" "$conf_alias" "$HOME/.bash_profile"
+	fi
 	
 }
-export -f copyParentNodePromptToFile
+export -f createOrModifyBashProfile
 
 # Removes leading and following spaces
 trimString()
