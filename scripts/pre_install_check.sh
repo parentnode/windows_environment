@@ -98,21 +98,21 @@ install_wkhtml=$(ask "Install WKHTMLTOPDF (Y/n)" "${install_wkhtml_array[@]}" "o
 export install_wkhtml
 
 # Setting up git user and email
-read -p "Your git username: " git_user
-export git_user
-echo ""
-
-read -p "Your git email address: " git_email
-export git_email
-echo ""
+#read -p "Your git username: " git_user
+#export git_user
+#echo ""
+#
+#read -p "Your git email address: " git_email
+#export git_email
+#echo ""
 
 
 # MariaDB not installed, ask for new root password
-if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mariadb_alt ]; then
-	read -s -p "Enter new root DB password: " db_root_password
-	export db_root_password
-	echo ""
-fi
+#if [ ! -e /mnt/c/srv/packages/$mariadb.zip ] && [ ! -e /mnt/c/srv/packages/$mariadb_alt ]; then
+#	read -s -p "Enter new root DB password: " db_root_password
+#	export db_root_password
+#	echo ""
+#fi
 
 
 ## SETTING DEFAULT GIT USER
@@ -193,3 +193,4 @@ if [ ! -z "$apache_service_running" ]; then
 	echo ""
 
 fi
+exit
