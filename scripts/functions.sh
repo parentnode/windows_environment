@@ -144,6 +144,16 @@ updateStatementInFile(){
 
 export -f updateStatementInFile
 
+fileExists(){
+	#$1 file to check for
+	if [ -f $1 ]; then
+		echo "true"
+	else
+		echo "false"
+	fi
+}
+export -f fileExists
+
 deleteAndAppendSection(){
     sed -i "/$1/,/$1/d" "$3" 
     readdata=$( < $2)
