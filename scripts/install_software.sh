@@ -166,7 +166,7 @@ if [ "$install_software" = "Y" ]; then
 
 	if [ "$install_webserver_conf" = "Y" ]; then 
 		outputHandler "comment" "Installing $mariadb"
-		sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$mariadb.msi" PASSWORD="$db_root_password" SERVICENAME="MariaDB" /qn
+		sudo /mnt/c/Windows/System32/msiexec.exe /i "C:\\srv\\packages\\$mariadb.msi" /qn ACCEPT_EULA=1 PASSWORD="$db_root_password1" SERVICENAME="MariaDB"
 		# Remove installer
 		rm /mnt/c/srv/packages/$mariadb.msi
 
@@ -181,7 +181,7 @@ if [ "$install_software" = "Y" ]; then
 	else 
 		outputHandler "comment" "Skipping Webserver installation"
 	fi
-
+	
 	outputHandler "comment" "Installing $imagick"
 	/mnt/c/srv/packages/$imagick.exe /NOICONS /SILENT
 	# Remove installer
