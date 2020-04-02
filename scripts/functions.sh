@@ -255,6 +255,17 @@ createOrModifyBashProfile(){
 }
 export -f createOrModifyBashProfile
 
+# Check folder exists create if not
+checkFolderExistOrCreate(){
+    if [ ! -e "$1" ]; then
+        echo "Creating folder $1"
+        mkdir -p "$1" 
+    else 
+        echo "Folder allready exists"
+    fi
+}
+export -f checkFolderExistOrCreate
+
 # Removes leading and following spaces
 trimString()
 {
