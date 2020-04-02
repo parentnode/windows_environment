@@ -27,7 +27,7 @@ getSiteInfo(){
 	fi
 }
 enablingApacheSite(){
-	include=$(echo "Include \"/mnt/c/$(getSiteInfo "$1" | sed s,/theme/www,/apache/httpd-vhosts.conf, )\"")
+	include=$(echo "Include \"$(getSiteInfo "$1" | sed s,/theme/www,/apache/httpd-vhosts.conf, )\"")
 	apache_entry_exists=$(grep "$include" "$apache_file_path" || echo "")
 	#echo "$include"
 	#echo "Apache Entry: $apache_entry_exists"
@@ -57,15 +57,15 @@ if [ -e "$PWD/apache/httpd-vhosts.conf" ] ; then
 	# Parse DocumentRoot from httpd-vhosts.conf
 	document_root=($(grep -E "DocumentRoot" "$PWD/apache/httpd-vhosts.conf" | sed -e "s/	DocumentRoot \"//; s/\"//"))
 	export document_root
-	
+	echo "$document_root"
 	# Parse ServerName from httpd-vhosts.conf
 	server_name=($(grep -E "ServerName" "$PWD/apache/httpd-vhosts.conf" | sed "s/	ServerName //"))
 	export server_name
-	
+	echo "$server_name"
 	# Parse ServerAlias from httpd-vhosts.conf
 	server_alias=($(grep -E "ServerAlias" "$PWD/apache/httpd-vhosts.conf" | sed "s/	ServerAlias //"))
     export server_alias
-
+	echo "$server_alias"
 	# Could not find DocumentRoot or ServerName
     if [ -z "$(getSiteInfo "${document_root[@]}")" ] && [ -z "$(getSiteInfo "${server_name[@]}")" ]; then
 		echo ""
