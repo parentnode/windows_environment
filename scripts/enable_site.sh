@@ -27,7 +27,7 @@ getSiteInfo(){
 	fi
 }
 enablingApacheSite(){
-	include=$(echo "Include \"$(getSiteInfo "$1" | sed s,/theme/www,/apache/httpd-vhosts.conf, )\"")
+	include=$(echo "Include \"/mnt/c/$(getSiteInfo "$1" | sed s,/theme/www,/apache/httpd-vhosts.conf, )\"")
 	apache_entry_exists=$(grep "$include" "$apache_file_path" || echo "")
 	#echo "$include"
 	#echo "Apache Entry: $apache_entry_exists"
