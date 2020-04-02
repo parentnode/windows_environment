@@ -98,30 +98,7 @@ if [ "$install_software" = "Y" ]; then
 	install_wkhtml=$(ask "Install WKHTMLTOPDF (Y/n)" "${install_wkhtml_array[@]}" "option wkhtml")
 	export install_wkhtml
 fi
-# Setting up git user and email
-#read -p "Your git username: " git_user
-#export git_user
-#echo ""
-#
-#read -p "Your git email address: " git_email
-#export git_email
-#echo ""
 
-
-
-
-
-## SETTING DEFAULT GIT USER
-#echo "-----------------------------------------"
-#echo "--- Setting up Git user configuration ---"
-#echo "-----------------------------------------"
-#echo ""
-#git config --global core.filemode false
-#git config --global user.name "$git_user"
-#git config --global user.email "$git_email"
-#git config --global credential.helper cache
-#git config --global push.default simple
-#git config --global core.autocrlf true
 
 outputHandler "comment" "Setting Default GIT User setting"
 # SETTING DEFAULT GIT USER
@@ -197,26 +174,6 @@ if [ "$install_software" = "Y" ]; then
 		outputHandler "comment" "Mariadb password allready set up"
 	fi	
 fi
-
-#Being done with a symlink allready remove when done
-#outputHandler "comment" "Setting Time zone"
-#
-#look_for_ex_timezone=$(sudo timedatectl status | grep "Time zone: " | cut -d ':' -f2)
-#if [ -z "$look_for_ex_timezone" ]; then
-#	outputHandler "comment" "Setting Time zone to Europe/Copenhagen"
-#	sudo timedatectl set-timezone "Europe/Copenhagen"
-#else 
-#	outputHandler "comment" "Existing time zone values: $look_for_ex_timezone"
-#fi
-
-
-# Setting up bash config
-#echo ""
-#echo "Copying .profile to /home/$SUDO_USER"
-#sudo cp "/mnt/c/srv/tools/conf/dot_profile" "/home/$SUDO_USER/.profile"
-#sudo chown "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.profile"
-#echo ""
-exit
 
 apache_service_installed=$(/mnt/c/Windows/System32/sc.exe queryex type= service state= all | grep -E "Apache" || echo "")
 export apache_service_installed
