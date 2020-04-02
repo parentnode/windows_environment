@@ -140,9 +140,8 @@ createOrModifyBashProfile
 if [ "$install_software" = "Y" ]; then
 	if [ "$(checkMariadbPassword)" = "false" ]; then
 		password_array=("[A-Za-z0-9\!\@\$\#]{8,30}")
-		echo "For security measures the terminal will not display how many characters you input"
-		echo ""
-		echo "Password format: between 8 and 30 characters, non casesensitive letters, numbers and  # ! @ \$ special characters "
+		outputHandler "comment" "For security measures the terminal will not display how many characters you input"
+		outputHandler "comment" "Password format: between 8 and 30 characters, non casesensitive letters, numbers and  # ! @ \$ special characters "
 		db_root_password1=$( ask "Enter mariadb password" "${password_array[@]}" "password")
 		echo ""
 		db_root_password2=$( ask "Confirm mariadb password" "${password_array[@]}" "password")
@@ -152,8 +151,7 @@ if [ "$install_software" = "Y" ]; then
 		if [  "$db_root_password1" != "$db_root_password2"  ]; then
 		    while [ true ]
 		    do
-		        echo "Password doesn't match"
-		        echo
+		        outputHandler "comment" "Password doesn't match"
 		        #password1=$( ask "Enter mariadb password" "${password_array[@]}" "Password")
 		        db_root_password1=$( ask "Enter mariadb password anew" "${password_array[@]}" "password")
 		        echo ""
@@ -161,13 +159,13 @@ if [ "$install_software" = "Y" ]; then
 		        echo "" 
 		        if [ "$db_root_password1" == "$db_root_password2" ];
 		        then
-		            echo "Password Match"
+		            outputHandler "comment" "Password Match"
 		            break
 		        fi
 		        export db_root_password1
 		    done
 		else
-		    echo "Password Match"
+		    outputHandler "comment" "Password Match"
 			export db_root_password1
 		fi
 	else 
@@ -182,10 +180,8 @@ apache_service_running=$(/mnt/c/Windows/System32/net.exe start | grep -E "Apache
 export apache_service_running
 # Apache is running (possibly other version)
 if [ ! -z "$apache_service_running" ]; then
-	echo ""
-	echo "Apache is running. Stopping Apache to continue."
+	outputHandler "comment" "Apache is running. Stopping Apache to continue."
 	# Stop Apache before continuing
 	sudo /mnt/c/Windows/System32/net.exe stop Apache2.4
-	echo ""
 
 fi
