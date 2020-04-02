@@ -37,7 +37,6 @@ disablingApacheSite(){
 		echo "disabling conf in $apache_file_path"
 		#echo "$include" >> "$apache_file_path"
 		sed -i "s,$include,," "$apache_file_path"
-		#sed '/debian/d' file
 	fi
 }
 removeHost(){
@@ -51,7 +50,7 @@ removeHost(){
 		echo "$1 exists"
 	else 
 		echo "Removing $1 host"
-		sudo sed -i "s,$server,," $host_file_path	
+		sed -i "s,$server,," $host_file_path	
 	fi
 	sudo chmod 644 "$host_file_path"
 }
