@@ -201,16 +201,16 @@ createOrModifyBashProfile(){
 	conf_alias="/mnt/c/srv/tools/conf/dot_profile_alias"
 	install_bash_profile=$(grep -E ". $HOME/.bash_profile" $HOME/.bashrc || echo "")
 	#install_bash_profile=$(grep -E "\$HOME\/\.bash_profile" /home/$install_user/.bashrc || echo "")
-	if [ -z "$install_bash_profile" ]; then
-		outputHandler "comment" "Setting up .bash_profile"
-		# Add .bash_profile to .bashrc
-		echo "" >> $HOME/.bashrc
-		echo "if [ -f \"$HOME/.bash_profile\" ]; then" >> $HOME/.bashrc
-		echo " . $HOME/.bash_profile" >> $HOME/.bashrc
-		echo "fi" >> $HOME/.bashrc
-	else
-		outputHandler "comment" ".bash_profile Installed"
-	fi
+	#if [ -z "$install_bash_profile" ]; then
+	#	outputHandler "comment" "Setting up .bash_profile"
+	#	# Add .bash_profile to .bashrc
+	#	echo "" >> $HOME/.bashrc
+	#	echo "if [ -f \"$HOME/.bash_profile\" ]; then" >> $HOME/.bashrc
+	#	echo " . $HOME/.bash_profile" >> $HOME/.bashrc
+	#	echo "fi" >> $HOME/.bashrc
+	#else
+	#	outputHandler "comment" ".bash_profile Installed"
+	#fi
 	if [ "$(fileExists "$HOME/.bash_profile")" = true ]; then
 		outputHandler "comment" ".bash_profile Exist"
 		bash_profile_modify_array=("[Yn]")
