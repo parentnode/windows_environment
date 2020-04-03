@@ -16,9 +16,9 @@ cp "/mnt/c/srv/installed-packages/php722/ssleay32.dll" "/mnt/c/srv/installed-pac
 
 outputHandler "comment" "Setting up httpd.conf"
 # Setting up httpd.conf
-outputHandler "comment" "Copying httpd config file to apache24/conf"
-cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
-
+#outputHandler "comment" "Copying httpd config file to apache24/conf"
+#cp "/mnt/c/srv/tools/conf/httpd.conf" "/mnt/c/srv/installed-packages/apache24/conf/httpd.conf"
+cp -r "/mnt/c/srv/tools/conf/ssl" "/mnt/c/srv/sites/apache/"
 outputHandler "comment" "Adding SSL cert"
 
 # Adding SSL cert
