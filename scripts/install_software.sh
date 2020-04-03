@@ -189,7 +189,7 @@ if [ "$install_software" = "Y" ]; then
 
 
 	outputHandler "comment" "Installing $redis"
-	sudo /mnt/c/Windows/SysWOW64/msiexec.exe /i "C:\\srv\\packages\\$redis.msi" ADD_FIREWALL_RULE=1 /qn
+	sudo /mnt/c/Windows/System32/msiexec.exe /i "C:\\srv\\packages\\$redis.msi" ADD_FIREWALL_RULE=1 /qn
 	
 	# Remove installer
 	rm /mnt/c/srv/packages/$redis.msi

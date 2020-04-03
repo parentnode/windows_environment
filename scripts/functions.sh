@@ -104,7 +104,7 @@ ask(){
 export -f ask
 
 # Check if program/service are installed
-testCommand(){
+testCommandResponse(){
 # Usage: returns a true if a program or service are located in 
 # P1: kommando
 # P2: array of valid responses
@@ -117,9 +117,10 @@ testCommand(){
 		fi
 
 	done
+	#added for further uses since most of the commands (at this time of entry) are unpakking and running msi packages
 
 }
-export -f testCommand
+export -f testCommandResponse
 
 checkGitCredential(){
 	value=$(git config user.$1)
@@ -164,6 +165,7 @@ checkMariadbPassword(){
 		password_is_set="true"
 	fi
 	echo "$password_is_set"
+	# for later use testing against running instances of mariadb instance
 }
 export -f checkMariadbPassword
 deleteAndAppendSection(){
@@ -284,63 +286,4 @@ checkFileContent(){
 	fi 
 }
 export -f checkFileContent
-
-# If an alias from parentnode exists then this script will update it, else it will parse it
-handleAlias(){
-    IFS=$'\n'
-    read_alias_file=$( < "/mnt/c/srv/tools/conf/dot_profile_alias" )
-
-    # The key komprises of value between the first and second quotation '"'
-    default_keys=( $( echo "$read_alias_file" | grep ^\" |cut -d\" -f2) )
-
-    #The value komprises of value between the third, fourth and fifth quotation '"'
-    default_values=( $( echo "$read_alias_file" | grep ^\" |cut -d\" -f3,4,5) )
-    unset IFS    
-    for line in "${!default_keys[@]}"
-    do		
-        if [ "$(checkFileContent "$HOME/.bash_profile" "${default_keys[line]}")" == "Found" ];
-        then
-            echo "Updated ${default_values[line]}"
-            sed -i -e "s,${default_keys[line]}\=.*,$(trimString "${default_values[line]}"),g" "$HOME/.bash_profile"
-        else 
-            echo "None or not all parentnode alias present" 
-            echo " copying $(trimString "${default_values[line]}") "
-            echo "$(trimString "${default_values[line]}")" >> "$HOME/.bash_profile"
-        fi
-    done
-	echo ""
-}
-export -f handleAlias
-
-# Checks if a folder exists if not it will be created
-checkFolderOrCreate(){
-	folderName=$1
-	if [ -e $folderName ];
-	then
-		echo "$folderName already exists"
-	else 
-		echo "Create directory $folderName"
-    	mkdir -p $folderName;
-	fi
-	echo ""
-}
-export -f checkFolderOrCreate
-
-# Setting Git credentials if needed
-git_configured(){
-	git_credential=$1
-	credential_configured=$(git config --global user.$git_credential || echo "")
-	if [ -z "$credential_configured" ];
-	then 
-		echo "No previous git user.$git_credential entered"
-		echo
-		read -p "Enter your new user.$git_credential: " git_new_value
-		git config --global user.$git_credential "$git_new_value"
-		echo
-	else 
-		echo "Git user.$git_credential allready set"
-	fi
-	echo ""
-}
-export -f git_configured
 
