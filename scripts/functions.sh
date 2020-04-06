@@ -198,7 +198,8 @@ export -f syncronizeAlias
 
 # Updates all the sections in the .bash_profile file with files in parentnode dot_profile
 createOrModifyBashProfile(){
-
+	conf="/mnt/c/srv/tools/conf/dot_profile"
+	conf_alias="/mnt/c/srv/tools/conf/dot_profile_alias"
 	if [ "$(fileExists "$HOME/.bash_profile")" = true ]; then
 		outputHandler "comment" ".bash_profile Exist"
 		bash_profile_modify_array=("[Yn]")
