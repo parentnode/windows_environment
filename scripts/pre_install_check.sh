@@ -131,8 +131,6 @@ git config --global credential.helper cache
 outputHandler "comment" "git credential.helper: $(git config --global credential.helper)"
 git config --global push.default simple
 outputHandler "comment" "git push.default: $(git config --global push.default)"
-git config --global core.autocrlf true
-outputHandler "comment" "git core.autocrlf: $(git config --global core.autocrlf)"
 
 createOrModifyBashProfile
 
