@@ -137,7 +137,7 @@ outputHandler "comment" "git core.autocrlf: $(git config --global core.autocrlf)
 createOrModifyBashProfile
 
 # MariaDB not installed, ask for new root password
-if [ "$install_software" = "Y" ]; then
+if [ "$install_webserver_conf" = "Y" ]; then
 	if [ "$(checkMariadbPassword)" = "false" ]; then
 		password_array=("[A-Za-z0-9\!\@\$\#]{8,30}")
 		outputHandler "comment" "For security measures the terminal will not display how many characters you input"
